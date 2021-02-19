@@ -120,7 +120,7 @@ deploy:
   repo: https://github.com/opsarno/opsarno.github.io
   branch: gh-pages
 
-# Aliyun
-- type: git
-  repo: https://github.com/opsarno/opsarno.github.io
-  branch: pages
+# # Aliyun
+# - type: git
+#   repo: https://github.com/opsarno/opsarno.github.io
+#   branch: pages
