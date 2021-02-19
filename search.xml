@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hexo Next 博客</title>
+    <url>/2021/02/19/hexo-next-blog/</url>
+    <content><![CDATA[<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ul>
+<li>Node</li>
+<li>Git</li>
+<li>GitHub</li>
+</ul>
+<p>安装 Hexo</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>初始化基础环境</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init &lt;folder&gt;</span><br><span class="line"><span class="built_in">cd</span> &lt;folder&gt;</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p><code>_config.yml</code> 文件中配置博客的基本信息</p>
+<h2 id="创建分类文件夹"><a href="#创建分类文件夹" class="headerlink" title="创建分类文件夹"></a>创建分类文件夹</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+<p>编辑 <code>source/categories/index.md</code> 文件，添加 <code>type: &quot;categories&quot;</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line">date: 2019-07-15 23:30:33</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<h2 id="创建标签文件夹"><a href="#创建标签文件夹" class="headerlink" title="创建标签文件夹"></a>创建标签文件夹</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+<p>编辑 <code>source/tags/index.md</code> 文件，添加 <code>type: &quot;tags&quot;</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: tags</span><br><span class="line">date: 2019-07-15 23:30:33</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>blog</tag>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nginx location 详解</title>
+    <url>/2021/02/19/nginx-location/</url>
+    <content><![CDATA[<p>location 指令用途</p>
+<p>根据请求 URI 设置配置，进而对请求做不同的处理和响应。</p>
+<h1 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 关键字    修饰符  匹配的前缀字符既URI &#123; 要执行的操作 &#125;</span></span><br><span class="line">location [ = | ~ | ~* | ^~ ] uri &#123; ... &#125;</span><br><span class="line">location @name &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>语法规则很简单，关键字location后跟可选的修饰符，后面是要匹配的前缀字符既URI，花括号中是要执行的操作。</p>
+<p>location 一般定义在 server 区块中，也可以嵌套定义在 location 区块中，但命名 location 不可嵌套。</p>
+<a id="more"></a>
+
+<h2 id="修饰符说明"><a href="#修饰符说明" class="headerlink" title="修饰符说明"></a>修饰符说明</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">空  前缀字符匹配 记录匹配的最长路径，继续后续规则</span><br><span class="line">=   精确字符匹配 匹配后终止搜索</span><br><span class="line">^~  非正则字符匹配 匹配后终止搜索</span><br><span class="line"></span><br><span class="line">~   正则匹配 区分大小写 匹配后终止搜索</span><br><span class="line">~*  正则匹配 不区分大小写 匹配后终止搜索</span><br><span class="line"></span><br><span class="line">@   命名 location，不用于常规请求处理，而是用于请求重定向。它们不能嵌套，也不能包含嵌套位置。</span><br></pre></td></tr></table></figure>
+<p>由修饰符的含义可以得出，location 有三种表现形式</p>
+<ul>
+<li>字符匹配</li>
+<li>正则匹配</li>
+<li>命名 location</li>
+</ul>
+<h1 id="匹配过程"><a href="#匹配过程" class="headerlink" title="匹配过程"></a>匹配过程</h1><p>首先会有一些内部的前置工作，例如对请求中 <code>%xx</code> 编码的文本进行解码，解析uri中的<code>.</code>，<code>..</code>相对路径的引用，对两个或多个相邻的斜杠 <code>/</code> 将其压缩为一个斜杠后，再开始对一个规范化的URI执行匹配。</p>
+<p>匹配过程：  </p>
+<ol>
+<li>匹配所有非正则表达式规则（空、=、^~），找到请求uri的最长匹配规则，并暂存；</li>
+<li>如果匹配到 = 或 ^~ 的规则，停止后续查找，使用匹配的规则；</li>
+<li>如果未匹配 = 或 ^~ 的规则，会按照顺序查找正则匹配规则，匹配后停止后续查找，使用匹配的规则；</li>
+<li>如果没有匹配的正则规则，则使用暂存的最长匹配规则；</li>
+</ol>
+<p>启示：</p>
+<ul>
+<li>精确匹配可以提高查找速度，例如经常请求 / 的话，可以使用<code>location = /</code>来定义。</li>
+<li>正则匹配的定义顺序很重要，因为匹配后，后续的查找就终止了。</li>
+</ul>
+<p>优先级总结：</p>
+<p><code>=</code> &gt; <code>^~</code> &gt; <code>~</code> &gt; <code>~*</code> &gt; <code>最长前缀字符匹配</code> &gt; <code>/</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">精确字符匹配 &gt; 非正则字符匹配 &gt; 区分大小写正则匹配 &gt; 不区分大小写正则匹配 &gt; 最长前缀字符匹配 &gt; 默认前缀字符匹配</span><br></pre></td></tr></table></figure>
+
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 等号 精确字符匹配</span></span><br><span class="line">location = / &#123;</span><br><span class="line">    [ configuration A ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 无修饰符 前缀字符匹配，此规则匹配其它未命中的规则。</span></span><br><span class="line">location / &#123;</span><br><span class="line">    [ configuration B ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 无修饰符 前缀字符匹配</span></span><br><span class="line">location /documents/ &#123;</span><br><span class="line">    [ configuration C ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ^~ 非正则字符匹配</span></span><br><span class="line">location ^~ /images/ &#123;</span><br><span class="line">    [ configuration D ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ~* 不区分大小写正则匹配</span></span><br><span class="line">location ~* \.(gif|jpg|jpeg)$ &#123;</span><br><span class="line">    [ configuration E ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>“/” 请求 精确匹配 A，不再往下查找。</li>
+<li>“/index.html” 请求 前缀字符匹配最长路径 配置B，后面无匹配的正则，使用配置B。</li>
+<li>“/documents/document.html” 请求 前缀字符匹配最长路径 配置C，后面无匹配的正则，使用配置C。</li>
+<li>“/images/1.gif” 请求 找到非正则字符匹配 配置D，不再往下查找，使用配置D。</li>
+<li>“/documents/1.jpg” 首先 前缀字符匹配到最长路径 配置C，后面匹配到正则匹配 配置 E，故而最终使用配置E。</li>
+</ul>
+<h1 id="location-name-用法"><a href="#location-name-用法" class="headerlink" title="location @name 用法"></a>location @name 用法</h1><p>@用来定义一个命名location。主要用于内部重定向，不能用来处理正常的请求。其用法如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ @custom</span><br><span class="line">&#125;</span><br><span class="line">location @custom &#123;</span><br><span class="line">    <span class="comment"># ...do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上例中，当尝试访问url找不到对应的文件就重定向到我们自定义的命名location（此处为custom）。</p>
+<h1 id="uri-末尾带不带-的说明"><a href="#uri-末尾带不带-的说明" class="headerlink" title="uri 末尾带不带 / 的说明"></a>uri 末尾带不带 / 的说明</h1><p>uri 末尾带斜杠<code>/user/</code>表示目录，不带斜杠<code>/user</code>表示文件。</p>
+<p>默认情况下，访问 <code>/user/</code>时，服务器会自动去该目录下查找加载默认文件。<br>而访问 <code>/user</code> 时，服务器会先尝试加载该文件，如果文件不存在，则重定向至<code>/user/</code>去该目录下找默认文件。</p>
+<h2 id="特殊情况"><a href="#特殊情况" class="headerlink" title="特殊情况"></a>特殊情况</h2><p>如果 location 匹配定义的前缀字符是以 <code>/</code> 结尾，并且请求由 <code>proxy_pass, fastcgi_pass, uwsgi_pass, scgi_pass, memcached_pass, or grpc_pass</code> 进行特殊处理。这种情况，不管 /user 文件是否存在，请求将会触发301永久重定向到被请求的uri，并附加斜杠。</p>
+<p>如果不希望这样，则需要明确定义不带 / 结尾的location配置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">location &#x2F;user&#x2F; &#123;</span><br><span class="line">    proxy_pass http:&#x2F;&#x2F;user.example.com;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location &#x3D; &#x2F;user &#123;</span><br><span class="line">    proxy_pass http:&#x2F;&#x2F;login.example.com;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>官方文档：<a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#location">http://nginx.org/en/docs/http/ngx_http_core_module.html#location</a></p>
+]]></content>
+      <categories>
+        <category>nginx</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+</search>
