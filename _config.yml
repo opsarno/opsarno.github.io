@@ -121,11 +121,6 @@ deploy:
   branch: gh-pages
 
 # Aliyun
-# - type: rsync
-#   host: <host>
-#   user: root
-#   root: /opt/web/www.fandenggui.com/
-#   port: 22
-#   delete: true
-#   verbose: true
-#   ignore_errors: true
+- type: git
+  repo: https://github.com/opsarno/opsarno.github.io
+  branch: pages
