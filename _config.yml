@@ -6,7 +6,7 @@
 title: 'IT DevOps Club'
 subtitle: '技术博客'
 description: '醉里挑灯看剑，梦回吹角连营。'
-keywords: 'linux, python, shell, nginx, docker'
+keywords: [linux, python, shell, nginx, docker]
 author: 'Arno Fan'
 language: zh-CN
 timezone: 'Asia/Shanghai'
@@ -110,17 +110,12 @@ theme_config: _config.next.yml
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-# Gitlab pages
-# - type: git
-#   repo: https://gitlab.com/opsarno/opsarno.github.io
-#   branch: gl-pages
-
 # Github pages
-- type: git
-  repo: https://github.com/opsarno/opsarno.github.io
-  branch: gh-pages
+# - type: git
+#   repo: https://github.com/opsarno/opsarno.github.io
+#   branch: gh-pages
 
-# # Aliyun
+# Aliyun
 # - type: git
 #   repo: https://github.com/opsarno/opsarno.github.io
 #   branch: pages

@@ -1,25 +1,15 @@
 ---
 title: Hexo Next 博客
-date: 2021-02-19 11:52:35
-tags: 
-  - hexo
-  - blog
-  - next
-categories:
-  - others
+date: 2020-02-19 11:52:35
+tags: [hexo, next, blog]
+categories: [others]
+
 ---
-
-# 准备工作
-
-- Node
-- Git
-- GitHub
 
 安装 Hexo
 ```bash
 npm install -g hexo-cli
 ```
-
 
 初始化基础环境
 ```bash
@@ -30,8 +20,10 @@ npm install
 
 `_config.yml` 文件中配置博客的基本信息
 
+`_config.next.yml` 文件中配置博客主题相关信息
 
-## 创建分类文件夹
+<!--more-->
+## 创建分类页
 ```
 hexo new page categories
 ```
@@ -45,7 +37,7 @@ type: "categories"
 ---
 ```
 
-## 创建标签文件夹
+## 创建标签页
 ```
 hexo new page tags
 ```
@@ -58,3 +50,7 @@ date: 2019-07-15 23:30:33
 type: "tags"
 ---
 ```
+
+# 参考资料
+- https://hexo.io/zh-cn/docs/
+- https://github.com/theme-next/hexo-theme-next
