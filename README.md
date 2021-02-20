@@ -1,18 +1,5 @@
-[opsarno.github.io](https://opsarno.github.io) = Hexo + Next + Github + Travis CI
+博客地址1：[opsarno.github.io](https://opsarno.github.io)
 
+博客地址2：[www.itdevops.cn](https://www.itdevops.cn) 
 
-categories
-```
-dev
-    shell
-    python
-    golang
-    pcre
-ops
-    linux
-    nginx
-    docker
-    optimization
-    troubleshooting
-others
-```
+Hexo + Next + Github + Travis CI
