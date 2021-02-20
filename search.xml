@@ -229,4 +229,40 @@
         <tag>location</tag>
       </tags>
   </entry>
+  <entry>
+    <title>nginx proxy_pass 详解</title>
+    <url>/2021/02/20/nginx-proxy-pass/</url>
+    <content><![CDATA[<h1 id="指令语法"><a href="#指令语法" class="headerlink" title="指令语法"></a>指令语法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">proxy_pass URL;</span><br></pre></td></tr></table></figure>
+<p>URL 由三部分组成：</p>
+<ul>
+<li>协议 可以指定 http 或 https</li>
+<li>地址 可以指定 域名 或 ip 以及 可选端口</li>
+<li>可选的URI</li>
+</ul>
+<p>示例</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">proxy_pass http://www.abc.com;</span><br><span class="line">proxy_pass http://127.0.0.1:8000/uri/;</span><br><span class="line"></span><br><span class="line">proxy_pass http://unix:/tmp/backend.socket:/uri/;</span><br></pre></td></tr></table></figure>
+<p>此外，可将地址指定为一个主机组 <a href="http://nginx.org/en/docs/http/ngx_http_upstream_module.html">server group</a>，使用 upstream 来定义主机组。</p>
+<p>当使用 rewrite 在代理位置更改URI时（地址重写），则重写后的URI会传递给后端服务器。</p>
+<a id="more"></a>
+
+
+<h1 id="示例解析"><a href="#示例解析" class="headerlink" title="示例解析"></a>示例解析</h1><p>假设访问域名为：<a href="http://www.abc123.com/">www.abc123.com</a></p>
+<p>我们围绕<code>proxy_pass</code>指令后面，地址带不带有 <code>uri</code>，以及是否以斜杠 <code>/</code> 结尾进行分析，看看后端服务接收到的请求是什么样的。</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><p>无 uri， 非斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location /test1/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test1/1.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/test1/1.html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><p>无 uri，斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location /test2/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110/;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test2/2.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/2.html</span></span><br></pre></td></tr></table></figure>
+<h2 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h2><p>有 uri，斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location /test3/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110/abc/;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test3/3.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/abc/3.html</span></span><br></pre></td></tr></table></figure>
+<h2 id="示例4"><a href="#示例4" class="headerlink" title="示例4"></a>示例4</h2><p>有 uri，非斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location /test4/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110/abc;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test4/4.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/abc4.html</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+        <category>nginx</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
 </search>
