@@ -1,7 +1,7 @@
 ---
 title: Hexo Next 博客
 date: 2020-02-19 11:52:35
-tags: [hexo, next, blog]
+tags: [hexo, next]
 categories: [others]
 
 ---

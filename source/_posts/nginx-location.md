@@ -1,7 +1,7 @@
 ---
 title: nginx location 详解
 date: 2021-02-19 11:52:35
-tags: [nginx, location]
+tags: [nginx]
 categories: [linux, nginx]
 ---
 
