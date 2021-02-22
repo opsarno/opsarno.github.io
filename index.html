@@ -224,10 +224,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-02-21 17:25:01 / 修改时间：18:09:10" itemprop="dateCreated datePublished" datetime="2021-02-21T17:25:01+08:00">2021-02-21</time>
+              <time title="创建时间：2021-02-21 17:25:01" itemprop="dateCreated datePublished" datetime="2021-02-21T17:25:01+08:00">2021-02-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-22 17:36:29" itemprop="dateModified" datetime="2021-02-22T17:36:29+08:00">2021-02-22</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -314,7 +320,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-21 18:09:10" itemprop="dateModified" datetime="2021-02-21T18:09:10+08:00">2021-02-21</time>
+                <time title="修改时间：2021-02-22 17:36:29" itemprop="dateModified" datetime="2021-02-22T17:36:29+08:00">2021-02-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -409,7 +415,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-21 18:09:10" itemprop="dateModified" datetime="2021-02-21T18:09:10+08:00">2021-02-21</time>
+                <time title="修改时间：2021-02-22 17:36:29" itemprop="dateModified" datetime="2021-02-22T17:36:29+08:00">2021-02-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -465,6 +471,100 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.fandenggui.com/2021/02/20/nginx-rewrite/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://www.fandenggui.com/static/img/choose.jpg">
+      <meta itemprop="name" content="Arno Fan">
+      <meta itemprop="description" content="醉里挑灯看剑，梦回吹角连营。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT DevOps Club">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/20/nginx-rewrite/" class="post-title-link" itemprop="url">nginx rewrite 模块详解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-20 11:04:20" itemprop="dateCreated datePublished" datetime="2021-02-20T11:04:20+08:00">2021-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-22 17:36:29" itemprop="dateModified" datetime="2021-02-22T17:36:29+08:00">2021-02-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/nginx/" itemprop="url" rel="index"><span itemprop="name">nginx</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>NGINX 重写模块 <code>ngx_http_rewrite_module</code>  用于使用 PCRE正则表达式 更改请求URI，返回重定向，并有条件地选择配置。</p>
+<p>主要的指令 <code>break, if, return, rewrite, set</code></p>
+<p>指令执行顺序：</p>
+<ol>
+<li>按顺序执行 server 区块中的 rewrite 模块指令</li>
+<li>如果发生 rewrite 地址重写，执行 location 匹配</li>
+<li>按顺序执行 匹配 location 中的 rewrite指令</li>
+</ol>
+<p>如果URI发生重写，就会重新循环执行1-3，直到找到真实存在的文件。</p>
+<p>如果循环超过10次，则返回 <a target="_blank" rel="noopener" href="http://nginx.org/en/docs/http/ngx_http_core_module.html#internal">500 Internal Server Error</a> 错误。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/02/20/nginx-rewrite/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://www.fandenggui.com/2021/02/19/nginx-location/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -496,7 +596,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-21 18:09:10" itemprop="dateModified" datetime="2021-02-21T18:09:10+08:00">2021-02-21</time>
+                <time title="修改时间：2021-02-22 17:36:29" itemprop="dateModified" datetime="2021-02-22T17:36:29+08:00">2021-02-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -585,7 +685,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-21 18:09:10" itemprop="dateModified" datetime="2021-02-21T18:09:10+08:00">2021-02-21</time>
+                <time title="修改时间：2021-02-22 17:36:29" itemprop="dateModified" datetime="2021-02-22T17:36:29+08:00">2021-02-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -671,7 +771,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-21 18:09:10" itemprop="dateModified" datetime="2021-02-21T18:09:10+08:00">2021-02-21</time>
+                <time title="修改时间：2021-02-22 17:36:29" itemprop="dateModified" datetime="2021-02-22T17:36:29+08:00">2021-02-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -756,7 +856,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-21 18:09:10" itemprop="dateModified" datetime="2021-02-21T18:09:10+08:00">2021-02-21</time>
+                <time title="修改时间：2021-02-22 17:36:29" itemprop="dateModified" datetime="2021-02-22T17:36:29+08:00">2021-02-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -843,7 +943,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-21 18:09:10" itemprop="dateModified" datetime="2021-02-21T18:09:10+08:00">2021-02-21</time>
+                <time title="修改时间：2021-02-22 17:36:29" itemprop="dateModified" datetime="2021-02-22T17:36:29+08:00">2021-02-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -962,7 +1062,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
