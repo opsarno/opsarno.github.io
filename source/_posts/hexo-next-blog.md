@@ -7,12 +7,12 @@ categories: [others]
 ---
 # GitHub Pages 博客
 主要组件
-- 博客框架 [Hexo - 快速、简洁且高效的博客框架](https://hexo.io/zh-cn/)
+- 博客框架 [Hexo](https://hexo.io/zh-cn/)
 - 博客主题 [hexo-theme-next](https://github.com/theme-next/hexo-theme-next)
 - 博客托管 [Github Pages](https://pages.github.com/)
 - 自动部署 [Travis CI](https://travis-ci.com/)
 
-Hexo 其实是一种静态站点生成器，也可以用 [Hugo](https://gohugo.io/)、[JekyII](https://jekyllrb.com/)、[MKkDocs](https://www.mkdocs.org/) 等其它静态站点生成器替代。更多生成器参见：[Site Generators](https://jamstack.org/generators/)。
+Hexo 其实是一种静态站点生成器，也可以用 [Hugo](https://gohugo.io/)、[JekyII](https://jekyllrb.com/)、[MkDocs](https://www.mkdocs.org/) 等其它静态站点生成器替代。更多生成器参见：[Site Generators](https://jamstack.org/generators/)。
 
 博客示例：
 - [GitHub Pages 域名 - opsarno.github.io](opsarno.github.io)
@@ -144,6 +144,22 @@ hexo s
 可以方便的本机访问，查看博客内容及样式。
 
 
+## 插件推荐
+- [hexo-generator-searchdb](https://github.com/next-theme/hexo-generator-searchdb)  
+更多功能的搜索数据生成器
+
+- [hexo-generator-feed](https://github.com/hexojs/hexo-generator-feed)  
+Generate Atom 1.0 or RSS 2.0 feed. 以便于支持RSS订阅。
+
+- [hexo-symbols-count-time](https://github.com/theme-next/hexo-symbols-count-time)  
+在博客文章中显示符号计数及所需阅读时间。
+比 [hexo-reading-time](https://github.com/ierhyna/hexo-reading-time) 好，比 [hexo-wordcount](https://github.com/willin/hexo-wordcount) 快。没有外部依赖。
+
+- [hexo-generator-sitemap](https://github.com/hexojs/hexo-generator-sitemap)  
+生成站点地图
+
+
+
 ## 自动部署
 官方文档：[将 Hexo 部署到 GitHub Pages](https://hexo.io/zh-cn/docs/github-pages)
 
@@ -173,12 +189,13 @@ deploy:
 ```
 
 ## 注意
-- 主分支 `main/master`，管理的是实际站点项目的源文件
+- 主分支 `main / master`，管理的是实际站点项目的源文件
 - 自动部署会自动新增`gh-pages`分支，用来托管实际的站点文件
 - GitHub项目 settings 中的 GitHub Pages项，Branchs 需改为 `gh-pages` 分支。
 - 自定义域名，需要将其主机记录 CNAME 指向 username.github.io ，username 为你自己的实际名称。
 
 # 参考资料
 更多细节，请参见官方文档。
+- https://pages.github.com/
 - https://hexo.io/zh-cn/docs/
 - https://github.com/theme-next/hexo-theme-next
