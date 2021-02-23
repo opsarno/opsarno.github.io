@@ -1,6 +1,6 @@
 ---
 title: nginx proxy_pass 详解
-date: 2021-02-20 15:51:44
+date: 2021-02-19 13:00:00
 tags: [nginx]
 categories: [linux, nginx]
 ---

@@ -1,9 +1,11 @@
 ---
-title: Bind DNS Logging Statement Grammar
+title: linux bind dns logging
 date: 2017-02-20 14:26:19
 tags: [bind, dns]
 categories: [linux, bind]
 ---
+
+Bind DNS 日志记录
 
 # 语法
 ```bash

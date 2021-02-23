@@ -1,6 +1,6 @@
 ---
-title: nginx rewrite 模块详解
-date: 2021-02-20 11:04:20
+title: nginx rewrite 详解
+date: 2021-02-19 14:00:00
 tags: nginx
 categories: [linux, nginx]
 ---
