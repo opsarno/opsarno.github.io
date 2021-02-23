@@ -20,22 +20,20 @@
     var CONFIG = {"hostname":"www.fandenggui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Environment123Python：2.7.13Pip：9.0.1matplotlib：2.0.0  (pip install matplotlib)  Error Message123456789101112131415161718&gt;&gt;&gt; import matplotlib.pyplotTraceback (most recent call last): File &amp;qu">
+  <meta name="description" content="指令语法1proxy_pass URL; URL 由三部分组成：  协议 可以指定 http 或 https 地址 可以指定 域名 或 ip 以及 可选端口 可选的URI  示例 1234proxy_pass http:&#x2F;&#x2F;www.abc.com;proxy_pass http:&#x2F;&#x2F;127.0.0.1:8000&#x2F;uri&#x2F;;proxy_pass http:&#x2F;&#x2F;unix:&#x2F;tmp&#x2F;backend.so">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python2 No module named _tkinter of matplotlib">
-<meta property="og:url" content="https://www.fandenggui.com/2017/02/20/Python2-No-module-named-tkinter/index.html">
+<meta property="og:title" content="nginx proxy_pass 详解">
+<meta property="og:url" content="https://www.fandenggui.com/2021/02/19/linux/nginx-proxy-pass/index.html">
 <meta property="og:site_name" content="IT DevOps Club">
-<meta property="og:description" content="Environment123Python：2.7.13Pip：9.0.1matplotlib：2.0.0  (pip install matplotlib)  Error Message123456789101112131415161718&gt;&gt;&gt; import matplotlib.pyplotTraceback (most recent call last): File &amp;qu">
+<meta property="og:description" content="指令语法1proxy_pass URL; URL 由三部分组成：  协议 可以指定 http 或 https 地址 可以指定 域名 或 ip 以及 可选端口 可选的URI  示例 1234proxy_pass http:&#x2F;&#x2F;www.abc.com;proxy_pass http:&#x2F;&#x2F;127.0.0.1:8000&#x2F;uri&#x2F;;proxy_pass http:&#x2F;&#x2F;unix:&#x2F;tmp&#x2F;backend.so">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2017-02-20T02:18:06.000Z">
-<meta property="article:modified_time" content="2021-02-22T09:36:29.869Z">
+<meta property="article:published_time" content="2021-02-19T05:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-23T07:59:24.112Z">
 <meta property="article:author" content="Arno Fan">
-<meta property="article:tag" content="python">
-<meta property="article:tag" content="matplotlib">
-<meta property="article:tag" content="troubleshooting">
+<meta property="article:tag" content="nginx">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://www.fandenggui.com/2017/02/20/Python2-No-module-named-tkinter/">
+<link rel="canonical" href="https://www.fandenggui.com/2021/02/19/linux/nginx-proxy-pass/">
 
 
 <script id="page-configurations">
@@ -48,7 +46,7 @@
   };
 </script>
 
-  <title>python2 No module named _tkinter of matplotlib | IT DevOps Club</title>
+  <title>nginx proxy_pass 详解 | IT DevOps Club</title>
   
 
 
@@ -202,7 +200,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.fandenggui.com/2017/02/20/Python2-No-module-named-tkinter/">
+    <link itemprop="mainEntityOfPage" href="https://www.fandenggui.com/2021/02/19/linux/nginx-proxy-pass/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://www.fandenggui.com/static/img/choose.jpg">
@@ -215,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          python2 No module named _tkinter of matplotlib
+          nginx proxy_pass 详解
         </h1>
 
         <div class="post-meta">
@@ -225,14 +223,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2017-02-20 10:18:06" itemprop="dateCreated datePublished" datetime="2017-02-20T10:18:06+08:00">2017-02-20</time>
+              <time title="创建时间：2021-02-19 13:00:00" itemprop="dateCreated datePublished" datetime="2021-02-19T13:00:00+08:00">2021-02-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-22 17:36:29" itemprop="dateModified" datetime="2021-02-22T17:36:29+08:00">2021-02-22</time>
+                <time title="修改时间：2021-02-23 15:59:24" itemprop="dateModified" datetime="2021-02-23T15:59:24+08:00">2021-02-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,11 +238,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/dev/" itemprop="url" rel="index"><span itemprop="name">dev</span></a>
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/dev/python2/" itemprop="url" rel="index"><span itemprop="name">python2</span></a>
+                  <a href="/categories/linux/nginx/" itemprop="url" rel="index"><span itemprop="name">nginx</span></a>
                 </span>
             </span>
 
@@ -259,22 +257,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Python：2.7.13</span><br><span class="line">Pip：9.0.1</span><br><span class="line">matplotlib：2.0.0  (pip install matplotlib)</span><br></pre></td></tr></table></figure>
-
-<h1 id="Error-Message"><a href="#Error-Message" class="headerlink" title="Error Message"></a>Error Message</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import matplotlib.pyplot</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line"> File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/pyplot.py&quot;</span>, line 115, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> _backend_mod, new_figure_manager, draw_if_interactive, _show = pylab_setup()</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/backends/__init__.py&quot;</span>, line 32, <span class="keyword">in</span> pylab_setup</span><br><span class="line"> globals(),locals(),[backend_name],0)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/backends/backend_tkagg.py&quot;</span>, line 6, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> from six.moves import tkinter as Tk</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 203, <span class="keyword">in</span> load_module</span><br><span class="line"> mod = mod._resolve()</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 115, <span class="keyword">in</span> _resolve</span><br><span class="line"> <span class="built_in">return</span> _import_module(self.mod)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 82, <span class="keyword">in</span> _import_module</span><br><span class="line"> __import__(name)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/lib-tk/Tkinter.py&quot;</span>, line 39, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> import _tkinter <span class="comment"># If this fails your Python may not be configured for Tk</span></span><br><span class="line">ImportError: No module named _tkinter</span><br></pre></td></tr></table></figure>
+        <h1 id="指令语法"><a href="#指令语法" class="headerlink" title="指令语法"></a>指令语法</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy_pass URL;</span><br></pre></td></tr></table></figure>
+<p>URL 由三部分组成：</p>
+<ul>
+<li>协议 可以指定 http 或 https</li>
+<li>地址 可以指定 域名 或 ip 以及 可选端口</li>
+<li>可选的URI</li>
+</ul>
+<p>示例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">proxy_pass http://www.abc.com;</span><br><span class="line">proxy_pass http://127.0.0.1:8000/uri/;</span><br><span class="line"></span><br><span class="line">proxy_pass http://unix:/tmp/backend.socket:/uri/;</span><br></pre></td></tr></table></figure>
+<p>此外，可将地址指定为一个主机组 <a target="_blank" rel="noopener" href="http://nginx.org/en/docs/http/ngx_http_upstream_module.html">server group</a>，使用 upstream 来定义主机组。</p>
+<p>当使用 rewrite 在代理位置更改URI时（地址重写），则重写后的URI会传递给后端服务器。</p>
 <a id="more"></a>
 
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>Recompile python</p>
-<ol>
-<li>Extract the source file <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># tar xzf Python-2.7.13.tgz</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># cd Python-2.7.13</span></span><br></pre></td></tr></table></figure></li>
-<li>Check the tk/tcl version，Step 4 need the version information <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># rpm -qa | grep ^tk</span></span><br><span class="line">tk-8.5.7-5.el6.x86_64</span><br><span class="line">tkinter-2.6.6-66.el6_8.x86_64</span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># rpm -qa | grep ^tcl</span></span><br><span class="line">tcl-8.5.7-6.el6.x86_64</span><br></pre></td></tr></table></figure></li>
-<li>Install tk/tcl devel <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># yum install tk-devel tcl-devel -y</span></span><br></pre></td></tr></table></figure></li>
-<li>Find these lines and cancel the comment <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim Modules/Setup</span></span><br><span class="line"><span class="comment"># *** Always uncomment this (leave the leading underscore in!):</span></span><br><span class="line">_tkinter _tkinter.c tkappinit.c -DWITH_APPINIT \</span><br><span class="line">-L/usr/<span class="built_in">local</span>/lib \</span><br><span class="line">-I/usr/<span class="built_in">local</span>/include \</span><br><span class="line">-ltk8.5 -ltcl8.5 \      <span class="comment"># this version from step 2.</span></span><br><span class="line">-lX11</span><br></pre></td></tr></table></figure></li>
-<li>Start complie &amp; install python <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># ldconfig</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># ./configure --prefix=/opt/soft/python2 --with-ensurepip=install</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># make</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># make install</span></span><br></pre></td></tr></table></figure></li>
-<li>Config sys env. <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># mv /usr/bin/python /usr/bin/pythonbak</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># unlink /usr/bin/python2</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim /usr/bin/yum</span></span><br><span class="line"><span class="meta">#!/usr/bin/python2.6</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim ~/.bash_profile</span></span><br><span class="line"><span class="comment"># User specific environment and startup programs</span></span><br><span class="line">PYPATH=/opt/soft/python2/bin</span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$HOME</span>/bin:<span class="variable">$PYPATH</span></span><br><span class="line"><span class="built_in">export</span> PATH</span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># source ~/.bash_profile</span></span><br></pre></td></tr></table></figure></li>
-<li>Verification result <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Python 2.7.13 (default, Feb 20 2017, 20:35:07)</span><br><span class="line">[GCC 4.4.7 20120313 (Red Hat 4.4.7-16)] on linux2</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; import matplotlib.pyplot</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></li>
-</ol>
 
+<h1 id="示例解析"><a href="#示例解析" class="headerlink" title="示例解析"></a>示例解析</h1><p>假设访问域名为：<a target="_blank" rel="noopener" href="http://www.abc123.com/">www.abc123.com</a></p>
+<p>我们围绕<code>proxy_pass</code>指令后面，地址带不带有 <code>uri</code>，以及是否以斜杠 <code>/</code> 结尾进行分析，看看后端服务接收到的请求是什么样的。</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><p>无 uri， 非斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location /test1/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test1/1.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/test1/1.html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><p>无 uri，斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location /test2/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110/;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test2/2.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/2.html</span></span><br></pre></td></tr></table></figure>
+<h2 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h2><p>有 uri，斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location /test3/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110/abc/;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test3/3.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/abc/3.html</span></span><br></pre></td></tr></table></figure>
+<h2 id="示例4"><a href="#示例4" class="headerlink" title="示例4"></a>示例4</h2><p>有 uri，非斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location /test4/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110/abc;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test4/4.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/abc4.html</span></span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -283,9 +290,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/python/" rel="tag"># python</a>
-              <a href="/tags/matplotlib/" rel="tag"># matplotlib</a>
-              <a href="/tags/troubleshooting/" rel="tag"># troubleshooting</a>
+              <a href="/tags/nginx/" rel="tag"># nginx</a>
           </div>
 
         
@@ -294,12 +299,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2017/02/12/Python2-Tab-Autocomplete/" rel="prev" title="Python2 Tab Autocomplete">
-      <i class="fa fa-chevron-left"></i> Python2 Tab Autocomplete
+    <a href="/2021/02/19/linux/nginx-location/" rel="prev" title="nginx location 详解">
+      <i class="fa fa-chevron-left"></i> nginx location 详解
     </a></div>
       <div class="post-nav-item">
-    <a href="/2017/02/20/Bind-DNS-Logging-Statement-Grammar/" rel="next" title="Bind DNS Logging Statement Grammar">
-      Bind DNS Logging Statement Grammar <i class="fa fa-chevron-right"></i>
+    <a href="/2021/02/19/linux/nginx-rewrite/" rel="next" title="nginx rewrite 详解">
+      nginx rewrite 详解 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -359,7 +364,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Environment"><span class="nav-number">1.</span> <span class="nav-text">Environment</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Error-Message"><span class="nav-number">2.</span> <span class="nav-text">Error Message</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Solution"><span class="nav-number">3.</span> <span class="nav-text">Solution</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E8%AF%AD%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">指令语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E8%A7%A3%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">示例解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="nav-number">2.1.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2"><span class="nav-number">2.2.</span> <span class="nav-text">示例2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B3"><span class="nav-number">2.3.</span> <span class="nav-text">示例3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B4"><span class="nav-number">2.4.</span> <span class="nav-text">示例4</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -375,7 +380,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -388,7 +393,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

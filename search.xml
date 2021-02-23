@@ -1,9 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Bind DNS Logging Statement Grammar</title>
-    <url>/2017/02/20/Bind-DNS-Logging-Statement-Grammar/</url>
-    <content><![CDATA[<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">logging &#123;</span><br><span class="line">    <span class="comment"># 定义 channel</span></span><br><span class="line">    [ channel channel_name &#123;</span><br><span class="line">        ( file path_name</span><br><span class="line">          [ versions ( number | unlimited ) ]</span><br><span class="line">          [ size size_spec ]</span><br><span class="line">        | syslog syslog_facility</span><br><span class="line">        | stderr</span><br><span class="line">        | null );</span><br><span class="line"></span><br><span class="line">        [ severity (critical | error | warning | notice | info | debug [ level ] | dynamic ); ]</span><br><span class="line"></span><br><span class="line">        [ print-category yes or no; ]</span><br><span class="line">        [ print-severity yes or no; ]</span><br><span class="line">        [ print-time yes or no; ]</span><br><span class="line">    &#125;; ]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义 category</span></span><br><span class="line">    [ category category_name &#123;</span><br><span class="line">        channel_name ; [ channel_name ; ... ]</span><br><span class="line">    &#125;; ]</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+    <title>Github Pages + Hexo Next 博客</title>
+    <url>/2020/02/21/hexo-next-blog/</url>
+    <content><![CDATA[<h1 id="GitHub-Pages-博客"><a href="#GitHub-Pages-博客" class="headerlink" title="GitHub Pages 博客"></a>GitHub Pages 博客</h1><p>主要组件</p>
+<ul>
+<li>博客框架 <a href="https://hexo.io/zh-cn/">Hexo - 快速、简洁且高效的博客框架</a></li>
+<li>博客主题 <a href="https://github.com/theme-next/hexo-theme-next">hexo-theme-next</a></li>
+<li>博客托管 <a href="https://pages.github.com/">Github Pages</a></li>
+<li>自动部署 <a href="https://travis-ci.com/">Travis CI</a></li>
+</ul>
+<p>Hexo 其实是一种静态站点生成器，也可以用 <a href="https://gohugo.io/">Hugo</a>、<a href="https://jekyllrb.com/">JekyII</a>、<a href="https://www.mkdocs.org/">MKkDocs</a> 等其它静态站点生成器替代。更多生成器参见：<a href="https://jamstack.org/generators/">Site Generators</a>。</p>
+<p>博客示例：</p>
+<ul>
+<li><a href="opsarno.github.io">GitHub Pages 域名 - opsarno.github.io</a></li>
+<li><a href="www.itdevops.cn">GitHub Pages 自定义域名 - www.itdevops.cn</a> <a id="more"></a>
+
+</li>
+</ul>
+<h1 id="快速安装"><a href="#快速安装" class="headerlink" title="快速安装"></a>快速安装</h1><p>主要步骤</p>
+<ol>
+<li>开发者电脑安装 Hexo 基础环境，编写博客内容</li>
+<li>定制化 Hexo 主题，使博客内容展示更加友好</li>
+<li>配置 GitHub + Travis CI，实现自动部署</li>
+</ol>
+<p><a href="https://hexo.io/zh-cn/docs/">Hexo 的官方文档</a> 其实非常详细了，本文会有一些额外的内容补充，例如 GitHub Pages 自定义域名，自动部署配置需要额外增加一步等，仅供大家参考。</p>
+<p>安装 Hexo 相当简单，只需要先安装下列应用程序即可：</p>
+<ul>
+<li>Node.js (建议用 <a href="https://github.com/jasongin/nvs/">nvs</a> 或 <a href="https://github.com/nvm-sh/nvm">nvm</a> 方式安装)</li>
+<li>Git</li>
+</ul>
+<h2 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<h2 id="初始化基础环境"><a href="#初始化基础环境" class="headerlink" title="初始化基础环境"></a>初始化基础环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init opsarno.github.io</span><br><span class="line"><span class="built_in">cd</span> opsarno.github.io</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p><code>_config.yml</code> 文件中配置博客的基本信息</p>
+<h2 id="安装主题"><a href="#安装主题" class="headerlink" title="安装主题"></a>安装主题</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br><span class="line"></span><br><span class="line">cp themes/next/_config.yml _config.next.yml</span><br></pre></td></tr></table></figure>
+<p>独立的主题配置文件  <code>_config.[theme].yml</code>  应放置于站点根目录下，支持 <code>yml</code> 或 <code>json</code> 格式。该特性自 Hexo 5.0.0 起提供。</p>
+<p>配置站点文件 <code>_config.yml</code> 中的 <code>theme</code> 以供 Hexo 寻找 <code>_config.[theme].yml</code> 文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># _config.yml</span></span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line">theme: next</span><br><span class="line">theme_config: _config.next.yml</span><br></pre></td></tr></table></figure>
+<p>配置主题文件 <code>_config.next.yml</code>，自定义定义菜单。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># _config.next.yml</span></span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-th</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="string">友链:</span> <span class="string">/links/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-link</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br></pre></td></tr></table></figure>
+<h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><h3 id="新建一篇文章"><a href="#新建一篇文章" class="headerlink" title="新建一篇文章"></a>新建一篇文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new <span class="string">&quot;Hello World&quot;</span></span><br></pre></td></tr></table></figure>
+<p>上述命令，会创建一个 <code>source/_posts/Hello-World.md</code> 的文件。</p>
+<p>另外，可以通过 <code>--path</code> 选项新建子目录，以便于在 <code>source/_posts/</code> 下创建更好的目录结构管理文章源文件。</p>
+<p>示例，<code>source/_posts/linux/nginx-install.md</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new --path linux/nginx-install <span class="string">&quot;nginx install&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建分类页"><a href="#创建分类页" class="headerlink" title="创建分类页"></a>创建分类页</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+<p>分类页，是一种特殊页面，编辑 <code>source/categories/index.md</code> 文件，添加  <code>type: &quot;categories&quot;</code> 即可，无需其它内容。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">categories</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2020-02-19 11:55:35</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">&quot;categories&quot;</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建标签页"><a href="#创建标签页" class="headerlink" title="创建标签页"></a>创建标签页</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+<p>标签页，也是一种特殊页面，编辑 <code>source/tags/index.md</code> 文件，添加 <code>type: &quot;tags&quot;</code> 即可，无需其它内容。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">tags</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2020-02-19 11:56:35</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">&quot;tags&quot;</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+<h3 id="友链-amp-关于"><a href="#友链-amp-关于" class="headerlink" title="友链 &amp; 关于"></a>友链 &amp; 关于</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page links</span><br><span class="line">hexo new page about</span><br></pre></td></tr></table></figure>
+<p>编辑 <code>source/about/index.md</code>，<code>source/links/index.md</code> 文件，与文章类似，填写需要展示的内容。</p>
+<h3 id="启动服务器"><a href="#启动服务器" class="headerlink" title="启动服务器"></a>启动服务器</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo server</span><br><span class="line"></span><br><span class="line"><span class="comment"># server 可简写为 s</span></span><br><span class="line">hexo s</span><br><span class="line"></span><br><span class="line"><span class="comment"># INFO  Validating config</span></span><br><span class="line"><span class="comment"># INFO  Start processing</span></span><br><span class="line"><span class="comment"># INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span></span><br></pre></td></tr></table></figure>
+<p>可以方便的本机访问，查看博客内容及样式。</p>
+<h2 id="自动部署"><a href="#自动部署" class="headerlink" title="自动部署"></a>自动部署</h2><p>官方文档：<a href="https://hexo.io/zh-cn/docs/github-pages">将 Hexo 部署到 GitHub Pages</a></p>
+<p>这里只补充一点，就是当指定了自定义域名后，项目中会多一个<code>CNAME</code>文件，文件内容就是自定义的域名。</p>
+<p>此时，<code>.travis.yml</code> 文件需要增加一个新增动作，同步CNAME文件。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">sudo:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">node_js</span></span><br><span class="line"><span class="attr">node_js:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="number">12</span> <span class="comment"># use nodejs v10 LTS</span></span><br><span class="line"><span class="attr">cache:</span> <span class="string">npm</span></span><br><span class="line"><span class="attr">branches:</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">main</span> <span class="comment"># build main branch only</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">generate</span> <span class="comment"># generate static files</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">cp</span> <span class="string">CNAME</span> <span class="string">public/</span> <span class="comment"># 新增动作，同步CNAME文件。</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">provider:</span> <span class="string">pages</span></span><br><span class="line">  <span class="attr">skip-cleanup:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">github-token:</span> <span class="string">$GH_TOKEN</span></span><br><span class="line">  <span class="attr">keep-history:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">on:</span></span><br><span class="line">    <span class="attr">branch:</span> <span class="string">main</span></span><br><span class="line">  <span class="attr">local-dir:</span> <span class="string">public</span></span><br></pre></td></tr></table></figure>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
+<li>主分支 <code>main/master</code>，管理的是实际站点项目的源文件</li>
+<li>自动部署会自动新增<code>gh-pages</code>分支，用来托管实际的站点文件</li>
+<li>GitHub项目 settings 中的 GitHub Pages项，Branchs 需改为 <code>gh-pages</code> 分支。</li>
+<li>自定义域名，需要将其主机记录 CNAME 指向 username.github.io ，username 为你自己的实际名称。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>更多细节，请参见官方文档。</p>
+<ul>
+<li><a href="https://hexo.io/zh-cn/docs/">https://hexo.io/zh-cn/docs/</a></li>
+<li><a href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>npm Error EACCES permission denied</title>
+    <url>/2021/02/21/npm-Error-EACCES-permission-denied/</url>
+    <content><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>基础环境</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">系统：Windows WSL</span><br><span class="line">工具：NVM (Node Version Manager)</span><br><span class="line">版本：node-v12.20.1、npm-6.14.10</span><br></pre></td></tr></table></figure>
+
+<p>全局安装工具包时抛错 <code>npm ERR! Error: EACCES: permission denied</code> </p>
+<a id="more"></a>
+
+<p>详情如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">opsarno@DESKTOP-T3JD9UU:~$ npm install nrm -g</span><br><span class="line">npm WARN deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142</span><br><span class="line">npm WARN deprecated coffee-script@1.7.1: CoffeeScript on NPM has moved to <span class="string">&quot;coffeescript&quot;</span> (no hyphen)</span><br><span class="line">npm WARN deprecated mkdirp@0.3.5: Legacy versions of mkdirp are no longer supported. Please update to mkdirp 1.x. (Note that the API surface has changed to use Promises <span class="keyword">in</span> 1.x.)</span><br><span class="line">npm WARN deprecated har-validator@5.1.5: this library is no longer supported</span><br><span class="line">npm ERR! code EACCES</span><br><span class="line">npm ERR! syscall rename</span><br><span class="line">npm ERR! path /home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width</span><br><span class="line">npm ERR! dest /home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2</span><br><span class="line">npm ERR! errno -13</span><br><span class="line">npm ERR! Error: EACCES: permission denied, rename <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span> -&gt; <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span></span><br><span class="line">npm ERR!  [OperationalError: EACCES: permission denied, rename <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span> -&gt; <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span>] &#123;</span><br><span class="line">npm ERR!   cause: [Error: EACCES: permission denied, rename <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span> -&gt; <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span>] &#123;</span><br><span class="line">npm ERR!     errno: -13,</span><br><span class="line">npm ERR!     code: <span class="string">&#x27;EACCES&#x27;</span>,</span><br><span class="line">npm ERR!     syscall: <span class="string">&#x27;rename&#x27;</span>,</span><br><span class="line">npm ERR!     path: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span>,</span><br><span class="line">npm ERR!     dest: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span></span><br><span class="line">npm ERR!   &#125;,</span><br><span class="line">npm ERR!   errno: -13,</span><br><span class="line">npm ERR!   code: <span class="string">&#x27;EACCES&#x27;</span>,</span><br><span class="line">npm ERR!   syscall: <span class="string">&#x27;rename&#x27;</span>,</span><br><span class="line">npm ERR!   path: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span>,</span><br><span class="line">npm ERR!   dest: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span>,</span><br><span class="line">npm ERR!   parent: <span class="string">&#x27;nrm&#x27;</span></span><br><span class="line">npm ERR! &#125;</span><br><span class="line">npm ERR!</span><br><span class="line">npm ERR! The operation was rejected by your operating system.</span><br><span class="line">npm ERR! It is likely you <span class="keyword">do</span> not have the permissions to access this file as the current user</span><br><span class="line">npm ERR!</span><br><span class="line">npm ERR! If you believe this might be a permissions issue, please double-check the</span><br><span class="line">npm ERR! permissions of the file and its containing directories, or try running</span><br><span class="line">npm ERR! the <span class="built_in">command</span> again as root/Administrator.</span><br><span class="line"></span><br><span class="line">npm ERR! A complete <span class="built_in">log</span> of this run can be found <span class="keyword">in</span>:</span><br><span class="line">npm ERR!     /home/opsarno/.npm/_logs/2021-02-19T13_28_26_969Z-debug.log</span><br></pre></td></tr></table></figure>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>默认 NVM 安装在用户家目录下，WSL环境中相当于安装在Windows C盘，此时如果有一些高危操作的话（如删除、重命名），可能会触发系统的保护性机制，导致权限不足。</p>
+<p>也有资料怀疑是  <a href="https://github.com/MicrosoftDocs/WSL/issues/26">Symlink Problems</a> 问题。</p>
+<p>解决方法，将 NVM （如未使用NVM，则是 node），安装到非系统盘符，默认WSL将所有Windows盘符挂载到 <code>/mnt/</code> 目录下。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 我这里在 d 盘下，新建了一个目录，用于存放 .nvm 工具</span></span><br><span class="line">mkdir /mnt/d/data/</span><br><span class="line">mv ~/.nvm /mnt/d/data/.nvm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新 ~/.bashrc 中的 nvm 变量配置</span></span><br><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">&quot;/mnt/d/data/.nvm&quot;</span></span><br><span class="line">[ -s <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> ] &amp;&amp; \. <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> <span class="comment"># This loads nvm</span></span><br></pre></td></tr></table></figure>
+<p>重新打开 terminal，再次执行安装，成功！</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://im.shellj.com/2020/05/wsl-npm-install-permission-denied-error.html">https://im.shellj.com/2020/05/wsl-npm-install-permission-denied-error.html</a></li>
+<li><a href="https://github.com/MicrosoftDocs/WSL/issues/26">https://github.com/MicrosoftDocs/WSL/issues/26</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>dev</category>
+        <category>npm</category>
+      </categories>
+      <tags>
+        <tag>nodejs</tag>
+        <tag>npm</tag>
+        <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux bind dns logging</title>
+    <url>/2017/02/20/linux/bind-dns-logging/</url>
+    <content><![CDATA[<p>Bind DNS 日志记录</p>
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">logging &#123;</span><br><span class="line">    <span class="comment"># 定义 channel</span></span><br><span class="line">    [ channel channel_name &#123;</span><br><span class="line">        ( file path_name</span><br><span class="line">          [ versions ( number | unlimited ) ]</span><br><span class="line">          [ size size_spec ]</span><br><span class="line">        | syslog syslog_facility</span><br><span class="line">        | stderr</span><br><span class="line">        | null );</span><br><span class="line"></span><br><span class="line">        [ severity (critical | error | warning | notice | info | debug [ level ] | dynamic ); ]</span><br><span class="line"></span><br><span class="line">        [ print-category yes or no; ]</span><br><span class="line">        [ print-severity yes or no; ]</span><br><span class="line">        [ print-time yes or no; ]</span><br><span class="line">    &#125;; ]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义 category</span></span><br><span class="line">    [ category category_name &#123;</span><br><span class="line">        channel_name ; [ channel_name ; ... ]</span><br><span class="line">    &#125;; ]</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 
 
@@ -36,138 +146,8 @@
       </tags>
   </entry>
   <entry>
-    <title>python2 No module named _tkinter of matplotlib</title>
-    <url>/2017/02/20/Python2-No-module-named-tkinter/</url>
-    <content><![CDATA[<h1 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Python：2.7.13</span><br><span class="line">Pip：9.0.1</span><br><span class="line">matplotlib：2.0.0  (pip install matplotlib)</span><br></pre></td></tr></table></figure>
-
-<h1 id="Error-Message"><a href="#Error-Message" class="headerlink" title="Error Message"></a>Error Message</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; import matplotlib.pyplot</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line"> File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/pyplot.py&quot;</span>, line 115, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> _backend_mod, new_figure_manager, draw_if_interactive, _show = pylab_setup()</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/backends/__init__.py&quot;</span>, line 32, <span class="keyword">in</span> pylab_setup</span><br><span class="line"> globals(),locals(),[backend_name],0)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/backends/backend_tkagg.py&quot;</span>, line 6, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> from six.moves import tkinter as Tk</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 203, <span class="keyword">in</span> load_module</span><br><span class="line"> mod = mod._resolve()</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 115, <span class="keyword">in</span> _resolve</span><br><span class="line"> <span class="built_in">return</span> _import_module(self.mod)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 82, <span class="keyword">in</span> _import_module</span><br><span class="line"> __import__(name)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/lib-tk/Tkinter.py&quot;</span>, line 39, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> import _tkinter <span class="comment"># If this fails your Python may not be configured for Tk</span></span><br><span class="line">ImportError: No module named _tkinter</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>Recompile python</p>
-<ol>
-<li>Extract the source file <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># tar xzf Python-2.7.13.tgz</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># cd Python-2.7.13</span></span><br></pre></td></tr></table></figure></li>
-<li>Check the tk/tcl version，Step 4 need the version information <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># rpm -qa | grep ^tk</span></span><br><span class="line">tk-8.5.7-5.el6.x86_64</span><br><span class="line">tkinter-2.6.6-66.el6_8.x86_64</span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># rpm -qa | grep ^tcl</span></span><br><span class="line">tcl-8.5.7-6.el6.x86_64</span><br></pre></td></tr></table></figure></li>
-<li>Install tk/tcl devel <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># yum install tk-devel tcl-devel -y</span></span><br></pre></td></tr></table></figure></li>
-<li>Find these lines and cancel the comment <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim Modules/Setup</span></span><br><span class="line"><span class="comment"># *** Always uncomment this (leave the leading underscore in!):</span></span><br><span class="line">_tkinter _tkinter.c tkappinit.c -DWITH_APPINIT \</span><br><span class="line">-L/usr/<span class="built_in">local</span>/lib \</span><br><span class="line">-I/usr/<span class="built_in">local</span>/include \</span><br><span class="line">-ltk8.5 -ltcl8.5 \      <span class="comment"># this version from step 2.</span></span><br><span class="line">-lX11</span><br></pre></td></tr></table></figure></li>
-<li>Start complie &amp; install python <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># ldconfig</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># ./configure --prefix=/opt/soft/python2 --with-ensurepip=install</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># make</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># make install</span></span><br></pre></td></tr></table></figure></li>
-<li>Config sys env. <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># mv /usr/bin/python /usr/bin/pythonbak</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># unlink /usr/bin/python2</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim /usr/bin/yum</span></span><br><span class="line"><span class="meta">#!/usr/bin/python2.6</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim ~/.bash_profile</span></span><br><span class="line"><span class="comment"># User specific environment and startup programs</span></span><br><span class="line">PYPATH=/opt/soft/python2/bin</span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$HOME</span>/bin:<span class="variable">$PYPATH</span></span><br><span class="line"><span class="built_in">export</span> PATH</span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># source ~/.bash_profile</span></span><br></pre></td></tr></table></figure></li>
-<li>Verification result <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Python 2.7.13 (default, Feb 20 2017, 20:35:07)</span><br><span class="line">[GCC 4.4.7 20120313 (Red Hat 4.4.7-16)] on linux2</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; import matplotlib.pyplot</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></li>
-</ol>
-]]></content>
-      <categories>
-        <category>dev</category>
-        <category>python2</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>matplotlib</tag>
-        <tag>troubleshooting</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python2 Tab Autocomplete</title>
-    <url>/2017/02/12/Python2-Tab-Autocomplete/</url>
-    <content><![CDATA[<h1 id="Linux-Python2-Tab-Autocomplete"><a href="#Linux-Python2-Tab-Autocomplete" class="headerlink" title="Linux Python2 Tab Autocomplete"></a>Linux Python2 Tab Autocomplete</h1><p>① 新建 <code>vim ~/.pystartup</code> Python2 启动时的环境变量加载文件。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Add auto-completion and a stored history file of commands to your Python</span></span><br><span class="line"><span class="comment"># interactive interpreter. Requires Python 2.0+, readline. Autocomplete is</span></span><br><span class="line"><span class="comment"># bound to the Esc key by default (you can change it - see readline docs).</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Store the file in ~/.pystartup, and set an environment variable to point</span></span><br><span class="line"><span class="comment"># to it:  &quot;export PYTHONSTARTUP=~/.pystartup&quot; in bash.</span></span><br><span class="line"><span class="keyword">import</span> atexit</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> readline</span><br><span class="line"><span class="keyword">import</span> rlcompleter</span><br><span class="line">readline.parse_and_bind(<span class="string">&#x27;tab: complete&#x27;</span>)</span><br><span class="line">historyPath = os.path.expanduser(<span class="string">&quot;~/.pyhistory&quot;</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_history</span>(<span class="params">historyPath=historyPath</span>):</span></span><br><span class="line">    <span class="keyword">import</span> readline</span><br><span class="line">    readline.write_history_file(historyPath)</span><br><span class="line"><span class="keyword">if</span> os.path.exists(historyPath):</span><br><span class="line">    readline.read_history_file(historyPath)</span><br><span class="line">atexit.register(save_history)</span><br><span class="line"><span class="keyword">del</span> os, atexit, readline, rlcompleter, save_history, historyPath</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-
-<p>② 设置系统变量</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 即时生效，重启失效</span></span><br><span class="line"><span class="built_in">export</span> PYTHONSTARTUP=~/.pystartup  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 永久生效</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;export PYTHONSTARTUP=~/.pystartup&quot;</span> &gt;&gt; /etc/profile</span><br></pre></td></tr></table></figure>
-<h1 id="Windows-Python2-Tab-Autocomplete"><a href="#Windows-Python2-Tab-Autocomplete" class="headerlink" title="Windows Python2 Tab Autocomplete"></a>Windows Python2 Tab Autocomplete</h1><p>① 安装 <code>pyreadline</code> 依赖</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install pyreadline</span><br></pre></td></tr></table></figure>
-<p>② 在Python安装路径的Lib文件夹下新建一个 tab.py。<br>例如：<code>C:\Program Files (x86)\Python2\Lib</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Add auto-completion and a stored history file of commands to your Python</span></span><br><span class="line"><span class="comment"># interactive interpreter. </span></span><br><span class="line">import atexit</span><br><span class="line">import os</span><br><span class="line">import readline</span><br><span class="line">import rlcompleter</span><br><span class="line">import sys</span><br><span class="line"><span class="comment"># Tab completion   </span></span><br><span class="line">readline.parse_and_bind(<span class="string">&#x27;tab: complete&#x27;</span>)   </span><br><span class="line"><span class="comment"># history file，这个路径可以自定义，但需要确保目录存在。</span></span><br><span class="line">histfile = os.path.join(<span class="string">&quot;D:\\Tmp\\history\\&quot;</span>, <span class="string">&quot;.pythonhistory&quot;</span>)</span><br><span class="line">try:   </span><br><span class="line">    readline.read_history_file(histfile)   </span><br><span class="line">except IOError:   </span><br><span class="line">    pass   </span><br><span class="line">atexit.register(readline.write_history_file, histfile)   </span><br><span class="line">           </span><br><span class="line">del os, histfile, readline, rlcompleter</span><br></pre></td></tr></table></figure>
-<p>③ 和linux类似，如果想输入python就自动加载tab补全，在系统属性中的环境变量里增加PYTHONSTARTUP变量，值为绝对路径的 tab.py，</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">例如：</span><br><span class="line">变量名：PYTHONSTARTUP</span><br><span class="line">变量值：C:\Program Files (x86)\Python2\Lib\tab.py</span><br></pre></td></tr></table></figure>
-<p>注：不做这步的话，每次输入python进入交互界面后，需要手动import tab</p>
-]]></content>
-      <categories>
-        <category>dev</category>
-        <category>python2</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>optimization</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Yum Repository Mirrors</title>
-    <url>/2021/02/20/Yum-Repository-Mirrors/</url>
-    <content><![CDATA[<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>通常情况下，企业内部会维护一套 <code>Yum Repository Mirrors</code>，以便于快速的安装更新一些软件包。即使是在阿里云VPC环境下，也会有一些三方或自定义的软件包需要内部镜像源来管理。</p>
-<p>针对这些需求，目前有三种镜像源的管理方式</p>
-<ul>
-<li>rsync</li>
-<li>Nexus</li>
-<li>createrepo</li>
-</ul>
-<a id="more"></a>
-
-<h1 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h1><p>针对系统发行版的官方源，以及常用的核心仓库进行全量的同步。</p>
-<ul>
-<li>centos</li>
-<li>epel</li>
-<li>remi</li>
-</ul>
-<p>优点是内部访问时稳定、速度快，缺点是会占用较大的数据空间。</p>
-<p>示例脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">mkdir -p /opt/data/repo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 过滤一些不必要的文件</span></span><br><span class="line">rsync -avz --delete-after --no-iconv \</span><br><span class="line">    --exclude=atomic/ \</span><br><span class="line">    --exclude=cr/ \</span><br><span class="line">    --exclude=dotnet/ \</span><br><span class="line">    --exclude=fasttrack/ \</span><br><span class="line">    --exclude=paas/ \</span><br><span class="line">    --exclude=rt/ \</span><br><span class="line">    --exclude=isos/ \</span><br><span class="line">    --exclude=debug/ \</span><br><span class="line">    rsync://mirrors.tuna.tsinghua.edu.cn/centos/ \</span><br><span class="line">    /opt/data/repo/centos/</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="Nexus"><a href="#Nexus" class="headerlink" title="Nexus"></a>Nexus</h1><p><a href="https://www.sonatype.com/nexus/repository-oss">Sonatype Nexus Repository Manager</a></p>
-<p>对于一些低频使用、非核心的三方包，我们通过 Nexus 代理官方仓库的方式，缓存安装的 RPM 包。</p>
-<ul>
-<li>AdoptOpenJDK</li>
-<li>elasticstack</li>
-<li>nvidia-cuda</li>
-<li>…..</li>
-</ul>
-<p>优点是仅缓存所需的依赖包，无需占用太多存储资源；缺点是对于文件较大的RPM包，在首次安装时会有失败的情况。</p>
-<h2 id="扩展说明"><a href="#扩展说明" class="headerlink" title="扩展说明"></a>扩展说明</h2><p><code>Sonatype Nexus Repository Manager</code> 功能非常强大，能够存储主流的文件仓库格式，如 apt, docker, go, npm, pypi yum… 等。</p>
-<p>更多细节，参见官方文档：<a href="https://help.sonatype.com/docs">Repository Manager Documentation</a></p>
-<h1 id="createrepo"><a href="#createrepo" class="headerlink" title="createrepo"></a>createrepo</h1><p>主要用于 rpmbuild 自封装的 RPM 包，或者固定版本的三方RPM包，存放到指定目录下，生成 repodata 进行管理使用。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">createrepo --update /opt/data/repo/self-repo</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>centos</tag>
-        <tag>yum</tag>
-        <tag>repository</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo Next 博客</title>
-    <url>/2020/02/19/hexo-next-blog/</url>
-    <content><![CDATA[<p>安装 Hexo</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-<p>初始化基础环境</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init &lt;folder&gt;</span><br><span class="line"><span class="built_in">cd</span> &lt;folder&gt;</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<p><code>_config.yml</code> 文件中配置博客的基本信息</p>
-<p><code>_config.next.yml</code> 文件中配置博客主题相关信息</p>
-<a id="more"></a>
-<h2 id="创建分类页"><a href="#创建分类页" class="headerlink" title="创建分类页"></a>创建分类页</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
-<p>编辑 <code>source/categories/index.md</code> 文件，添加 <code>type: &quot;categories&quot;</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line">date: 2019-07-15 23:30:33</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<h2 id="创建标签页"><a href="#创建标签页" class="headerlink" title="创建标签页"></a>创建标签页</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
-<p>编辑 <code>source/tags/index.md</code> 文件，添加 <code>type: &quot;tags&quot;</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: tags</span><br><span class="line">date: 2019-07-15 23:30:33</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="https://hexo.io/zh-cn/docs/">https://hexo.io/zh-cn/docs/</a></li>
-<li><a href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>others</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>next</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>nginx location 详解</title>
-    <url>/2021/02/19/nginx-location/</url>
+    <url>/2021/02/19/linux/nginx-location/</url>
     <content><![CDATA[<p>location 指令用途</p>
 <p>根据请求 URI 设置配置，进而对请求做不同的处理和响应。</p>
 <h1 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 关键字    修饰符  匹配的前缀字符既URI &#123; 要执行的操作 &#125;</span></span><br><span class="line">location [ = | ~ | ~* | ^~ ] uri &#123; ... &#125;</span><br><span class="line">location @name &#123; ... &#125;</span><br></pre></td></tr></table></figure>
@@ -229,7 +209,7 @@
   </entry>
   <entry>
     <title>nginx proxy_pass 详解</title>
-    <url>/2021/02/20/nginx-proxy-pass/</url>
+    <url>/2021/02/19/linux/nginx-proxy-pass/</url>
     <content><![CDATA[<h1 id="指令语法"><a href="#指令语法" class="headerlink" title="指令语法"></a>指令语法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">proxy_pass URL;</span><br></pre></td></tr></table></figure>
 <p>URL 由三部分组成：</p>
 <ul>
@@ -264,8 +244,8 @@
       </tags>
   </entry>
   <entry>
-    <title>nginx rewrite 模块详解</title>
-    <url>/2021/02/20/nginx-rewrite/</url>
+    <title>nginx rewrite 详解</title>
+    <url>/2021/02/19/linux/nginx-rewrite/</url>
     <content><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>NGINX 重写模块 <code>ngx_http_rewrite_module</code>  用于使用 PCRE正则表达式 更改请求URI，返回重定向，并有条件地选择配置。</p>
 <p>主要的指令 <code>break, if, return, rewrite, set</code></p>
 <p>指令执行顺序：</p>
@@ -349,34 +329,139 @@
       </tags>
   </entry>
   <entry>
-    <title>npm Error EACCES permission denied</title>
-    <url>/2021/02/21/npm-Error-EACCES-permission-denied/</url>
-    <content><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>基础环境</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">系统：Windows WSL</span><br><span class="line">工具：NVM (Node Version Manager)</span><br><span class="line">版本：node-v12.20.1、npm-6.14.10</span><br></pre></td></tr></table></figure>
-
-<p>全局安装工具包时抛错 <code>npm ERR! Error: EACCES: permission denied</code> </p>
+    <title>linux openvpn server</title>
+    <url>/2015/07/02/linux/openvpn-server/</url>
+    <content><![CDATA[<h1 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h1><p>本文用 Vmware Workstation 模拟出来的一个VPN环境，其中主机参数如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 任意的WEB服务</span></span><br><span class="line">LAN WEB SERVER      10.1.1.11</span><br><span class="line"></span><br><span class="line"><span class="comment"># Centos 6.X（Openvpn 2.3.X）  </span></span><br><span class="line">VPN  SERVER         10.1.1.10（LAN）   10.1.2.10（WAN）</span><br><span class="line"></span><br><span class="line"><span class="comment"># Windows 7 （Openvpn Client）</span></span><br><span class="line">WAN Client PC       10.1.2.11</span><br></pre></td></tr></table></figure>
+<p>目的</p>
+<p>客户端通过VPN连接到 VPN Server，然后使之能够访问到内部的WEB 服务，实际生产环境中应用大同小异。</p>
 <a id="more"></a>
 
-<p>详情如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">opsarno@DESKTOP-T3JD9UU:~$ npm install nrm -g</span><br><span class="line">npm WARN deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142</span><br><span class="line">npm WARN deprecated coffee-script@1.7.1: CoffeeScript on NPM has moved to <span class="string">&quot;coffeescript&quot;</span> (no hyphen)</span><br><span class="line">npm WARN deprecated mkdirp@0.3.5: Legacy versions of mkdirp are no longer supported. Please update to mkdirp 1.x. (Note that the API surface has changed to use Promises <span class="keyword">in</span> 1.x.)</span><br><span class="line">npm WARN deprecated har-validator@5.1.5: this library is no longer supported</span><br><span class="line">npm ERR! code EACCES</span><br><span class="line">npm ERR! syscall rename</span><br><span class="line">npm ERR! path /home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width</span><br><span class="line">npm ERR! dest /home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2</span><br><span class="line">npm ERR! errno -13</span><br><span class="line">npm ERR! Error: EACCES: permission denied, rename <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span> -&gt; <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span></span><br><span class="line">npm ERR!  [OperationalError: EACCES: permission denied, rename <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span> -&gt; <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span>] &#123;</span><br><span class="line">npm ERR!   cause: [Error: EACCES: permission denied, rename <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span> -&gt; <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span>] &#123;</span><br><span class="line">npm ERR!     errno: -13,</span><br><span class="line">npm ERR!     code: <span class="string">&#x27;EACCES&#x27;</span>,</span><br><span class="line">npm ERR!     syscall: <span class="string">&#x27;rename&#x27;</span>,</span><br><span class="line">npm ERR!     path: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span>,</span><br><span class="line">npm ERR!     dest: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span></span><br><span class="line">npm ERR!   &#125;,</span><br><span class="line">npm ERR!   errno: -13,</span><br><span class="line">npm ERR!   code: <span class="string">&#x27;EACCES&#x27;</span>,</span><br><span class="line">npm ERR!   syscall: <span class="string">&#x27;rename&#x27;</span>,</span><br><span class="line">npm ERR!   path: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span>,</span><br><span class="line">npm ERR!   dest: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span>,</span><br><span class="line">npm ERR!   parent: <span class="string">&#x27;nrm&#x27;</span></span><br><span class="line">npm ERR! &#125;</span><br><span class="line">npm ERR!</span><br><span class="line">npm ERR! The operation was rejected by your operating system.</span><br><span class="line">npm ERR! It is likely you <span class="keyword">do</span> not have the permissions to access this file as the current user</span><br><span class="line">npm ERR!</span><br><span class="line">npm ERR! If you believe this might be a permissions issue, please double-check the</span><br><span class="line">npm ERR! permissions of the file and its containing directories, or try running</span><br><span class="line">npm ERR! the <span class="built_in">command</span> again as root/Administrator.</span><br><span class="line"></span><br><span class="line">npm ERR! A complete <span class="built_in">log</span> of this run can be found <span class="keyword">in</span>:</span><br><span class="line">npm ERR!     /home/opsarno/.npm/_logs/2021-02-19T13_28_26_969Z-debug.log</span><br></pre></td></tr></table></figure>
-<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>默认 NVM 安装在用户家目录下，WSL环境中相当于安装在Windows C盘，此时如果有一些高危操作的话（如删除、重命名），可能会触发系统的保护性机制，导致权限不足。</p>
-<p>也有资料怀疑是  <a href="https://github.com/MicrosoftDocs/WSL/issues/26">Symlink Problems</a> 问题。</p>
-<p>解决方法，将 NVM （如未使用NVM，则是 node），安装到非系统盘符，默认WSL将所有Windows盘符挂载到 <code>/mnt/</code> 目录下。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 我这里在 d 盘下，新建了一个目录，用于存放 .nvm 工具</span></span><br><span class="line">mkdir /mnt/d/data/</span><br><span class="line">mv ~/.nvm /mnt/d/data/.nvm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新 ~/.bashrc 中的 nvm 变量配置</span></span><br><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">&quot;/mnt/d/data/.nvm&quot;</span></span><br><span class="line">[ -s <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> ] &amp;&amp; \. <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> <span class="comment"># This loads nvm</span></span><br></pre></td></tr></table></figure>
-<p>重新打开 terminal，再次执行安装，成功！</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="https://im.shellj.com/2020/05/wsl-npm-install-permission-denied-error.html">https://im.shellj.com/2020/05/wsl-npm-install-permission-denied-error.html</a></li>
-<li><a href="https://github.com/MicrosoftDocs/WSL/issues/26">https://github.com/MicrosoftDocs/WSL/issues/26</a></li>
+<h1 id="具体配置"><a href="#具体配置" class="headerlink" title="具体配置"></a>具体配置</h1><p>LAN WEB Server 只需搭建一个简单的 web 服务即可，能够有一个简单的WEB页面用来测试。</p>
+<p>WAN Client 则只要安装一个Openvpn Client就可以了；</p>
+<p>下面重点说一下VPN SERVER中 openvpn的实现过程与配置</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>① 安装epel源和openvpn</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;dl.fedoraproject.org&#x2F;pub&#x2F;epel&#x2F;epel-release-latest-6.noarch.rpm</span><br><span class="line"></span><br><span class="line">rpm -Uvh epel-release-latest-6.noarch.rpm</span><br><span class="line"></span><br><span class="line">yum install openvpn easy-rsa -y</span><br></pre></td></tr></table></figure>
+<p>② 使用easy-rsa生成密钥和证书</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /etc/openvpn/easy-rsa</span><br><span class="line">cp -rf /usr/share/easy-rsa/2.0/* /etc/openvpn/easy-rsa/</span><br><span class="line"><span class="built_in">cd</span> /etc/openvpn/easy-rsa/</span><br><span class="line"></span><br><span class="line">vim vars  <span class="comment">#根据自己情况修改文本中下面的这些内容</span></span><br><span class="line"><span class="built_in">export</span> KEY_COUNTRY=<span class="string">&quot;CN&quot;</span>    <span class="comment">#国家</span></span><br><span class="line"><span class="built_in">export</span> KEY_PROVINCE=<span class="string">&quot;BJ&quot;</span>   <span class="comment">#省份</span></span><br><span class="line"><span class="built_in">export</span> KEY_CITY=<span class="string">&quot;BeiJing&quot;</span>  <span class="comment">#城市</span></span><br><span class="line"><span class="built_in">export</span> KEY_ORG=<span class="string">&quot;personal&quot;</span>  <span class="comment">#组织</span></span><br><span class="line"><span class="built_in">export</span> KEY_EMAIL=<span class="string">&quot;admin@fandenggui.com&quot;</span> <span class="comment">#邮箱</span></span><br><span class="line"><span class="built_in">export</span> KEY_OU=<span class="string">&quot;myserver&quot;</span>  <span class="comment">#单位</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./vars <span class="comment">#加载vars参数到当前环境中</span></span><br><span class="line">./clean-all   <span class="comment">#第一次使用时需要执行，会在当前目录中建立keys目录 </span></span><br><span class="line">./build-ca    <span class="comment">#建立ca证书</span></span><br><span class="line">./build-key-server server  <span class="comment">#建立服务器证书</span></span><br><span class="line">./build-key client  <span class="comment">#建立客户端证书</span></span><br><span class="line">./build-dh  <span class="comment">#为OpenVPN服务端生成 Diffie Hellman 参数</span></span><br></pre></td></tr></table></figure>
+<p>③ 配置服务器配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /usr/share/doc/openvpn-2.3.7/sample/sample-config-files/server.conf /etc/openvpn/</span><br><span class="line"><span class="built_in">cd</span> /etc/openvpn</span><br><span class="line">mkdir <span class="built_in">log</span>  <span class="comment">#在当前目录下创建log目录，用于存放openvpn中的log文件</span></span><br><span class="line"></span><br><span class="line">vim server.conf  <span class="comment">#egrep -v &quot;#|;|^$&quot; server.conf过滤结果如下</span></span><br><span class="line">port 1194</span><br><span class="line">proto tcp</span><br><span class="line">dev tun</span><br><span class="line">ca easy-rsa/keys/ca.crt</span><br><span class="line">cert easy-rsa/keys/server.crt</span><br><span class="line">dh easy-rsa/keys/dh2048.pem</span><br><span class="line">server 10.8.0.0 255.255.255.0</span><br><span class="line">ifconfig-pool-persist ipp.txt</span><br><span class="line">push <span class="string">&quot;route 10.1.1.0 255.255.255.0&quot;</span></span><br><span class="line">push <span class="string">&quot;dhcp-option DNS 208.67.220.220&quot;</span></span><br><span class="line">keepalive 10 120</span><br><span class="line">comp-lzo</span><br><span class="line">user nobody</span><br><span class="line">group nobody</span><br><span class="line">persist-key</span><br><span class="line">persist-tun</span><br><span class="line">status <span class="built_in">log</span>/openvpn-status.log</span><br><span class="line"><span class="built_in">log</span>         <span class="built_in">log</span>/openvpn.log</span><br><span class="line">log-append  <span class="built_in">log</span>/openvpn.log</span><br><span class="line">verb 3   </span><br></pre></td></tr></table></figure>
+<p>④ 配置 iptables</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">iptables -F</span><br><span class="line">iptables -X</span><br><span class="line">iptables -A INPUT -p tcp --dport 22 -j ACCEPT <span class="comment">#开启ssh端口</span></span><br><span class="line">iptables -P INPUT DROP </span><br><span class="line">iptables -P FORWARD DROP </span><br><span class="line">iptables -P OUTPUT ACCEPT </span><br><span class="line">iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT <span class="comment">#保持已经建立的连接</span></span><br><span class="line">iptables -A INPUT -p tcp --dport 1194 -j ACCEPT  <span class="comment">#允许openvpn的端口连接 </span></span><br><span class="line">iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE <span class="comment">#将所有10.8.0.0网段的包转发到eth0口</span></span><br><span class="line">iptables -A FORWARD -i tun+ -j ACCEPT <span class="comment">#添加FORWARD白名单</span></span><br><span class="line">iptables -A INPUT -s 10.8.0.0/24 -j ACCEPT <span class="comment">#允许虚拟网段的所有连接</span></span><br></pre></td></tr></table></figure>
+<p>⑤ 配置系统内核参数，使其支持转发</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># a. 临时生效</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;1&quot;</span> &gt; /proc/sys/net/ipv4/ip_forward  </span><br><span class="line"></span><br><span class="line"><span class="comment"># b. 配置文件，长久生效</span></span><br><span class="line">vim /etc/sysctl.conf</span><br><span class="line">net.ipv4.ip_forward = 1  <span class="comment">#更改这个条目，保存退出；</span></span><br><span class="line">sysctl -p  <span class="comment">#使之生效</span></span><br></pre></td></tr></table></figure>
+<p>⑥ 客户端连接</p>
+<p>WIN7下，安装Openvpn客户端后，从服务器上面下载 <code>ca.crt、client.crt、client.key、client.ovpn</code> 文件到 Openvpn Client 安装路径下的 config 目录下。(<code>默认是c:\Program Files\OpenVPN\config</code>)</p>
+<blockquote>
+<p>其中ovpn模板配置文件可参见：cp /usr/share/doc/openvpn-2.3.7/sample/sample-config-files/client.conf /etc/openvpn/easy-rsa/keys/client.ovpn</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>openvpn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux yum repository mirrors</title>
+    <url>/2021/02/20/linux/yum-repository-mirrors/</url>
+    <content><![CDATA[<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>通常情况下，企业内部会维护一套 <code>Yum Repository Mirrors</code>，以便于快速的安装更新一些软件包。即使是在阿里云VPC环境下，也会有一些三方或自定义的软件包需要内部镜像源来管理。</p>
+<p>针对这些需求，目前有三种镜像源的管理方式</p>
+<ul>
+<li>rsync</li>
+<li>Nexus</li>
+<li>createrepo</li>
 </ul>
+<a id="more"></a>
+
+<h1 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h1><p>针对系统发行版的官方源，以及常用的核心仓库进行全量的同步。</p>
+<ul>
+<li>centos</li>
+<li>epel</li>
+<li>remi</li>
+</ul>
+<p>优点是内部访问时稳定、速度快，缺点是会占用较大的数据空间。</p>
+<p>示例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">mkdir -p /opt/data/repo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 过滤一些不必要的文件</span></span><br><span class="line">rsync -avz --delete-after --no-iconv \</span><br><span class="line">    --exclude=atomic/ \</span><br><span class="line">    --exclude=cr/ \</span><br><span class="line">    --exclude=dotnet/ \</span><br><span class="line">    --exclude=fasttrack/ \</span><br><span class="line">    --exclude=paas/ \</span><br><span class="line">    --exclude=rt/ \</span><br><span class="line">    --exclude=isos/ \</span><br><span class="line">    --exclude=debug/ \</span><br><span class="line">    rsync://mirrors.tuna.tsinghua.edu.cn/centos/ \</span><br><span class="line">    /opt/data/repo/centos/</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Nexus"><a href="#Nexus" class="headerlink" title="Nexus"></a>Nexus</h1><p><a href="https://www.sonatype.com/nexus/repository-oss">Sonatype Nexus Repository Manager</a></p>
+<p>对于一些低频使用、非核心的三方包，我们通过 Nexus 代理官方仓库的方式，缓存安装的 RPM 包。</p>
+<ul>
+<li>AdoptOpenJDK</li>
+<li>elasticstack</li>
+<li>nvidia-cuda</li>
+<li>…..</li>
+</ul>
+<p>优点是仅缓存所需的依赖包，无需占用太多存储资源；缺点是对于文件较大的RPM包，在首次安装时会有失败的情况。</p>
+<h2 id="扩展说明"><a href="#扩展说明" class="headerlink" title="扩展说明"></a>扩展说明</h2><p><code>Sonatype Nexus Repository Manager</code> 功能非常强大，能够存储主流的文件仓库格式，如 apt, docker, go, npm, pypi yum… 等。</p>
+<p>更多细节，参见官方文档：<a href="https://help.sonatype.com/docs">Repository Manager Documentation</a></p>
+<h1 id="createrepo"><a href="#createrepo" class="headerlink" title="createrepo"></a>createrepo</h1><p>主要用于 rpmbuild 自封装的 RPM 包，或者固定版本的三方RPM包，存放到指定目录下，生成 repodata 进行管理使用。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">createrepo --update /opt/data/repo/self-repo</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>centos</tag>
+        <tag>yum</tag>
+        <tag>repository</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python2 No module named _tkinter of matplotlib</title>
+    <url>/2017/02/20/python/Python2-No-module-named-tkinter/</url>
+    <content><![CDATA[<h1 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Python：2.7.13</span><br><span class="line">Pip：9.0.1</span><br><span class="line">matplotlib：2.0.0  (pip install matplotlib)</span><br></pre></td></tr></table></figure>
+
+<h1 id="Error-Message"><a href="#Error-Message" class="headerlink" title="Error Message"></a>Error Message</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; import matplotlib.pyplot</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line"> File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/pyplot.py&quot;</span>, line 115, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> _backend_mod, new_figure_manager, draw_if_interactive, _show = pylab_setup()</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/backends/__init__.py&quot;</span>, line 32, <span class="keyword">in</span> pylab_setup</span><br><span class="line"> globals(),locals(),[backend_name],0)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/backends/backend_tkagg.py&quot;</span>, line 6, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> from six.moves import tkinter as Tk</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 203, <span class="keyword">in</span> load_module</span><br><span class="line"> mod = mod._resolve()</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 115, <span class="keyword">in</span> _resolve</span><br><span class="line"> <span class="built_in">return</span> _import_module(self.mod)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 82, <span class="keyword">in</span> _import_module</span><br><span class="line"> __import__(name)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/lib-tk/Tkinter.py&quot;</span>, line 39, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> import _tkinter <span class="comment"># If this fails your Python may not be configured for Tk</span></span><br><span class="line">ImportError: No module named _tkinter</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>Recompile python</p>
+<ol>
+<li>Extract the source file <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># tar xzf Python-2.7.13.tgz</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># cd Python-2.7.13</span></span><br></pre></td></tr></table></figure></li>
+<li>Check the tk/tcl version，Step 4 need the version information <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># rpm -qa | grep ^tk</span></span><br><span class="line">tk-8.5.7-5.el6.x86_64</span><br><span class="line">tkinter-2.6.6-66.el6_8.x86_64</span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># rpm -qa | grep ^tcl</span></span><br><span class="line">tcl-8.5.7-6.el6.x86_64</span><br></pre></td></tr></table></figure></li>
+<li>Install tk/tcl devel <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># yum install tk-devel tcl-devel -y</span></span><br></pre></td></tr></table></figure></li>
+<li>Find these lines and cancel the comment <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim Modules/Setup</span></span><br><span class="line"><span class="comment"># *** Always uncomment this (leave the leading underscore in!):</span></span><br><span class="line">_tkinter _tkinter.c tkappinit.c -DWITH_APPINIT \</span><br><span class="line">-L/usr/<span class="built_in">local</span>/lib \</span><br><span class="line">-I/usr/<span class="built_in">local</span>/include \</span><br><span class="line">-ltk8.5 -ltcl8.5 \      <span class="comment"># this version from step 2.</span></span><br><span class="line">-lX11</span><br></pre></td></tr></table></figure></li>
+<li>Start complie &amp; install python <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># ldconfig</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># ./configure --prefix=/opt/soft/python2 --with-ensurepip=install</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># make</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># make install</span></span><br></pre></td></tr></table></figure></li>
+<li>Config sys env. <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># mv /usr/bin/python /usr/bin/pythonbak</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># unlink /usr/bin/python2</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim /usr/bin/yum</span></span><br><span class="line"><span class="meta">#!/usr/bin/python2.6</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim ~/.bash_profile</span></span><br><span class="line"><span class="comment"># User specific environment and startup programs</span></span><br><span class="line">PYPATH=/opt/soft/python2/bin</span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$HOME</span>/bin:<span class="variable">$PYPATH</span></span><br><span class="line"><span class="built_in">export</span> PATH</span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># source ~/.bash_profile</span></span><br></pre></td></tr></table></figure></li>
+<li>Verification result <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Python 2.7.13 (default, Feb 20 2017, 20:35:07)</span><br><span class="line">[GCC 4.4.7 20120313 (Red Hat 4.4.7-16)] on linux2</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; import matplotlib.pyplot</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
 ]]></content>
       <categories>
         <category>dev</category>
-        <category>npm</category>
+        <category>python2</category>
       </categories>
       <tags>
         <tag>troubleshooting</tag>
-        <tag>nodejs</tag>
-        <tag>npm</tag>
+        <tag>python</tag>
+        <tag>matplotlib</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python2 Tab Autocomplete</title>
+    <url>/2017/02/12/python/Python2-Tab-Autocomplete/</url>
+    <content><![CDATA[<h1 id="Linux-Python2-Tab-Autocomplete"><a href="#Linux-Python2-Tab-Autocomplete" class="headerlink" title="Linux Python2 Tab Autocomplete"></a>Linux Python2 Tab Autocomplete</h1><p>① 新建 <code>vim ~/.pystartup</code> Python2 启动时的环境变量加载文件。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Add auto-completion and a stored history file of commands to your Python</span></span><br><span class="line"><span class="comment"># interactive interpreter. Requires Python 2.0+, readline. Autocomplete is</span></span><br><span class="line"><span class="comment"># bound to the Esc key by default (you can change it - see readline docs).</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Store the file in ~/.pystartup, and set an environment variable to point</span></span><br><span class="line"><span class="comment"># to it:  &quot;export PYTHONSTARTUP=~/.pystartup&quot; in bash.</span></span><br><span class="line"><span class="keyword">import</span> atexit</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> readline</span><br><span class="line"><span class="keyword">import</span> rlcompleter</span><br><span class="line">readline.parse_and_bind(<span class="string">&#x27;tab: complete&#x27;</span>)</span><br><span class="line">historyPath = os.path.expanduser(<span class="string">&quot;~/.pyhistory&quot;</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_history</span>(<span class="params">historyPath=historyPath</span>):</span></span><br><span class="line">    <span class="keyword">import</span> readline</span><br><span class="line">    readline.write_history_file(historyPath)</span><br><span class="line"><span class="keyword">if</span> os.path.exists(historyPath):</span><br><span class="line">    readline.read_history_file(historyPath)</span><br><span class="line">atexit.register(save_history)</span><br><span class="line"><span class="keyword">del</span> os, atexit, readline, rlcompleter, save_history, historyPath</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+
+<p>② 设置系统变量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 即时生效，重启失效</span></span><br><span class="line"><span class="built_in">export</span> PYTHONSTARTUP=~/.pystartup  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 永久生效</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;export PYTHONSTARTUP=~/.pystartup&quot;</span> &gt;&gt; /etc/profile</span><br></pre></td></tr></table></figure>
+<h1 id="Windows-Python2-Tab-Autocomplete"><a href="#Windows-Python2-Tab-Autocomplete" class="headerlink" title="Windows Python2 Tab Autocomplete"></a>Windows Python2 Tab Autocomplete</h1><p>① 安装 <code>pyreadline</code> 依赖</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install pyreadline</span><br></pre></td></tr></table></figure>
+<p>② 在Python安装路径的Lib文件夹下新建一个 tab.py。<br>例如：<code>C:\Program Files (x86)\Python2\Lib</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Add auto-completion and a stored history file of commands to your Python</span></span><br><span class="line"><span class="comment"># interactive interpreter. </span></span><br><span class="line">import atexit</span><br><span class="line">import os</span><br><span class="line">import readline</span><br><span class="line">import rlcompleter</span><br><span class="line">import sys</span><br><span class="line"><span class="comment"># Tab completion   </span></span><br><span class="line">readline.parse_and_bind(<span class="string">&#x27;tab: complete&#x27;</span>)   </span><br><span class="line"><span class="comment"># history file，这个路径可以自定义，但需要确保目录存在。</span></span><br><span class="line">histfile = os.path.join(<span class="string">&quot;D:\\Tmp\\history\\&quot;</span>, <span class="string">&quot;.pythonhistory&quot;</span>)</span><br><span class="line">try:   </span><br><span class="line">    readline.read_history_file(histfile)   </span><br><span class="line">except IOError:   </span><br><span class="line">    pass   </span><br><span class="line">atexit.register(readline.write_history_file, histfile)   </span><br><span class="line">           </span><br><span class="line">del os, histfile, readline, rlcompleter</span><br></pre></td></tr></table></figure>
+<p>③ 和linux类似，如果想输入python就自动加载tab补全，在系统属性中的环境变量里增加PYTHONSTARTUP变量，值为绝对路径的 tab.py，</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">例如：</span><br><span class="line">变量名：PYTHONSTARTUP</span><br><span class="line">变量值：C:\Program Files (x86)\Python2\Lib\tab.py</span><br></pre></td></tr></table></figure>
+<p>注：不做这步的话，每次输入python进入交互界面后，需要手动import tab</p>
+]]></content>
+      <categories>
+        <category>dev</category>
+        <category>python2</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>optimization</tag>
       </tags>
   </entry>
 </search>
