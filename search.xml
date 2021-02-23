@@ -5,12 +5,12 @@
     <url>/2020/02/21/hexo-next-blog/</url>
     <content><![CDATA[<h1 id="GitHub-Pages-博客"><a href="#GitHub-Pages-博客" class="headerlink" title="GitHub Pages 博客"></a>GitHub Pages 博客</h1><p>主要组件</p>
 <ul>
-<li>博客框架 <a href="https://hexo.io/zh-cn/">Hexo - 快速、简洁且高效的博客框架</a></li>
+<li>博客框架 <a href="https://hexo.io/zh-cn/">Hexo</a></li>
 <li>博客主题 <a href="https://github.com/theme-next/hexo-theme-next">hexo-theme-next</a></li>
 <li>博客托管 <a href="https://pages.github.com/">Github Pages</a></li>
 <li>自动部署 <a href="https://travis-ci.com/">Travis CI</a></li>
 </ul>
-<p>Hexo 其实是一种静态站点生成器，也可以用 <a href="https://gohugo.io/">Hugo</a>、<a href="https://jekyllrb.com/">JekyII</a>、<a href="https://www.mkdocs.org/">MKkDocs</a> 等其它静态站点生成器替代。更多生成器参见：<a href="https://jamstack.org/generators/">Site Generators</a>。</p>
+<p>Hexo 其实是一种静态站点生成器，也可以用 <a href="https://gohugo.io/">Hugo</a>、<a href="https://jekyllrb.com/">JekyII</a>、<a href="https://www.mkdocs.org/">MkDocs</a> 等其它静态站点生成器替代。更多生成器参见：<a href="https://jamstack.org/generators/">Site Generators</a>。</p>
 <p>博客示例：</p>
 <ul>
 <li><a href="opsarno.github.io">GitHub Pages 域名 - opsarno.github.io</a></li>
@@ -54,18 +54,29 @@
 <p>编辑 <code>source/about/index.md</code>，<code>source/links/index.md</code> 文件，与文章类似，填写需要展示的内容。</p>
 <h3 id="启动服务器"><a href="#启动服务器" class="headerlink" title="启动服务器"></a>启动服务器</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo server</span><br><span class="line"></span><br><span class="line"><span class="comment"># server 可简写为 s</span></span><br><span class="line">hexo s</span><br><span class="line"></span><br><span class="line"><span class="comment"># INFO  Validating config</span></span><br><span class="line"><span class="comment"># INFO  Start processing</span></span><br><span class="line"><span class="comment"># INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span></span><br></pre></td></tr></table></figure>
 <p>可以方便的本机访问，查看博客内容及样式。</p>
+<h2 id="插件推荐"><a href="#插件推荐" class="headerlink" title="插件推荐"></a>插件推荐</h2><ul>
+<li><p><a href="https://github.com/next-theme/hexo-generator-searchdb">hexo-generator-searchdb</a><br>更多功能的搜索数据生成器</p>
+</li>
+<li><p><a href="https://github.com/hexojs/hexo-generator-feed">hexo-generator-feed</a><br>Generate Atom 1.0 or RSS 2.0 feed. 以便于支持RSS订阅。</p>
+</li>
+<li><p><a href="https://github.com/theme-next/hexo-symbols-count-time">hexo-symbols-count-time</a><br>在博客文章中显示符号计数及所需阅读时间。<br>比 <a href="https://github.com/ierhyna/hexo-reading-time">hexo-reading-time</a> 好，比 <a href="https://github.com/willin/hexo-wordcount">hexo-wordcount</a> 快。没有外部依赖。</p>
+</li>
+<li><p><a href="https://github.com/hexojs/hexo-generator-sitemap">hexo-generator-sitemap</a><br>生成站点地图</p>
+</li>
+</ul>
 <h2 id="自动部署"><a href="#自动部署" class="headerlink" title="自动部署"></a>自动部署</h2><p>官方文档：<a href="https://hexo.io/zh-cn/docs/github-pages">将 Hexo 部署到 GitHub Pages</a></p>
 <p>这里只补充一点，就是当指定了自定义域名后，项目中会多一个<code>CNAME</code>文件，文件内容就是自定义的域名。</p>
 <p>此时，<code>.travis.yml</code> 文件需要增加一个新增动作，同步CNAME文件。</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">sudo:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">node_js</span></span><br><span class="line"><span class="attr">node_js:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="number">12</span> <span class="comment"># use nodejs v10 LTS</span></span><br><span class="line"><span class="attr">cache:</span> <span class="string">npm</span></span><br><span class="line"><span class="attr">branches:</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">main</span> <span class="comment"># build main branch only</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">generate</span> <span class="comment"># generate static files</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">cp</span> <span class="string">CNAME</span> <span class="string">public/</span> <span class="comment"># 新增动作，同步CNAME文件。</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">provider:</span> <span class="string">pages</span></span><br><span class="line">  <span class="attr">skip-cleanup:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">github-token:</span> <span class="string">$GH_TOKEN</span></span><br><span class="line">  <span class="attr">keep-history:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">on:</span></span><br><span class="line">    <span class="attr">branch:</span> <span class="string">main</span></span><br><span class="line">  <span class="attr">local-dir:</span> <span class="string">public</span></span><br></pre></td></tr></table></figure>
 <h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
-<li>主分支 <code>main/master</code>，管理的是实际站点项目的源文件</li>
+<li>主分支 <code>main / master</code>，管理的是实际站点项目的源文件</li>
 <li>自动部署会自动新增<code>gh-pages</code>分支，用来托管实际的站点文件</li>
 <li>GitHub项目 settings 中的 GitHub Pages项，Branchs 需改为 <code>gh-pages</code> 分支。</li>
 <li>自定义域名，需要将其主机记录 CNAME 指向 username.github.io ，username 为你自己的实际名称。</li>
 </ul>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>更多细节，请参见官方文档。</p>
 <ul>
+<li><a href="https://pages.github.com/">https://pages.github.com/</a></li>
 <li><a href="https://hexo.io/zh-cn/docs/">https://hexo.io/zh-cn/docs/</a></li>
 <li><a href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a></li>
 </ul>
