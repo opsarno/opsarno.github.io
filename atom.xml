@@ -6,7 +6,7 @@
   <link href="https://www.itdevops.cn/atom.xml" rel="self"/>
   
   <link href="https://www.itdevops.cn/"/>
-  <updated>2021-02-23T10:32:19.477Z</updated>
+  <updated>2021-04-08T08:00:52.713Z</updated>
   <id>https://www.itdevops.cn/</id>
   
   <author>
@@ -17,11 +17,62 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Configure SFTP Service</title>
+    <link href="https://www.itdevops.cn/2021/04/08/linux/sftp-service/"/>
+    <id>https://www.itdevops.cn/2021/04/08/linux/sftp-service/</id>
+    <published>2021-04-08T07:55:39.000Z</published>
+    <updated>2021-04-08T08:00:52.713Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;SFTP&quot;&gt;&lt;a href=&quot;#SFTP&quot; class=&quot;headerlink&quot; title=&quot;SFTP&quot;&gt;&lt;/a&gt;SFTP&lt;/h1&gt;&lt;p&gt;SFTP (SSH File Transfer Protocol)是一种安全的文件传输协议。它通过SSH协议运行。它支持SSH的完整安全和身份验证功能。&lt;/p&gt;
+&lt;p&gt;SFTP已几乎取代了旧版FTP作为文件传输协议，并且正在迅速取代FTP/S。它提供了这些协议提供的所有功能，但更安全，更可靠，配置更简单。&lt;/p&gt;
+&lt;p&gt;SFTP还可以防止密码嗅探和中间人攻击。它使用加密和加密哈希函数保护数据的完整性，并对服务器和用户进行身份验证。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/tags/linux/"/>
+    
+    <category term="sftp" scheme="https://www.itdevops.cn/tags/sftp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Terminal proxy config</title>
+    <link href="https://www.itdevops.cn/2021/04/08/linux/terminal-proxy-config/"/>
+    <id>https://www.itdevops.cn/2021/04/08/linux/terminal-proxy-config/</id>
+    <published>2021-04-08T07:49:52.000Z</published>
+    <updated>2021-04-08T08:00:52.713Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Linux-Terminal-Proxy-代理配置&quot;&gt;&lt;a href=&quot;#Linux-Terminal-Proxy-代理配置&quot; class=&quot;headerlink&quot; title=&quot;Linux Terminal Proxy 代理配置&quot;&gt;&lt;/a&gt;Linux Terminal Proxy 代理配置&lt;/h1&gt;&lt;p&gt;如果需要在 Terminal 中使用代理，则需配置一些代理变量来实现。此方式适用于所有 Linux 发行版、MacOS 等类Unix系统。&lt;/p&gt;
+&lt;h2 id=&quot;通用配置&quot;&gt;&lt;a href=&quot;#通用配置&quot; class=&quot;headerlink&quot; title=&quot;通用配置&quot;&gt;&lt;/a&gt;通用配置&lt;/h2&gt;&lt;p&gt;如果代理启用了身份认证，需要提供账号密码&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在当前 BASH 终端中输入可临时生效&lt;/li&gt;
+&lt;li&gt;将内容写入 &lt;code&gt;~/.bashrc&lt;/code&gt; 中，对当前用户生效&lt;/li&gt;
+&lt;li&gt;将内容写入 &lt;code&gt;/etc/profile&lt;/code&gt; 中，对所有用户生效&lt;/li&gt;
+&lt;li&gt;在脚本中写入，仅对脚本中的请求生效&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/tags/linux/"/>
+    
+    <category term="proxy" scheme="https://www.itdevops.cn/tags/proxy/"/>
+    
+  </entry>
+  
+  <entry>
     <title>npm Error EACCES permission denied</title>
     <link href="https://www.itdevops.cn/2021/02/21/npm-Error-EACCES-permission-denied/"/>
     <id>https://www.itdevops.cn/2021/02/21/npm-Error-EACCES-permission-denied/</id>
     <published>2021-02-21T09:25:01.000Z</published>
-    <updated>2021-02-23T10:32:19.477Z</updated>
+    <updated>2021-04-08T08:00:52.713Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h1&gt;&lt;p&gt;基础环境&lt;/p&gt;
@@ -49,7 +100,7 @@
     <link href="https://www.itdevops.cn/2021/02/20/linux/yum-repository-mirrors/"/>
     <id>https://www.itdevops.cn/2021/02/20/linux/yum-repository-mirrors/</id>
     <published>2021-02-20T03:20:57.000Z</published>
-    <updated>2021-02-23T10:32:19.477Z</updated>
+    <updated>2021-04-08T08:00:52.713Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h1&gt;&lt;p&gt;通常情况下，企业内部会维护一套 &lt;code&gt;Yum Repository Mirrors&lt;/code&gt;，以便于快速的安装更新一些软件包。即使是在阿里云VPC环境下，也会有一些三方或自定义的软件包需要内部镜像源来管理。&lt;/p&gt;
@@ -78,7 +129,7 @@
     <link href="https://www.itdevops.cn/2021/02/19/linux/nginx-rewrite/"/>
     <id>https://www.itdevops.cn/2021/02/19/linux/nginx-rewrite/</id>
     <published>2021-02-19T06:00:00.000Z</published>
-    <updated>2021-02-23T10:32:19.477Z</updated>
+    <updated>2021-04-08T08:00:52.713Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h1&gt;&lt;p&gt;NGINX 重写模块 &lt;code&gt;ngx_http_rewrite_module&lt;/code&gt;  用于使用 PCRE正则表达式 更改请求URI，返回重定向，并有条件地选择配置。&lt;/p&gt;
@@ -108,7 +159,7 @@
     <link href="https://www.itdevops.cn/2021/02/19/linux/nginx-proxy-pass/"/>
     <id>https://www.itdevops.cn/2021/02/19/linux/nginx-proxy-pass/</id>
     <published>2021-02-19T05:00:00.000Z</published>
-    <updated>2021-02-23T10:32:19.477Z</updated>
+    <updated>2021-04-08T08:00:52.713Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;指令语法&quot;&gt;&lt;a href=&quot;#指令语法&quot; class=&quot;headerlink&quot; title=&quot;指令语法&quot;&gt;&lt;/a&gt;指令语法&lt;/h1&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;proxy_pass URL;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -139,7 +190,7 @@
     <link href="https://www.itdevops.cn/2021/02/19/linux/nginx-location/"/>
     <id>https://www.itdevops.cn/2021/02/19/linux/nginx-location/</id>
     <published>2021-02-19T04:00:00.000Z</published>
-    <updated>2021-02-23T10:32:19.477Z</updated>
+    <updated>2021-04-08T08:00:52.713Z</updated>
     
     
     <summary type="html">&lt;p&gt;location 指令用途&lt;/p&gt;
@@ -164,7 +215,7 @@
     <link href="https://www.itdevops.cn/2020/02/21/hexo-next-blog/"/>
     <id>https://www.itdevops.cn/2020/02/21/hexo-next-blog/</id>
     <published>2020-02-21T04:00:00.000Z</published>
-    <updated>2021-02-23T10:32:19.477Z</updated>
+    <updated>2021-04-08T08:00:52.713Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;GitHub-Pages-博客&quot;&gt;&lt;a href=&quot;#GitHub-Pages-博客&quot; class=&quot;headerlink&quot; title=&quot;GitHub Pages 博客&quot;&gt;&lt;/a&gt;GitHub Pages 博客&lt;/h1&gt;&lt;p&gt;主要组件&lt;/p&gt;
@@ -196,7 +247,7 @@
     <link href="https://www.itdevops.cn/2017/02/20/linux/bind-dns-logging/"/>
     <id>https://www.itdevops.cn/2017/02/20/linux/bind-dns-logging/</id>
     <published>2017-02-20T06:26:19.000Z</published>
-    <updated>2021-02-23T10:32:19.477Z</updated>
+    <updated>2021-04-08T08:00:52.713Z</updated>
     
     
     <summary type="html">&lt;p&gt;Bind DNS 日志记录&lt;/p&gt;
@@ -220,7 +271,7 @@
     <link href="https://www.itdevops.cn/2017/02/20/python/Python2-No-module-named-tkinter/"/>
     <id>https://www.itdevops.cn/2017/02/20/python/Python2-No-module-named-tkinter/</id>
     <published>2017-02-20T02:18:06.000Z</published>
-    <updated>2021-02-23T10:32:19.477Z</updated>
+    <updated>2021-04-08T08:00:52.713Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;Environment&quot;&gt;&lt;a href=&quot;#Environment&quot; class=&quot;headerlink&quot; title=&quot;Environment&quot;&gt;&lt;/a&gt;Environment&lt;/h1&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Python：2.7.13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Pip：9.0.1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;matplotlib：2.0.0  (pip install matplotlib)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -247,7 +298,7 @@
     <link href="https://www.itdevops.cn/2017/02/12/python/Python2-Tab-Autocomplete/"/>
     <id>https://www.itdevops.cn/2017/02/12/python/Python2-Tab-Autocomplete/</id>
     <published>2017-02-12T02:31:52.000Z</published>
-    <updated>2021-02-23T10:32:19.477Z</updated>
+    <updated>2021-04-08T08:00:52.713Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;Linux-Python2-Tab-Autocomplete&quot;&gt;&lt;a href=&quot;#Linux-Python2-Tab-Autocomplete&quot; class=&quot;headerlink&quot; title=&quot;Linux Python2 Tab Autocomplete&quot;&gt;&lt;/a&gt;Linux Python2 Tab Autocomplete&lt;/h1&gt;&lt;p&gt;① 新建 &lt;code&gt;vim ~/.pystartup&lt;/code&gt; Python2 启动时的环境变量加载文件。&lt;/p&gt;
@@ -271,7 +322,7 @@
     <link href="https://www.itdevops.cn/2015/07/02/linux/openvpn-server/"/>
     <id>https://www.itdevops.cn/2015/07/02/linux/openvpn-server/</id>
     <published>2015-07-02T04:00:00.000Z</published>
-    <updated>2021-02-23T10:32:19.477Z</updated>
+    <updated>2021-04-08T08:00:52.713Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;实验环境&quot;&gt;&lt;a href=&quot;#实验环境&quot; class=&quot;headerlink&quot; title=&quot;实验环境&quot;&gt;&lt;/a&gt;实验环境&lt;/h1&gt;&lt;p&gt;本文用 Vmware Workstation 模拟出来的一个VPN环境，其中主机参数如下：&lt;/p&gt;
