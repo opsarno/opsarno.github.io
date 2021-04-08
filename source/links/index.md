@@ -23,9 +23,8 @@ date: 2021-02-19 16:44:58
 
 
 # 技术学习网站
-- [蓝桥云课](https://www.lanqiao.cn/)
-2020年8月8日起，实验楼网站与蓝桥网站合并形成新品牌蓝桥云课， 您的学习服务仍然由原实验楼团队提供，初心不变，服务不变。
-
+- [慕课网](https://www.imooc.com/)
+- [蓝桥云课 - 原实验楼](https://www.lanqiao.cn/)
 
 # 常用工具推荐
 - [火币 - 虚拟货币交易所](https://www.huobi.co/zh-cn/topic/invited/?invite_code=ac9i4)
