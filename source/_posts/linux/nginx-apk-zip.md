@@ -1,8 +1,8 @@
 ---
 title: NGINX 修改 Response Headers，解决 apk 文件下载变 zip 后缀问题
 date: 2021-06-03 11:35:53
-tags:
-categories:
+tags: nginx
+categories: [linux, nginx]
 ---
 # 问题
 部分用户手机下载 apk 文件时，后缀会变为 zip 文件。
@@ -18,6 +18,8 @@ categories:
 ```
 content-type: application/zip
 ```
+
+<!--more-->
 
 故而以为是 Mine Types 问题，于是修改 **源站域名 nginx 的 mine.types 文件** 添加以下内容，但并未解决。
 ```
