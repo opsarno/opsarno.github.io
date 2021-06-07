@@ -4,6 +4,8 @@ date: 2021-02-21 17:25:01
 tags: [nodejs, npm, troubleshooting]
 categories: [dev, npm]
 ---
+<!--more-->
+
 # 问题
 
 基础环境
@@ -16,7 +18,6 @@ categories: [dev, npm]
 
 全局安装工具包时抛错 `npm ERR! Error: EACCES: permission denied` 
 
-<!--more-->
 
 详情如下：
 ```bash

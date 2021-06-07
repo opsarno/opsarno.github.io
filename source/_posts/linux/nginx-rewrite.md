@@ -4,6 +4,7 @@ date: 2021-02-19 14:00:00
 tags: nginx
 categories: [linux, nginx]
 ---
+<!--more-->
 
 # 概述
 NGINX 重写模块 `ngx_http_rewrite_module`  用于使用 PCRE正则表达式 更改请求URI，返回重定向，并有条件地选择配置。
@@ -19,7 +20,6 @@ NGINX 重写模块 `ngx_http_rewrite_module`  用于使用 PCRE正则表达式 �
 
 如果循环超过10次，则返回 [500 Internal Server Error](http://nginx.org/en/docs/http/ngx_http_core_module.html#internal) 错误。
 
-<!--more-->
 
 # 指令语法
 

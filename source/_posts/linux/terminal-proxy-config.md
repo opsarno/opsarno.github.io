@@ -4,6 +4,7 @@ date: 2021-04-08 15:49:52
 tags: [linux, proxy]
 categories: [linux]
 ---
+<!--more-->
 
 # Linux Terminal Proxy 代理配置
 
@@ -20,7 +21,6 @@ categories: [linux]
 - 将内容写入 `/etc/profile` 中，对所有用户生效
 - 在脚本中写入，仅对脚本中的请求生效
 
-<!--more-->
 
 ```bash
 export username='myuser'
