@@ -16,13 +16,6 @@
   </url>
   
   <url>
-    <loc>https://www.itdevops.cn/2021/02/21/npm-Error-EACCES-permission-denied/</loc>
-    
-    <lastmod>2021-06-07</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.itdevops.cn/2020/02/21/hexo-next-blog/</loc>
     
     <lastmod>2021-06-07</lastmod>
@@ -30,7 +23,7 @@
   </url>
   
   <url>
-    <loc>https://www.itdevops.cn/2017/02/20/linux/bind-dns-logging/</loc>
+    <loc>https://www.itdevops.cn/2021/02/21/npm-Error-EACCES-permission-denied/</loc>
     
     <lastmod>2021-06-07</lastmod>
     
@@ -38,6 +31,13 @@
   
   <url>
     <loc>https://www.itdevops.cn/2021/06/03/linux/nginx-apk-zip/</loc>
+    
+    <lastmod>2021-06-07</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2017/02/20/linux/bind-dns-logging/</loc>
     
     <lastmod>2021-06-07</lastmod>
     
@@ -79,14 +79,14 @@
   </url>
   
   <url>
-    <loc>https://www.itdevops.cn/2021/04/08/linux/terminal-proxy-config/</loc>
+    <loc>https://www.itdevops.cn/2021/04/08/linux/sftp-service/</loc>
     
     <lastmod>2021-06-07</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.itdevops.cn/2021/04/08/linux/sftp-service/</loc>
+    <loc>https://www.itdevops.cn/2021/04/08/linux/terminal-proxy-config/</loc>
     
     <lastmod>2021-06-07</lastmod>
     
@@ -137,6 +137,20 @@
 
   
   <url>
+    <loc>https://www.itdevops.cn/tags/hexo/</loc>
+    <lastmod>2021-06-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/next/</loc>
+    <lastmod>2021-06-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://www.itdevops.cn/tags/nodejs/</loc>
     <lastmod>2021-06-07</lastmod>
     <changefreq>daily</changefreq>
@@ -158,14 +172,7 @@
   </url>
   
   <url>
-    <loc>https://www.itdevops.cn/tags/hexo/</loc>
-    <lastmod>2021-06-07</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.itdevops.cn/tags/next/</loc>
+    <loc>https://www.itdevops.cn/tags/nginx/</loc>
     <lastmod>2021-06-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -186,13 +193,6 @@
   </url>
   
   <url>
-    <loc>https://www.itdevops.cn/tags/nginx/</loc>
-    <lastmod>2021-06-07</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://www.itdevops.cn/tags/openvpn/</loc>
     <lastmod>2021-06-07</lastmod>
     <changefreq>daily</changefreq>
@@ -207,14 +207,14 @@
   </url>
   
   <url>
-    <loc>https://www.itdevops.cn/tags/proxy/</loc>
+    <loc>https://www.itdevops.cn/tags/sftp/</loc>
     <lastmod>2021-06-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://www.itdevops.cn/tags/sftp/</loc>
+    <loc>https://www.itdevops.cn/tags/proxy/</loc>
     <lastmod>2021-06-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -265,14 +265,14 @@
 
   
   <url>
-    <loc>https://www.itdevops.cn/categories/dev/</loc>
+    <loc>https://www.itdevops.cn/categories/others/</loc>
     <lastmod>2021-06-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://www.itdevops.cn/categories/others/</loc>
+    <loc>https://www.itdevops.cn/categories/dev/</loc>
     <lastmod>2021-06-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
