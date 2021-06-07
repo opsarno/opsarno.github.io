@@ -6,6 +6,7 @@ categories: [linux, bind]
 ---
 
 Bind DNS 日志记录
+<!--more-->
 
 # 语法
 ```bash
@@ -34,7 +35,6 @@ logging {
 };
 ```
 
-<!--more-->
 
 
 # 定义和使用

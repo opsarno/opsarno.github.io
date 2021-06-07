@@ -4,7 +4,6 @@ date: 2021-06-04 11:35:53
 tags: nginx
 categories: [linux, nginx]
 ---
-<!--more-->
 
 # Linux 系统调优
 
@@ -17,6 +16,8 @@ categories: [linux, nginx]
         See also tcp_max_syn_backlog for additional tuning for TCP sockets.
     ```
     `net.core.somaxconn` 参数是 socket listen() 的 backlog 限制。**用于控制全连接队列长度**。默认值是4096（内核5.4版本以前是128）。如果 `socket server` 处理请求较慢，以至于监听队列填满后，新来的请求会被拒绝。
+
+<!--more-->
 
 
 - [net.core.netdev_max_backlog](https://www.kernel.org/doc/Documentation/sysctl/net.txt)

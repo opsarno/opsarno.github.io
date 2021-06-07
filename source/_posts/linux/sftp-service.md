@@ -4,7 +4,6 @@ date: 2021-04-08 15:55:39
 tags: [linux, sftp]
 categories: [linux]
 ---
-<!--more-->
 
 # SFTP
 
@@ -14,6 +13,7 @@ SFTP已几乎取代了旧版FTP作为文件传输协议，并且正在迅速取�
 
 SFTP还可以防止密码嗅探和中间人攻击。它使用加密和加密哈希函数保护数据的完整性，并对服务器和用户进行身份验证。
 
+<!--more-->
 
 ## Setup Chroot SFTP
 

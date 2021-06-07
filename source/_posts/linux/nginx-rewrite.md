@@ -4,12 +4,13 @@ date: 2021-02-19 14:00:00
 tags: nginx
 categories: [linux, nginx]
 ---
-<!--more-->
 
 # 概述
 NGINX 重写模块 `ngx_http_rewrite_module`  用于使用 PCRE正则表达式 更改请求URI，返回重定向，并有条件地选择配置。
 
 主要的指令 `break, if, return, rewrite, set`
+
+<!--more-->
 
 指令执行顺序：
 1. 按顺序执行 server 区块中的 rewrite 模块指令

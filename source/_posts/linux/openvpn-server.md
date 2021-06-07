@@ -18,11 +18,11 @@ VPN  SERVER         10.1.1.10（LAN）   10.1.2.10（WAN）
 WAN Client PC       10.1.2.11
 ```
 
+<!--more-->
+
 目的
 
 客户端通过VPN连接到 VPN Server，然后使之能够访问到内部的WEB 服务，实际生产环境中应用大同小异。
-
-<!--more-->
 
 # 具体配置
 

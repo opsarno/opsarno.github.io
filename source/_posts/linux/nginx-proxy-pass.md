@@ -13,6 +13,8 @@ URL 由三部分组成：
 - 地址 可以指定 域名 或 ip 以及 可选端口
 - 可选的URI
 
+<!--more-->
+
 示例
 ```bash
 proxy_pass http://www.abc.com;
@@ -24,8 +26,6 @@ proxy_pass http://unix:/tmp/backend.socket:/uri/;
 此外，可将地址指定为一个主机组 [server group](http://nginx.org/en/docs/http/ngx_http_upstream_module.html)，使用 upstream 来定义主机组。
 
 当使用 rewrite 在代理位置更改URI时（地址重写），则重写后的URI会传递给后端服务器。
-
-<!--more-->
 
 
 # 示例解析

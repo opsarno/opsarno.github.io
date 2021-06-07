@@ -9,6 +9,7 @@ location 指令用途
 
 根据请求 URI 设置配置，进而对请求做不同的处理和响应。
 
+<!--more-->
 
 # 语法规则
 ```bash
@@ -20,9 +21,6 @@ location @name { ... }
 语法规则很简单，关键字location后跟可选的修饰符，后面是要匹配的前缀字符既URI，花括号中是要执行的操作。
 
 location 一般定义在 server 区块中，也可以嵌套定义在 location 区块中，但命名 location 不可嵌套。
-
-
-<!--more-->
 
 ## 修饰符说明
 ```bash

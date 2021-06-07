@@ -4,13 +4,12 @@ date: 2021-04-08 15:49:52
 tags: [linux, proxy]
 categories: [linux]
 ---
-<!--more-->
 
 # Linux Terminal Proxy 代理配置
 
 如果需要在 Terminal 中使用代理，则需配置一些代理变量来实现。此方式适用于所有 Linux 发行版、MacOS 等类Unix系统。
 
-
+<!--more-->
 
 ## 通用配置
 
