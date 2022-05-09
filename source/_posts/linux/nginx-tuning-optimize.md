@@ -45,13 +45,15 @@ categories: [linux, nginx]
 
 
 ## 文件描述符
-`file-max` 系统级别文件句柄数 - 确定整个系统的最大文件句柄数。Red Hat Enterprise Linux 7上的默认值是最大8192，或者是内核启动时可用空闲内存页的十分之一。
+`file-max` 系统级别文件句柄数 - 确定整个系统的最大文件句柄数。RHEL7 默认值是内核启动时可用空闲内存页的十分之一，当计算值小于 8192 时，值为8192。
 ```bash
 # sys.fs.file-max – The system‑wide limit for file descriptors
 
 # Determines the maximum number of file handles for the entire system. 
 # The default value on Red Hat Enterprise Linux 7 is the maximum of either 8192, or one tenth of the free memory pages available at the time the kernel starts.
 ```
+
+建议：当内存小于等于 8G 时，可以考虑手动优化这个值为 1048576 ，当内存大于 8G 时，一般让系统启动时自动计算即可。如果出现瓶颈，再手动调大该值。
 
 > 扩展: [What is the default value and the max value range for fs.file-max in Red Hat Enterprise Linux?](https://access.redhat.com/solutions/23733)
 
