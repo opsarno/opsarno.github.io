@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.itdevops.cn/2021/06/04/linux/nginx-tuning-optimize/</loc>
-    
-    <lastmod>2022-05-09</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.itdevops.cn/links/index.html</loc>
     
     <lastmod>2022-05-09</lastmod>
@@ -17,13 +10,6 @@
   
   <url>
     <loc>https://www.itdevops.cn/tags/index.html</loc>
-    
-    <lastmod>2022-05-09</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.itdevops.cn/2020/02/21/hexo-next-blog/</loc>
     
     <lastmod>2022-05-09</lastmod>
     
@@ -66,6 +52,13 @@
   
   <url>
     <loc>https://www.itdevops.cn/2021/02/19/linux/nginx-rewrite/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2021/06/04/linux/nginx-tuning-optimize/</loc>
     
     <lastmod>2022-05-09</lastmod>
     
@@ -122,6 +115,13 @@
   
   <url>
     <loc>https://www.itdevops.cn/categories/index.html</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2020/02/21/hexo-next-blog/</loc>
     
     <lastmod>2022-05-09</lastmod>
     
