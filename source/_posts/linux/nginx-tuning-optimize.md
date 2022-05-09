@@ -45,12 +45,29 @@ categories: [linux, nginx]
 
 
 ## 文件描述符
-系统级别文件句柄数
+`file-max` 系统级别文件句柄数 - 确定整个系统的最大文件句柄数。Red Hat Enterprise Linux 7上的默认值是最大8192，或者是内核启动时可用空闲内存页的十分之一。
 ```bash
 # sys.fs.file-max – The system‑wide limit for file descriptors
+
+# Determines the maximum number of file handles for the entire system. 
+# The default value on Red Hat Enterprise Linux 7 is the maximum of either 8192, or one tenth of the free memory pages available at the time the kernel starts.
 ```
 
-用户级别文件句柄数
+> 扩展: [What is the default value and the max value range for fs.file-max in Red Hat Enterprise Linux?](https://access.redhat.com/solutions/23733)
+
+
+`nr_open` 进程可以分配的最大文件句柄数，默认值为 `1048576`，x86_64 系统最大值为 `2147483584`。
+```bash
+# nr_open
+
+# This denotes the maximum number of file-handles a process can allocate. Default value is 1024*1024 (1048576) which should be enough for most machines. Actual limit depends on RLIMIT_NOFILE resource limit.
+```
+
+> 扩展: [What is the the maximum value and default value for fs.nr_open in Red Hat Enterprise Linux?](https://access.redhat.com/solutions/1479623)
+
+
+
+`ulimit` 用户级别文件句柄数，不能超过 `nr_open` 的值，如果需要比 1048576 更大的句柄数，需要先增加 `fs.nr_open` 的值。
 ```bash
 # nofile – The user file descriptor limit, set in the /etc/security/limits.conf file
 ```
@@ -97,7 +114,7 @@ net.core.somaxconn = 32768
 net.core.netdev_max_backlog = 16384
 
 # Increase size of file handles and inode cache
-fs.file-max = 209708
+fs.file-max = 1048576
 
 # Allowed local port range
 net.ipv4.ip_local_port_range = 1024 65535
@@ -108,8 +125,8 @@ net.ipv4.ip_local_port_range = 1024 65535
 # End of file
 *	soft	nproc	65535
 *	hard	nproc	65535
-*	soft	nofile	65535
-*	hard	nofile	65535
+*	soft	nofile	1048576
+*	hard	nofile	1048576
 ```
 - nproc - maximum number of processes
 - nofile - maximum number of open file descriptors
@@ -124,12 +141,12 @@ worker_processes auto;
 
 [worker_rlimit_nofile](https://nginx.org/en/docs/ngx_core_module.html#worker_rlimit_nofile) 更改工作进程打开文件的最大数量的限制(RLIMIT NOFILE)。可在不重启主进程的情况下增加限制。
 ```bash
-worker_rlimit_nofile 65535;
+worker_rlimit_nofile 1048576;
 ```
 
 [worker_connections](https://nginx.org/en/docs/ngx_core_module.html#worker_connections) 设置工作进程可以打开的最大同时连接数。包含客户端连接、与代理服务器的连接。同样连接数不能超过工作进程打开文件的最大数量的限制(worker_rlimit_nofile)。
 ```
-worker_connections 65535;
+worker_connections 1048576;
 ```
 
 ## backlog
@@ -183,14 +200,14 @@ server {
 user                 nginx;
 pid                  /var/run/nginx.pid;
 worker_processes     auto;
-worker_rlimit_nofile 65535;
+worker_rlimit_nofile 1048576;
 
 # Load modules
 include              /etc/nginx/modules-enabled/*.conf;
 
 events {
     multi_accept       on;
-    worker_connections 65535;
+    worker_connections 1048576;
 }
 
 http {
