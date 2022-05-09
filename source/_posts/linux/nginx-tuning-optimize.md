@@ -45,34 +45,33 @@ categories: [linux, nginx]
 
 
 ## 文件描述符
-`file-max` 系统级别文件句柄数 - 确定整个系统的最大文件句柄数。RHEL7 默认值是内核启动时可用空闲内存页的十分之一，当计算值小于 8192 时，值为8192。
-```bash
-# sys.fs.file-max – The system‑wide limit for file descriptors
+- `file-max` 系统级别文件句柄数 - 确定整个系统的最大文件句柄数。RHEL7 默认值是内核启动时可用空闲内存页的十分之一，当计算值小于 8192 时，值为8192。
+    ```bash
+    # sys.fs.file-max – The system‑wide limit for file descriptors
 
-# Determines the maximum number of file handles for the entire system. 
-# The default value on Red Hat Enterprise Linux 7 is the maximum of either 8192, or one tenth of the free memory pages available at the time the kernel starts.
-```
+    # Determines the maximum number of file handles for the entire system. 
+    # The default value on Red Hat Enterprise Linux 7 is the maximum of either 8192, or one tenth of the free memory pages available at the time the kernel starts.
+    ```
 
-建议：当内存小于等于 8G 时，可以考虑手动优化这个值为 1048576 ，当内存大于 8G 时，一般让系统启动时自动计算即可。如果出现瓶颈，再手动调大该值。
+    建议：当内存小于等于 8G 时，可以考虑手动优化这个值为 1048576 ，当内存大于 8G 时，一般让系统启动时自动计算即可。如果出现瓶颈，再手动调大该值。
 
-> 扩展: [What is the default value and the max value range for fs.file-max in Red Hat Enterprise Linux?](https://access.redhat.com/solutions/23733)
-
-
-`nr_open` 进程可以分配的最大文件句柄数，默认值为 `1048576`，x86_64 系统最大值为 `2147483584`。
-```bash
-# nr_open
-
-# This denotes the maximum number of file-handles a process can allocate. Default value is 1024*1024 (1048576) which should be enough for most machines. Actual limit depends on RLIMIT_NOFILE resource limit.
-```
-
-> 扩展: [What is the the maximum value and default value for fs.nr_open in Red Hat Enterprise Linux?](https://access.redhat.com/solutions/1479623)
+    > 扩展: [What is the default value and the max value range for fs.file-max in Red Hat Enterprise Linux?](https://access.redhat.com/solutions/23733)
 
 
+- `nr_open` 进程可以分配的最大文件句柄数，默认值为 `1048576`，x86_64 系统最大值为 `2147483584`。
+    ```bash
+    # nr_open
 
-`ulimit` 用户级别文件句柄数，不能超过 `nr_open` 的值，如果需要比 1048576 更大的句柄数，需要先增加 `fs.nr_open` 的值。
-```bash
-# nofile – The user file descriptor limit, set in the /etc/security/limits.conf file
-```
+    # This denotes the maximum number of file-handles a process can allocate. Default value is 1024*1024 (1048576) which should be enough for most machines. Actual limit depends on RLIMIT_NOFILE resource limit.
+    ```
+
+    > 扩展: [What is the the maximum value and default value for fs.nr_open in Red Hat Enterprise Linux?](https://access.redhat.com/solutions/1479623)
+
+
+- `ulimit` 用户级别文件句柄数，不能超过 `nr_open` 的值，如果需要比 1048576 更大的句柄数，需要先增加 `fs.nr_open` 的值。
+    ```bash
+    # nofile – The user file descriptor limit, set in the /etc/security/limits.conf file
+    ```
 
 
 ## 端口范围
@@ -93,17 +92,17 @@ categories: [linux, nginx]
 
 
 扩展：  
-[ip_unprivileged_port_start](https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt)
-```bash
-ip_unprivileged_port_start - INTEGER
-	This is a per-namespace sysctl.  It defines the first
-	unprivileged port in the network namespace.  Privileged ports
-	require root or CAP_NET_BIND_SERVICE in order to bind to them.
-	To disable all privileged ports, set this to 0.  They must not
-	overlap with the ip_local_port_range.
+- [ip_unprivileged_port_start](https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt)
+    ```bash
+    ip_unprivileged_port_start - INTEGER
+        This is a per-namespace sysctl.  It defines the first
+        unprivileged port in the network namespace.  Privileged ports
+        require root or CAP_NET_BIND_SERVICE in order to bind to them.
+        To disable all privileged ports, set this to 0.  They must not
+        overlap with the ip_local_port_range.
 
-	Default: 1024
-```
+        Default: 1024
+    ```
 
 
 ## Linux 系统调优总结
@@ -165,9 +164,7 @@ server {
 
 ## Keepalived
 `Keepalive Connections` 可以减少打开和关闭连接所需的CPU和网络开销。
-- `keepalive_requests` 客户端可以通过单个连接的最大请求数。在达到最大请求数后，连接关闭。  
-为了释放每个连接分配的内存，需要定期关闭连接。因此，使用过高的最大请求数可能会导致过多的内存使用，不建议这样做。  
-更高的值对于使用 `load-generation` 工具测试尤为有用。  
+- `keepalive_requests` 客户端可以通过单个连接的最大请求数。在达到最大请求数后，连接关闭。为了释放每个连接分配的内存，需要定期关闭连接。因此，使用过高的最大请求数可能会导致过多的内存使用，不建议这样做。更高的值对于使用 `load-generation` 工具测试尤为有用。  
     ```bash
     Syntax:	    keepalive_requests number;
     Default:	keepalive_requests 1000;
@@ -223,6 +220,9 @@ http {
     types_hash_bucket_size 64;
     client_max_body_size   16M;
 
+    keepalive_requests     1000;
+    keepalive_timeout      75s;
+
     # MIME
     include                mime.types;
     default_type           application/octet-stream;
@@ -262,6 +262,34 @@ http {
     # Load configs
     # include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
+}
+```
+
+虚拟主机配置
+```bash
+upstream wildcard_itdevops.cn_ups {
+    server 1.1.1.1;
+    server 1.1.1.2;
+    server 1.1.1.3;
+
+    # Activates the cache for connections to upstream servers.
+    keepalive 32;
+}
+
+server {
+    listen      80;
+    listen      443 ssl http2;
+    server_name .itdevops.cn;
+
+    ssl_certificate     itdevops.cn.crt;
+    ssl_certificate_key itdevops.cn.key;
+
+    location / {
+        ......
+    }
+
+    access_log /data/service_logs/nginx/wildcard_itdevops.cn_access.log misc;
+    error_log  /data/service_logs/nginx/wildcard_itdevops.cn_error.log;
 }
 ```
 
