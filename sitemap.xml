@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://www.itdevops.cn/2024/07/07/nodejs/NVM-INSTALL-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</loc>
+    
+    <lastmod>2024-07-07</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2020/02/21/nodejs/hexo-next-blog/</loc>
+    
+    <lastmod>2024-07-07</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2021/02/21/nodejs/WSL-NVM-npm-Error-EACCES-permission-denied/</loc>
+    
+    <lastmod>2024-07-07</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/links/index.html</loc>
+    
+    <lastmod>2024-07-07</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2021/06/04/linux/nginx-tuning-optimize/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/index.html</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2017/02/20/linux/bind-dns-logging/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2021/06/03/linux/nginx-apk-zip/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2021/02/19/linux/nginx-location/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2021/02/19/linux/nginx-proxy-pass/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2021/02/19/linux/nginx-rewrite/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2015/07/02/linux/openvpn-server/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2021/04/08/linux/terminal-proxy-config/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2021/02/20/linux/yum-repository-mirrors/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2021/04/08/linux/sftp-service/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2017/02/12/python/Python2-Tab-Autocomplete/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/2017/02/20/python/Python2-No-module-named-tkinter/</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/about/index.html</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/categories/index.html</loc>
+    
+    <lastmod>2022-05-09</lastmod>
+    
+  </url>
+  
+
+  <url>
+    <loc>https://www.itdevops.cn/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/hexo/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/next/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/nodejs/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/npm/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/troubleshooting/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/bind/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/dns/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/nginx/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/openvpn/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/linux/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/proxy/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/centos/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/yum/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/repository/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/sftp/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/python/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/optimization/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/matplotlib/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/tags/blog/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  
+  <url>
+    <loc>https://www.itdevops.cn/categories/others/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/categories/dev/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/categories/linux/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/categories/dev/npm/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/categories/linux/nginx/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/categories/linux/bind/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.itdevops.cn/categories/dev/python2/</loc>
+    <lastmod>2024-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+</urlset>

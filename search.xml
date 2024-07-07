@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>linux bind dns logging</title>
+    <url>/2017/02/20/linux/bind-dns-logging/</url>
+    <content><![CDATA[<p>Bind DNS 日志记录</p>
+<a id="more"></a>
+
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">logging &#123;</span><br><span class="line">    <span class="comment"># 定义 channel</span></span><br><span class="line">    [ channel channel_name &#123;</span><br><span class="line">        ( file path_name</span><br><span class="line">          [ versions ( number | unlimited ) ]</span><br><span class="line">          [ size size_spec ]</span><br><span class="line">        | syslog syslog_facility</span><br><span class="line">        | stderr</span><br><span class="line">        | null );</span><br><span class="line"></span><br><span class="line">        [ severity (critical | error | warning | notice | info | debug [ level ] | dynamic ); ]</span><br><span class="line"></span><br><span class="line">        [ print-category yes or no; ]</span><br><span class="line">        [ print-severity yes or no; ]</span><br><span class="line">        [ print-time yes or no; ]</span><br><span class="line">    &#125;; ]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义 category</span></span><br><span class="line">    [ category category_name &#123;</span><br><span class="line">        channel_name ; [ channel_name ; ... ]</span><br><span class="line">    &#125;; ]</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="定义和使用"><a href="#定义和使用" class="headerlink" title="定义和使用"></a>定义和使用</h1><p>如果没有明确定义logging语句，默认配置为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">logging &#123;</span><br><span class="line">    category default &#123; default_syslog; default_debug; &#125;;</span><br><span class="line">    category unmatched &#123; null; &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>channel 语句</p>
+<ul>
+<li>所有log可以输出到一个或多个channel.</li>
+<li>每个channel 定义都必须包含一个目标语句，该语句指出为该channel选择的消息是转到file、syslog、stderr，还是被丢弃。</li>
+<li>它还可以选择性地限制channel将接受的消息严重性级别（默认为info），以及是否包括命名生成的时间戳，类别名称和/或严重性级别（默认值不包括任何 ）。</li>
+</ul>
+<p>Example usage of the size and versions options:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">channel an_example_channel &#123;</span><br><span class="line">    file <span class="string">&quot;example.log&quot;</span> versions 3 size 20m;</span><br><span class="line">    print-time yes;</span><br><span class="line">    print-category yes;</span><br><span class="line">&#125;; </span><br></pre></td></tr></table></figure>
+<p>有四个预定义的默认日志记录，如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">channel default_syslog &#123;</span><br><span class="line">    &#x2F;&#x2F; send to syslog’s daemon facility</span><br><span class="line">    syslog daemon; </span><br><span class="line">    &#x2F;&#x2F; only send priority info and hig</span><br><span class="line">    severity info;</span><br><span class="line">&#125;;</span><br><span class="line">channel default_debug &#123;</span><br><span class="line">    &#x2F;&#x2F; write to named.run in the worki</span><br><span class="line">    &#x2F;&#x2F; Note: stderr is used instead of</span><br><span class="line">    &#x2F;&#x2F; the server is started with the</span><br><span class="line">    file &quot;named.run&quot;;</span><br><span class="line">    &#x2F;&#x2F; log at the server’s current deb</span><br><span class="line">    severity dynamic;</span><br><span class="line">&#125;;</span><br><span class="line">channel default_stderr &#123;</span><br><span class="line">    &#x2F;&#x2F; writes to stderr</span><br><span class="line">    stderr;</span><br><span class="line">    &#x2F;&#x2F; only send priority info and hig</span><br><span class="line">    severity info;</span><br><span class="line">&#125;;</span><br><span class="line">channel null &#123;</span><br><span class="line">    &#x2F;&#x2F; toss anything sent to this chann</span><br><span class="line">    null;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>channel default_debug 有特殊属性，它只在服务器的调试级别非零时才产生输出。 它通常写入服务器工作目录中名为named.run的文件</p>
+<p>以下是其包含的日志信息类型的可用类别：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">client    处理客户端请求</span><br><span class="line">cname     域名服务器日志,跳过由于它们是一个CNAME而不是A&#x2F;AAAA的记录</span><br><span class="line">config    配置文件解析和处理。</span><br><span class="line">database  与名称服务器内部使用的用于存储区域和缓存数据的数据库相关的消息。</span><br><span class="line">default   默认类别定义了没有定义特定配置的那些类别的日志记录选项。</span><br><span class="line">delegation-only  记录由于仅限授权区域或授权（仅在转发，提示或存根区域声明中）强制执行NXDOMAIN的查询。</span><br><span class="line">dispatch  将传入的数据包发送到要处理的服务器模块。</span><br><span class="line">dnssec    DNSSEC和TSIG协议处理。</span><br><span class="line">edns-disabled    记录由于超时而被强制使用纯DNS的查询。</span><br><span class="line">general   很多事情仍然没有分为类别,最终他们都在这里。</span><br><span class="line">lame-servers     这些是远程服务器配置错误，BIND9在解析过程中尝试查询这些服务器时发生。</span><br><span class="line">network   网络操作信息</span><br><span class="line">notify    NOTIFY协议</span><br><span class="line">queries   查询信息</span><br><span class="line">query-errors     查询解析的一些失败信息</span><br><span class="line">rate-limit 在此类别的信息严重性中记录了响应流的速率限制的开始，周期和最终通知。</span><br><span class="line">resolver   DNS解析，例如由缓存名称服务器代表客户端执行的递归查找</span><br><span class="line">rpz        有关响应策略区域文件，重写响应以及最高调试级别错误的信息，只需重写尝试。</span><br><span class="line">security   批准和拒绝请求。</span><br><span class="line">spill      通过删除或响应SERVFAIL来记录已被终止的查询，这是由于超出了限制配额限制的结果。</span><br><span class="line">unmatched  named无法确定的消息类或没有匹配的view，一行摘要也记录到客户端类别。此类别最好发送到文件或stderr，默认情况下发送到空信道。</span><br><span class="line">update     动态更新</span><br><span class="line">update-security  批准和拒绝更新请求。</span><br><span class="line">xfer-in    服务器接收的zone传输信息</span><br><span class="line">xfer-out   服务器发送的zone传输信息</span><br></pre></td></tr></table></figure>
+
+
+<p>使用的配置示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># LOGGING</span></span><br><span class="line"><span class="comment"># severity (critical | error | warning | notice | info | debug [ level ] | dynamic ); </span></span><br><span class="line">logging &#123;</span><br><span class="line">    channel default_log &#123;</span><br><span class="line">        file <span class="string">&quot;/var/log/named.log&quot;</span> versions 10 size 200m;</span><br><span class="line">        severity dynamic;</span><br><span class="line">        print-category yes;</span><br><span class="line">        print-severity yes;</span><br><span class="line">        print-time yes;</span><br><span class="line">    &#125;;</span><br><span class="line">    channel query_log &#123;</span><br><span class="line">        file <span class="string">&quot;/var/log/query.log&quot;</span> versions 10 size 200m;</span><br><span class="line">        severity dynamic;</span><br><span class="line">        print-category yes;</span><br><span class="line">        print-severity yes;</span><br><span class="line">        print-time yes;</span><br><span class="line">    &#125;;</span><br><span class="line">    channel resolver_log &#123;</span><br><span class="line">        file <span class="string">&quot;/var/log/resolver.log&quot;</span> versions 10 size 200m;</span><br><span class="line">        severity dynamic;</span><br><span class="line">        print-category yes;</span><br><span class="line">        print-severity yes;</span><br><span class="line">        print-time yes;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    category default &#123;default_log;&#125;;</span><br><span class="line">    category queries &#123;query_log;&#125;;</span><br><span class="line">    category query-errors &#123;query_log;&#125;;</span><br><span class="line">    category resolver &#123;resolver_log;&#125;;</span><br><span class="line">    category lame-servers &#123;null;&#125;;</span><br><span class="line">    category edns-disabled &#123;null;&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+        <category>bind</category>
+      </categories>
+      <tags>
+        <tag>bind</tag>
+        <tag>dns</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NGINX 修改 Response Headers，解决 apk 文件下载变 zip 后缀问题</title>
+    <url>/2021/06/03/linux/nginx-apk-zip/</url>
+    <content><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>部分用户手机下载 apk 文件时，后缀会变为 zip 文件。</p>
+<p>同样适用于修改 Response Headers 的场景。</p>
+<a id="more"></a>
+
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>请求链路：用户手机 –&gt; CDN 域名 –&gt; 源站域名 —&gt; Ceph 存储</p>
+<p>通过调试请求，发现请求下载文件时的 Response Headers 中 <code>Content-Type</code> 是 <code>zip</code> 类型。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">content-type: application&#x2F;zip</span><br></pre></td></tr></table></figure>
+<p>故而以为是 Mine Types 问题，于是修改 <strong>源站域名 nginx 的 mine.types 文件</strong> 添加以下内容，但并未解决。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">application&#x2F;vnd.android.package-archive          apk;</span><br></pre></td></tr></table></figure>
+<p>接着，尝试通过声明请求 apk 结尾文件时，add_header 添加文件类型。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~* \.(apk)$ &#123;</span><br><span class="line">    add_header Content-Type application/vnd.android.package-archive;</span><br><span class="line">    proxy_pass  http://xxx;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但请求结果就会加载 2个 Content-Type，也是有问题的。</p>
+<p>也就是说，用户在上传 apk 文件到存储时，存储端存在 Content-Type 文件类型，但并未声明正确的值，由于开发人员反馈无法修改存储文件的 Metadata 数据，故而我们还是在NGINX层处理先解决问题。</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><ol>
+<li>移除后端返回的 Content-Type</li>
+<li>添加指定类型的 Content-Type</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">location ~* \.(apk)$ &#123;</span><br><span class="line">    proxy_hide_header Content-Type;</span><br><span class="line">    add_header Content-Type application&#x2F;vnd.android.package-archive;</span><br><span class="line">    proxy_pass  http:&#x2F;&#x2F;xxxx;</span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，问题得到解决。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_hide_header">proxy_hide_header</a></li>
+<li><a href="http://nginx.org/en/docs/http/ngx_http_headers_module.html">add_header</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>nginx</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nginx location 详解</title>
+    <url>/2021/02/19/linux/nginx-location/</url>
+    <content><![CDATA[<p>location 指令用途</p>
+<p>根据请求 URI 设置配置，进而对请求做不同的处理和响应。</p>
+<a id="more"></a>
+
+<h1 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 关键字    修饰符  匹配的前缀字符既URI &#123; 要执行的操作 &#125;</span></span><br><span class="line">location [ = | ~ | ~* | ^~ ] uri &#123; ... &#125;</span><br><span class="line">location @name &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>语法规则很简单，关键字location后跟可选的修饰符，后面是要匹配的前缀字符既URI，花括号中是要执行的操作。</p>
+<p>location 一般定义在 server 区块中，也可以嵌套定义在 location 区块中，但命名 location 不可嵌套。</p>
+<h2 id="修饰符说明"><a href="#修饰符说明" class="headerlink" title="修饰符说明"></a>修饰符说明</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">空  前缀字符匹配 记录匹配的最长路径，继续后续规则</span><br><span class="line">=   精确字符匹配 匹配后终止搜索</span><br><span class="line">^~  非正则字符匹配 匹配后终止搜索</span><br><span class="line"></span><br><span class="line">~   正则匹配 区分大小写 匹配后终止搜索</span><br><span class="line">~*  正则匹配 不区分大小写 匹配后终止搜索</span><br><span class="line"></span><br><span class="line">@   命名 location，不用于常规请求处理，而是用于请求重定向。它们不能嵌套，也不能包含嵌套位置。</span><br></pre></td></tr></table></figure>
+<p>由修饰符的含义可以得出，location 有三种表现形式</p>
+<ul>
+<li>字符匹配</li>
+<li>正则匹配</li>
+<li>命名 location</li>
+</ul>
+<h1 id="匹配过程"><a href="#匹配过程" class="headerlink" title="匹配过程"></a>匹配过程</h1><p>首先会有一些内部的前置工作，例如对请求中 <code>%xx</code> 编码的文本进行解码，解析uri中的<code>.</code>，<code>..</code>相对路径的引用，对两个或多个相邻的斜杠 <code>/</code> 将其压缩为一个斜杠后，再开始对一个规范化的URI执行匹配。</p>
+<p>匹配过程：  </p>
+<ol>
+<li>匹配所有非正则表达式规则（空、=、^~），找到请求uri的最长匹配规则，并暂存；</li>
+<li>如果匹配到 = 或 ^~ 的规则，停止后续查找，使用匹配的规则；</li>
+<li>如果未匹配 = 或 ^~ 的规则，会按照顺序查找正则匹配规则，匹配后停止后续查找，使用匹配的规则；</li>
+<li>如果没有匹配的正则规则，则使用暂存的最长匹配规则；</li>
+</ol>
+<p>启示：</p>
+<ul>
+<li>精确匹配可以提高查找速度，例如经常请求 / 的话，可以使用<code>location = /</code>来定义。</li>
+<li>正则匹配的定义顺序很重要，因为匹配后，后续的查找就终止了。</li>
+</ul>
+<p>优先级总结：</p>
+<p><code>=</code> &gt; <code>^~</code> &gt; <code>~</code> &gt; <code>~*</code> &gt; <code>最长前缀字符匹配</code> &gt; <code>/</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">精确字符匹配 &gt; 非正则字符匹配 &gt; 区分大小写正则匹配 &gt; 不区分大小写正则匹配 &gt; 最长前缀字符匹配 &gt; 默认前缀字符匹配</span><br></pre></td></tr></table></figure>
+
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 等号 精确字符匹配</span></span><br><span class="line">location = / &#123;</span><br><span class="line">    [ configuration A ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 无修饰符 前缀字符匹配，此规则匹配其它未命中的规则。</span></span><br><span class="line">location / &#123;</span><br><span class="line">    [ configuration B ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 无修饰符 前缀字符匹配</span></span><br><span class="line">location /documents/ &#123;</span><br><span class="line">    [ configuration C ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ^~ 非正则字符匹配</span></span><br><span class="line">location ^~ /images/ &#123;</span><br><span class="line">    [ configuration D ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ~* 不区分大小写正则匹配</span></span><br><span class="line">location ~* \.(gif|jpg|jpeg)$ &#123;</span><br><span class="line">    [ configuration E ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>“/” 请求 精确匹配 A，不再往下查找。</li>
+<li>“/index.html” 请求 前缀字符匹配最长路径 配置B，后面无匹配的正则，使用配置B。</li>
+<li>“/documents/document.html” 请求 前缀字符匹配最长路径 配置C，后面无匹配的正则，使用配置C。</li>
+<li>“/images/1.gif” 请求 找到非正则字符匹配 配置D，不再往下查找，使用配置D。</li>
+<li>“/documents/1.jpg” 首先 前缀字符匹配到最长路径 配置C，后面匹配到正则匹配 配置 E，故而最终使用配置E。</li>
+</ul>
+<h1 id="location-name-用法"><a href="#location-name-用法" class="headerlink" title="location @name 用法"></a>location @name 用法</h1><p>@用来定义一个命名location。主要用于内部重定向，不能用来处理正常的请求。其用法如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ @custom</span><br><span class="line">&#125;</span><br><span class="line">location @custom &#123;</span><br><span class="line">    <span class="comment"># ...do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上例中，当尝试访问url找不到对应的文件就重定向到我们自定义的命名location（此处为custom）。</p>
+<h1 id="uri-末尾带不带-的说明"><a href="#uri-末尾带不带-的说明" class="headerlink" title="uri 末尾带不带 / 的说明"></a>uri 末尾带不带 / 的说明</h1><p>uri 末尾带斜杠<code>/user/</code>表示目录，不带斜杠<code>/user</code>表示文件。</p>
+<p>默认情况下，访问 <code>/user/</code>时，服务器会自动去该目录下查找加载默认文件。<br>而访问 <code>/user</code> 时，服务器会先尝试加载该文件，如果文件不存在，则重定向至<code>/user/</code>去该目录下找默认文件。</p>
+<h2 id="特殊情况"><a href="#特殊情况" class="headerlink" title="特殊情况"></a>特殊情况</h2><p>如果 location 匹配定义的前缀字符是以 <code>/</code> 结尾，并且请求由 <code>proxy_pass, fastcgi_pass, uwsgi_pass, scgi_pass, memcached_pass, or grpc_pass</code> 进行特殊处理。这种情况，不管 /user 文件是否存在，请求将会触发301永久重定向到被请求的uri，并附加斜杠。</p>
+<p>如果不希望这样，则需要明确定义不带 / 结尾的location配置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">location &#x2F;user&#x2F; &#123;</span><br><span class="line">    proxy_pass http:&#x2F;&#x2F;user.example.com;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location &#x3D; &#x2F;user &#123;</span><br><span class="line">    proxy_pass http:&#x2F;&#x2F;login.example.com;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>官方文档：<a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#location">http://nginx.org/en/docs/http/ngx_http_core_module.html#location</a></p>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>nginx</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nginx proxy_pass 详解</title>
+    <url>/2021/02/19/linux/nginx-proxy-pass/</url>
+    <content><![CDATA[<h1 id="指令语法"><a href="#指令语法" class="headerlink" title="指令语法"></a>指令语法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">proxy_pass URL;</span><br></pre></td></tr></table></figure>
+<p>URL 由三部分组成：</p>
+<ul>
+<li>协议 可以指定 http 或 https</li>
+<li>地址 可以指定 域名 或 ip 以及 可选端口</li>
+<li>可选的URI</li>
+</ul>
+<a id="more"></a>
+
+<p>示例</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">proxy_pass http://www.abc.com;</span><br><span class="line">proxy_pass http://127.0.0.1:8000/uri/;</span><br><span class="line"></span><br><span class="line">proxy_pass http://unix:/tmp/backend.socket:/uri/;</span><br></pre></td></tr></table></figure>
+<p>此外，可将地址指定为一个主机组 <a href="http://nginx.org/en/docs/http/ngx_http_upstream_module.html">server group</a>，使用 upstream 来定义主机组。</p>
+<p>当使用 rewrite 在代理位置更改URI时（地址重写），则重写后的URI会传递给后端服务器。</p>
+<h1 id="示例解析"><a href="#示例解析" class="headerlink" title="示例解析"></a>示例解析</h1><p>假设访问域名为：<a href="http://www.abc123.com/">www.abc123.com</a></p>
+<p>我们围绕<code>proxy_pass</code>指令后面，地址带不带有 <code>uri</code>，以及是否以斜杠 <code>/</code> 结尾进行分析，看看后端服务接收到的请求是什么样的。</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><p>无 uri， 非斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location /test1/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test1/1.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/test1/1.html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><p>无 uri，斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location /test2/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110/;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test2/2.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/2.html</span></span><br></pre></td></tr></table></figure>
+<h2 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h2><p>有 uri，斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location /test3/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110/abc/;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test3/3.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/abc/3.html</span></span><br></pre></td></tr></table></figure>
+<h2 id="示例4"><a href="#示例4" class="headerlink" title="示例4"></a>示例4</h2><p>有 uri，非斜杠结尾</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location /test4/ &#123;</span><br><span class="line">    proxy_pass http://192.168.10.110/abc;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请求结果</span></span><br><span class="line"><span class="comment"># 请求：http://www.abc123.com/test4/4.html</span></span><br><span class="line"><span class="comment"># 后端：http://192.168.10.110/abc4.html</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+        <category>nginx</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nginx rewrite 详解</title>
+    <url>/2021/02/19/linux/nginx-rewrite/</url>
+    <content><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>NGINX 重写模块 <code>ngx_http_rewrite_module</code>  用于使用 PCRE正则表达式 更改请求URI，返回重定向，并有条件地选择配置。</p>
+<p>主要的指令 <code>break, if, return, rewrite, set</code></p>
+<a id="more"></a>
+
+<p>指令执行顺序：</p>
+<ol>
+<li>按顺序执行 server 区块中的 rewrite 模块指令</li>
+<li>如果发生 rewrite 地址重写，执行 location 匹配</li>
+<li>按顺序执行 匹配 location 中的 rewrite指令</li>
+</ol>
+<p>如果URI发生重写，就会重新循环执行1-3，直到找到真实存在的文件。</p>
+<p>如果循环超过10次，则返回 <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#internal">500 Internal Server Error</a> 错误。</p>
+<h1 id="指令语法"><a href="#指令语法" class="headerlink" title="指令语法"></a>指令语法</h1><h2 id="break-指令"><a href="#break-指令" class="headerlink" title="break 指令"></a>break 指令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Syntax:	    <span class="built_in">break</span>;</span><br><span class="line">Default:    —</span><br><span class="line">Context:	server, location, <span class="keyword">if</span></span><br></pre></td></tr></table></figure>
+<p>停止执行当前设置的 rewrite 模块指令集。</p>
+<p>如果指令在 location 中定义，那么请求的进一步处理将在 location 继续运行。</p>
+<p>示例</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$slow</span>) &#123;</span><br><span class="line">    limit_rate 10k;</span><br><span class="line">    <span class="built_in">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="if-指令"><a href="#if-指令" class="headerlink" title="if 指令"></a>if 指令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Syntax:	    <span class="keyword">if</span> (condition) &#123; ... &#125;</span><br><span class="line">Default:	—</span><br><span class="line">Context:	server, location</span><br></pre></td></tr></table></figure>
+<p>评估指定的条件(condition)，如果为真(true)，大括号内指定的模块指令将被执行。</p>
+<p>条件(condition)可以是下列任何一种</p>
+<ul>
+<li>一个变量名称；如果变量的值是 <code>空字符串</code> 或 <code>0</code>，结果则为false。</li>
+<li>使用 <code>=</code> 和 <code>!=</code> 操作符比较变量和字符串。</li>
+<li>使用 <code>〜</code>（区分大小写）和 <code>〜*</code>（不区分大小写）运算符将变量与正则表达式进行匹配。正则表达式可以包含用于稍后在 <code>$1..$9</code> 中重用的捕获。也可以使用负运算符 <code>!~</code> 和 <code>!〜*</code> 。如果正则表达式包含大括号 <code>&#123;</code> 或 分号 <code>;</code> 字符，整个表达式应该用单引号或双引号括起来。</li>
+<li>使用 <code>-f</code> 和 <code>!-f</code> 操作符检查文件是否存在。</li>
+<li>使用 <code>-d</code> 和 <code>!-d</code> 操作符检查目录是否存在。</li>
+<li>使用 <code>-e</code> 和 <code>!-e</code> 操作符检查文件、目录或符号链接是否存在。</li>
+<li>使用 <code>-x</code> 和 <code>！-x</code> 运算符检查可执行文件。</li>
+</ul>
+<p>示例</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$http_user_agent</span> ~ MSIE) &#123;</span><br><span class="line">    rewrite ^(.*)$ /msie/<span class="variable">$1</span> <span class="built_in">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$http_cookie</span> ~* <span class="string">&quot;id=([^;]+)(?:;|$)&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$id</span> <span class="variable">$1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$request_method</span> = POST) &#123;</span><br><span class="line">    <span class="built_in">return</span> 405;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$slow</span>) &#123;</span><br><span class="line">    limit_rate 10k;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$invalid_referer</span>) &#123;</span><br><span class="line">    <span class="built_in">return</span> 403;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="return-指令"><a href="#return-指令" class="headerlink" title="return 指令"></a>return 指令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Syntax:	    <span class="built_in">return</span> code [text];</span><br><span class="line">            <span class="built_in">return</span> code URL;</span><br><span class="line">            <span class="built_in">return</span> URL;</span><br><span class="line">Default:	—</span><br><span class="line">Context:	server, location, <span class="keyword">if</span></span><br></pre></td></tr></table></figure>
+<p>停止处理并将指定的代码返回给客户机。</p>
+<p>非标准代码444关闭连接时不发送响应头。</p>
+<p>响应正文text 和 重定向URL 可以包含变量。</p>
+<h2 id="rewrite-指令"><a href="#rewrite-指令" class="headerlink" title="rewrite 指令"></a>rewrite 指令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Syntax:	    rewrite regex replacement [flag];</span><br><span class="line">Default:	—</span><br><span class="line">Context:	server, location, <span class="keyword">if</span></span><br></pre></td></tr></table></figure>
+<p>如果指定的正则表达式与请求URI匹配，则URI将按照替换字符串中的指定进行更改。</p>
+<p>rewrite 指令按照它们在配置文件中出现的顺序依次执行。</p>
+<p>可以使用标记符 flag 终止指令的进一步处理。 </p>
+<p>如果 <code>replacement</code> 字符串以 <code>http：//, https：//, 或 $scheme </code> 开头，则处理将停止并将重定向返回给客户端。</p>
+<h3 id="标记符"><a href="#标记符" class="headerlink" title="标记符"></a>标记符</h3><ul>
+<li><p>last<br>  停止处理当前的 ngx_http_rewrite_module 模块指令集，开始搜索重写uri后的 location 匹配。浏览器地址不变。</p>
+</li>
+<li><p>break<br>  和 break指令一样，停止处理 ngx_http_rewrite_module 模块指令集。</p>
+</li>
+<li><p>redirect<br>  302 临时重定向。客户端或搜索引擎不记录新地址。</p>
+</li>
+<li><p>permanent<br>  301 永久重定向。客户端或搜索引擎会记录新地址。</p>
+</li>
+</ul>
+<blockquote>
+<p>Tips：<br>last与break的相同点在于，立即停止执行所有当前上下文的rewrite模块指令；<br>不同点在于last参数接着用新的URI马上搜寻新的location，而break不会搜寻新的location，直接用这个新的URI来处理请求，这样能避免重复rewite。因此，通常在server上下文中使用last，而在location上下文中使用break。</p>
+</blockquote>
+<p>示例</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    ...</span><br><span class="line">    rewrite ^(/download/.*)/media/(.*)\..*$ <span class="variable">$1</span>/mp3/<span class="variable">$2</span>.mp3 last;</span><br><span class="line">    rewrite ^(/download/.*)/audio/(.*)\..*$ <span class="variable">$1</span>/mp3/<span class="variable">$2</span>.ra  last;</span><br><span class="line">    <span class="built_in">return</span>  403;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果这些指令放在 <code>location /download/</code> 中，最后一个标志应该替换为 break，否则nginx将进行10个循环并返回500错误。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location /download/ &#123;</span><br><span class="line">    rewrite ^(/download/.*)/media/(.*)\..*$ <span class="variable">$1</span>/mp3/<span class="variable">$2</span>.mp3 <span class="built_in">break</span>;</span><br><span class="line">    rewrite ^(/download/.*)/audio/(.*)\..*$ <span class="variable">$1</span>/mp3/<span class="variable">$2</span>.ra  <span class="built_in">break</span>;</span><br><span class="line">    <span class="built_in">return</span>  403;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果替换字符串包括新的请求参数，则先前的请求参数将附加在它们之后。<br>如果不希望这样，请在替换字符串的末尾添加问号，避免附加它们，例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rewrite ^/users/(.*)$  /show?user=<span class="variable">$1</span>? last;</span><br></pre></td></tr></table></figure>
+<p>如果正则表达式包含 <code>&#125;</code> 或 <code>;</code> 字符，整个表达式应该用单引号或双引号括起来。</p>
+<h1 id="301-302-307-308-状态码扩展"><a href="#301-302-307-308-状态码扩展" class="headerlink" title="301/302/307/308 状态码扩展"></a>301/302/307/308 状态码扩展</h1><h2 id="301-Moved-Permanently"><a href="#301-Moved-Permanently" class="headerlink" title="301 Moved Permanently"></a>301 Moved Permanently</h2><p>被请求的资源已永久移动到新位置，并且将来任何对此资源的引用都应该使用本响应返回的若干个 URI 之一。</p>
+<p>如果可能，拥有链接编辑功能的客户端应当自动把请求的地址修改为从服务器反馈回来的地址。除非额外指定，否则这个响应也是可缓存的。</p>
+<p>HTTP 301 永久重定向 说明请求的资源已经被移动到了由 Location 头部指定的url上，是固定的不会再改变。搜索引擎会根据该响应修正。</p>
+<p>尽管标准要求浏览器在收到该响应并进行重定向时不应该修改http method和body，但是有一些浏览器可能会有问题。<strong>所以最好是在应对GET 或 HEAD 方法时使用301，其他情况使用308 来替代301。</strong></p>
+<h2 id="302-Found"><a href="#302-Found" class="headerlink" title="302 Found"></a>302 Found</h2><p>请求的资源现在临时从不同的 URI 响应请求。由于这样的重定向是临时的，客户端应当继续向原有地址发送以后的请求。只有在Cache-Control或Expires中进行了指定的情况下，这个响应才是可缓存的。</p>
+<p>HTTP 302 Found 重定向状态码表明请求的资源被暂时的移动到了由Location 头部指定的 URL 上。浏览器会重定向到这个URL， 但是搜索引擎不会对该资源的链接进行更新 (In SEO-speak, it is said that the link-juice is not sent to the new URL)。</p>
+<h2 id="307-Temporary-Redirect"><a href="#307-Temporary-Redirect" class="headerlink" title="307 Temporary Redirect"></a>307 Temporary Redirect</h2><p>请求的资源现在临时从不同的URI 响应请求。由于这样的重定向是临时的，客户端应当继续向原有地址发送以后的请求。只有在Cache-Control或Expires中进行了指定的情况下，这个响应才是可缓存的。</p>
+<p>状态码 307 与 302 之间的唯一区别在于，当发送重定向请求的时候，307 状态码可以确保请求方法和消息主体不会发生变化。如果使用 302 响应状态码，一些旧客户端会错误地将请求方法转换为 GET：也就是说，在 Web 中，如果使用了 GET 以外的请求方法，且返回了 302 状态码，则重定向后的请求方法是不可预测的；但如果使用 307 状态码，之后的请求方法就是可预测的。对于 GET 请求来说，两种情况没有区别。</p>
+<h2 id="308-Permanent-Redirect"><a href="#308-Permanent-Redirect" class="headerlink" title="308 Permanent Redirect"></a>308 Permanent Redirect</h2><p>这意味着资源现在永久位于由 Location: HTTP Response 标头指定的另一个 URI。 这与 <code>301 Moved Permanently</code> HTTP 响应代码具有相同的语义，但用户代理不能更改所使用的 HTTP 方法：如果在第一个请求中使用 POST，则必须在第二个请求中使用 POST。</p>
+<p>在重定向过程中，请求方法和消息主体不会发生改变，然而在返回 301 状态码的情况下，请求方法有时候会被客户端错误地修改为 GET 方法。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html">官方文档 - ngx_http_rewrite_module</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status">MDN Web Docs - HTTP 响应代码</a></p>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>nginx</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NGINX WEBSERVER 调优</title>
+    <url>/2021/06/04/linux/nginx-tuning-optimize/</url>
+    <content><![CDATA[<h1 id="Linux-系统调优"><a href="#Linux-系统调优" class="headerlink" title="Linux 系统调优"></a>Linux 系统调优</h1><h2 id="Backlog-队列"><a href="#Backlog-队列" class="headerlink" title="Backlog 队列"></a>Backlog 队列</h2><ul>
+<li><a href="https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt">net.core.somaxconn</a>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">somaxconn - INTEGER</span><br><span class="line">    Limit of socket listen() backlog, known <span class="keyword">in</span> userspace as SOMAXCONN.</span><br><span class="line">    Defaults to 4096. (Was 128 before linux-5.4)</span><br><span class="line">    See also tcp_max_syn_backlog <span class="keyword">for</span> additional tuning <span class="keyword">for</span> TCP sockets.</span><br></pre></td></tr></table></figure>
+  <code>net.core.somaxconn</code> 参数是 socket listen() 的 backlog 限制。<strong>用于控制全连接队列长度</strong>。默认值是4096（内核5.4版本以前是128）。如果 <code>socket server</code> 处理请求较慢，以至于监听队列填满后，新来的请求会被拒绝。</li>
+</ul>
+<a id="more"></a>
+
+
+<ul>
+<li><a href="https://www.kernel.org/doc/Documentation/sysctl/net.txt">net.core.netdev_max_backlog</a>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netdev_max_backlog</span><br><span class="line">    Maximum number of packets, queued on the INPUT side, </span><br><span class="line">    when the interface receives packets faster than kernel can process them.</span><br></pre></td></tr></table></figure>
+  <code>net.core.netdev_max_backlog</code> 参数是当网络接口接收的数据包速度比内核处理速度快时，用于控制网络设备的最大队列数。增大此值可以提高高带宽机器的性能。</li>
+</ul>
+<p>扩展：  </p>
+<ul>
+<li><a href="https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt">net.ipv4.tcp_max_syn_backlog</a>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tcp_max_syn_backlog - INTEGER</span><br><span class="line">    Maximal number of remembered connection requests (SYN_RECV),</span><br><span class="line">    <span class="built_in">which</span> have not received an acknowledgment from connecting client.</span><br><span class="line">    This is a per-listener <span class="built_in">limit</span>.</span><br><span class="line">    The minimal value is 128 <span class="keyword">for</span> low memory machines, and it will</span><br><span class="line">    increase <span class="keyword">in</span> proportion to the memory of machine.</span><br><span class="line">    If server suffers from overload, try increasing this number.</span><br><span class="line">    Remember to also check /proc/sys/net/core/somaxconn</span><br><span class="line">    A SYN_RECV request socket consumes about 304 bytes of memory.</span><br></pre></td></tr></table></figure>
+  <code>net.ipv4.tcp_max_syn_backlog</code> 参数是记录连接请求（SYN_RECV）的最大数值。<strong>用于控制半连接队列长度</strong>。因其会随着机器的内存成比例增加，通常不需要手动修改它。</li>
+</ul>
+<h2 id="文件描述符"><a href="#文件描述符" class="headerlink" title="文件描述符"></a>文件描述符</h2><ul>
+<li><p><code>file-max</code> 系统级别文件句柄数 - 确定整个系统的最大文件句柄数。RHEL7 默认值是内核启动时可用空闲内存页的十分之一，当计算值小于 8192 时，值为8192。</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sys.fs.file-max – The system‑wide limit for file descriptors</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Determines the maximum number of file handles for the entire system. </span></span><br><span class="line"><span class="comment"># The default value on Red Hat Enterprise Linux 7 is the maximum of either 8192, or one tenth of the free memory pages available at the time the kernel starts.</span></span><br></pre></td></tr></table></figure>
+<p>  建议：当内存小于等于 8G 时，可以考虑手动优化这个值为 1048576 ，当内存大于 8G 时，一般让系统启动时自动计算即可。如果出现瓶颈，再手动调大该值。</p>
+<blockquote>
+<p>扩展: <a href="https://access.redhat.com/solutions/23733">What is the default value and the max value range for fs.file-max in Red Hat Enterprise Linux?</a></p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><code>nr_open</code> 进程可以分配的最大文件句柄数，默认值为 <code>1048576</code>，x86_64 系统最大值为 <code>2147483584</code>。  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># nr_open</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This denotes the maximum number of file-handles a process can allocate. Default value is 1024*1024 (1048576) which should be enough for most machines. Actual limit depends on RLIMIT_NOFILE resource limit.</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>扩展: <a href="https://access.redhat.com/solutions/1479623">What is the the maximum value and default value for fs.nr_open in Red Hat Enterprise Linux?</a></p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><code>ulimit</code> 用户级别文件句柄数，不能超过 <code>nr_open</code> 的值，如果需要比 1048576 更大的句柄数，需要先增加 <code>fs.nr_open</code> 的值。  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># nofile – The user file descriptor limit, set in the /etc/security/limits.conf file</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="端口范围"><a href="#端口范围" class="headerlink" title="端口范围"></a>端口范围</h2><p>当 NGINX 用作 reverse proxy 时，与每个 <code>upstream server</code> 都需要使用一个临时端口建立连接。</p>
+<ul>
+<li><a href="https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt">net.ipv4.ip_local_port_range</a>   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ip_local_port_range - 2 INTEGERS</span><br><span class="line">    Defines the <span class="built_in">local</span> port range that is used by TCP and UDP to</span><br><span class="line">    choose the <span class="built_in">local</span> port. The first number is the first, the</span><br><span class="line">    second the last <span class="built_in">local</span> port number.</span><br><span class="line">    If possible, it is better these numbers have different parity</span><br><span class="line">    (one even and one odd value).</span><br><span class="line">    Must be greater than or equal to ip_unprivileged_port_start.</span><br><span class="line">    The default values are 32768 and 60999 respectively.</span><br></pre></td></tr></table></figure>
+  <code>net.ipv4.ip_local_port_range</code> 定义TCP/UDP连接时的本地端口范围。<br>  默认值是 32768 60999。最小值不得低于 <code>ip_unprivileged_port_start</code>（默认1024）。</li>
+</ul>
+<p>扩展：  </p>
+<ul>
+<li><a href="https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt">ip_unprivileged_port_start</a>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ip_unprivileged_port_start - INTEGER</span><br><span class="line">    This is a per-namespace sysctl.  It defines the first</span><br><span class="line">    unprivileged port <span class="keyword">in</span> the network namespace.  Privileged ports</span><br><span class="line">    require root or CAP_NET_BIND_SERVICE <span class="keyword">in</span> order to <span class="built_in">bind</span> to them.</span><br><span class="line">    To <span class="built_in">disable</span> all privileged ports, <span class="built_in">set</span> this to 0.  They must not</span><br><span class="line">    overlap with the ip_local_port_range.</span><br><span class="line"></span><br><span class="line">    Default: 1024</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Linux-系统调优总结"><a href="#Linux-系统调优总结" class="headerlink" title="Linux 系统调优总结"></a>Linux 系统调优总结</h2><p>编辑文件 <code>/etc/sysctl.conf</code> 添加以下内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Increase number of incoming connections. Default: 4096</span></span><br><span class="line">net.core.somaxconn = 32768</span><br><span class="line"></span><br><span class="line"><span class="comment"># Increase number of incoming connections backlog</span></span><br><span class="line">net.core.netdev_max_backlog = 16384</span><br><span class="line"></span><br><span class="line"><span class="comment"># Increase size of file handles and inode cache</span></span><br><span class="line">fs.file-max = 1048576</span><br><span class="line"></span><br><span class="line"><span class="comment"># Allowed local port range</span></span><br><span class="line">net.ipv4.ip_local_port_range = 1024 65535</span><br></pre></td></tr></table></figure>
+<p>编辑 <code>/etc/security/limits.conf</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># End of file</span></span><br><span class="line">*	soft	nproc	65535</span><br><span class="line">*	hard	nproc	65535</span><br><span class="line">*	soft	nofile	1048576</span><br><span class="line">*	hard	nofile	1048576</span><br></pre></td></tr></table></figure>
+<ul>
+<li>nproc - maximum number of processes</li>
+<li>nofile - maximum number of open file descriptors</li>
+</ul>
+<h1 id="NGINX-服务调优"><a href="#NGINX-服务调优" class="headerlink" title="NGINX 服务调优"></a>NGINX 服务调优</h1><h2 id="Worker"><a href="#Worker" class="headerlink" title="Worker"></a>Worker</h2><p><a href="https://nginx.org/en/docs/ngx_core_module.html#worker_processes">worker_processes</a> 定义工作进程数量。auto 将自动检测并设为与内核数一致。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">worker_processes auto;</span><br></pre></td></tr></table></figure>
+<p><a href="https://nginx.org/en/docs/ngx_core_module.html#worker_rlimit_nofile">worker_rlimit_nofile</a> 更改工作进程打开文件的最大数量的限制(RLIMIT NOFILE)。可在不重启主进程的情况下增加限制。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">worker_rlimit_nofile 1048576;</span><br></pre></td></tr></table></figure>
+<p><a href="https://nginx.org/en/docs/ngx_core_module.html#worker_connections">worker_connections</a> 设置工作进程可以打开的最大同时连接数。包含客户端连接、与代理服务器的连接。同样连接数不能超过工作进程打开文件的最大数量的限制(worker_rlimit_nofile)。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">worker_connections 1048576;</span><br></pre></td></tr></table></figure>
+<h2 id="backlog"><a href="#backlog" class="headerlink" title="backlog"></a>backlog</h2><p>NGINX <a href="https://nginx.org/en/docs/http/ngx_http_core_module.html#listen">listen backlog</a>，限制了等待连接队列的最大长度。在高并发场景，可以适当的增大它。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># backlog=number</span></span><br><span class="line"><span class="comment"># sets the backlog parameter in the listen() call that limits the maximum length for the queue of pending connections. By default, backlog is set to -1 on FreeBSD, DragonFly BSD, and macOS, and to 511 on other platforms.</span></span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80 backlog=1024;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Keepalived"><a href="#Keepalived" class="headerlink" title="Keepalived"></a>Keepalived</h2><p><code>Keepalive Connections</code> 可以减少打开和关闭连接所需的CPU和网络开销。</p>
+<ul>
+<li><code>keepalive_requests</code> 客户端可以通过单个连接的最大请求数。在达到最大请求数后，连接关闭。为了释放每个连接分配的内存，需要定期关闭连接。因此，使用过高的最大请求数可能会导致过多的内存使用，不建议这样做。更高的值对于使用 <code>load-generation</code> 工具测试尤为有用。    <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Syntax:	    keepalive_requests number;</span><br><span class="line">Default:	keepalive_requests 1000;</span><br><span class="line">Context:	http, server, location</span><br></pre></td></tr></table></figure></li>
+<li><code>keepalive_timeout</code> 设置闲置连接的超时时间。  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Syntax:	    keepalive_timeout timeout [header_timeout];</span><br><span class="line">Default:	keepalive_timeout 75s;</span><br><span class="line">Context:	http, server, location</span><br></pre></td></tr></table></figure></li>
+<li><code>keepalive</code> 设置后启用每个工作进程的缓存中保留到 <code>upstream server</code> 的最大空闲 keepalive 连接数。  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Syntax:	    keepalive connections;</span><br><span class="line">Default:	—</span><br><span class="line">Context:	upstream</span><br></pre></td></tr></table></figure>
+  要使上游服务器保持连接，配置中还需包含以下指令  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">proxy_http_version 1.1;</span><br><span class="line">proxy_set_header Connection <span class="string">&quot;&quot;</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="Nginx-配置示例"><a href="#Nginx-配置示例" class="headerlink" title="Nginx 配置示例"></a>Nginx 配置示例</h2></li>
+</ul>
+<p>主配置文件 <code>nginx.conf</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Generated by opsarno</span></span><br><span class="line"></span><br><span class="line">user                 nginx;</span><br><span class="line">pid                  /var/run/nginx.pid;</span><br><span class="line">worker_processes     auto;</span><br><span class="line">worker_rlimit_nofile 1048576;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load modules</span></span><br><span class="line">include              /etc/nginx/modules-enabled/*.conf;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    multi_accept       on;</span><br><span class="line">    worker_connections 1048576;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    charset                utf-8;</span><br><span class="line">    sendfile               on;</span><br><span class="line">    tcp_nopush             on;</span><br><span class="line">    tcp_nodelay            on;</span><br><span class="line">    server_tokens          off;</span><br><span class="line">    log_not_found          off;</span><br><span class="line">    types_hash_max_size    2048;</span><br><span class="line">    types_hash_bucket_size 64;</span><br><span class="line">    client_max_body_size   16M;</span><br><span class="line"></span><br><span class="line">    keepalive_requests     1000;</span><br><span class="line">    keepalive_timeout      75s;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># MIME</span></span><br><span class="line">    include                mime.types;</span><br><span class="line">    default_type           application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Limits</span></span><br><span class="line">    <span class="comment"># limit_req_log_level    warn;</span></span><br><span class="line">    <span class="comment"># limit_req_zone         $binary_remote_addr zone=login:10m rate=10r/m;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># SSL</span></span><br><span class="line">    ssl_session_timeout    1d;</span><br><span class="line">    ssl_session_cache      shared:SSL:10m;</span><br><span class="line">    ssl_session_tickets    off;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Diffie-Hellman parameter for DHE ciphersuites</span></span><br><span class="line">    ssl_dhparam            /etc/nginx/dhparam.pem;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Mozilla Intermediate configuration</span></span><br><span class="line">    ssl_protocols          TLSv1.2 TLSv1.3;</span><br><span class="line">    ssl_ciphers            ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># OCSP Stapling</span></span><br><span class="line">    ssl_stapling           on;</span><br><span class="line">    ssl_stapling_verify    on;</span><br><span class="line">    resolver               1.1.1.1 1.0.0.1 8.8.8.8 8.8.4.4 208.67.222.222 208.67.220.220 valid=60s;</span><br><span class="line">    resolver_timeout       2s;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Custom log format: main</span></span><br><span class="line">    log_format main     <span class="string">&#x27;[$time_local] $remote_addr - $remote_user &#x27;</span></span><br><span class="line">                        <span class="string">&#x27;$scheme $http_host &quot;$request&quot; $body_bytes_sent $request_time $status &#x27;</span></span><br><span class="line">                        <span class="string">&#x27;&quot;$http_referer&quot; &quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot; &#x27;</span></span><br><span class="line">                        <span class="string">&#x27;$upstream_addr $upstream_response_time $upstream_status&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Logging</span></span><br><span class="line">    access_log             /var/<span class="built_in">log</span>/nginx/access.log main;</span><br><span class="line">    error_log              /var/<span class="built_in">log</span>/nginx/error.log warn;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Load configs</span></span><br><span class="line">    <span class="comment"># include /etc/nginx/conf.d/*.conf;</span></span><br><span class="line">    include /etc/nginx/sites-enabled/*;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>虚拟主机配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">upstream wildcard_itdevops.cn_ups &#123;</span><br><span class="line">    server 1.1.1.1;</span><br><span class="line">    server 1.1.1.2;</span><br><span class="line">    server 1.1.1.3;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Activates the cache for connections to upstream servers.</span></span><br><span class="line">    keepalive 32;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen      80;</span><br><span class="line">    listen      443 ssl http2;</span><br><span class="line">    server_name .itdevops.cn;</span><br><span class="line"></span><br><span class="line">    ssl_certificate     itdevops.cn.crt;</span><br><span class="line">    ssl_certificate_key itdevops.cn.key;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    access_log /data/service_logs/nginx/wildcard_itdevops.cn_access.log misc;</span><br><span class="line">    error_log  /data/service_logs/nginx/wildcard_itdevops.cn_error.log;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/#optimize">Optimizing Performance for Serving Content</a></li>
+<li><a href="https://www.nginx.com/blog/tuning-nginx/">Tuning NGINX for Performance</a></li>
+<li><a href="https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt">kernel networking ip-sysctl.txt</a></li>
+<li><a href="https://www.kernel.org/doc/Documentation/sysctl/">kernel sysctl</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>nginx</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux openvpn server</title>
+    <url>/2015/07/02/linux/openvpn-server/</url>
+    <content><![CDATA[<h1 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h1><p>本文用 Vmware Workstation 模拟出来的一个VPN环境，其中主机参数如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 任意的WEB服务</span></span><br><span class="line">LAN WEB SERVER      10.1.1.11</span><br><span class="line"></span><br><span class="line"><span class="comment"># Centos 6.X（Openvpn 2.3.X）  </span></span><br><span class="line">VPN  SERVER         10.1.1.10（LAN）   10.1.2.10（WAN）</span><br><span class="line"></span><br><span class="line"><span class="comment"># Windows 7 （Openvpn Client）</span></span><br><span class="line">WAN Client PC       10.1.2.11</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<p>目的</p>
+<p>客户端通过VPN连接到 VPN Server，然后使之能够访问到内部的WEB 服务，实际生产环境中应用大同小异。</p>
+<h1 id="具体配置"><a href="#具体配置" class="headerlink" title="具体配置"></a>具体配置</h1><p>LAN WEB Server 只需搭建一个简单的 web 服务即可，能够有一个简单的WEB页面用来测试。</p>
+<p>WAN Client 则只要安装一个Openvpn Client就可以了；</p>
+<p>下面重点说一下VPN SERVER中 openvpn的实现过程与配置</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>① 安装epel源和openvpn</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;dl.fedoraproject.org&#x2F;pub&#x2F;epel&#x2F;epel-release-latest-6.noarch.rpm</span><br><span class="line"></span><br><span class="line">rpm -Uvh epel-release-latest-6.noarch.rpm</span><br><span class="line"></span><br><span class="line">yum install openvpn easy-rsa -y</span><br></pre></td></tr></table></figure>
+<p>② 使用easy-rsa生成密钥和证书</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /etc/openvpn/easy-rsa</span><br><span class="line">cp -rf /usr/share/easy-rsa/2.0/* /etc/openvpn/easy-rsa/</span><br><span class="line"><span class="built_in">cd</span> /etc/openvpn/easy-rsa/</span><br><span class="line"></span><br><span class="line">vim vars  <span class="comment">#根据自己情况修改文本中下面的这些内容</span></span><br><span class="line"><span class="built_in">export</span> KEY_COUNTRY=<span class="string">&quot;CN&quot;</span>    <span class="comment">#国家</span></span><br><span class="line"><span class="built_in">export</span> KEY_PROVINCE=<span class="string">&quot;BJ&quot;</span>   <span class="comment">#省份</span></span><br><span class="line"><span class="built_in">export</span> KEY_CITY=<span class="string">&quot;BeiJing&quot;</span>  <span class="comment">#城市</span></span><br><span class="line"><span class="built_in">export</span> KEY_ORG=<span class="string">&quot;personal&quot;</span>  <span class="comment">#组织</span></span><br><span class="line"><span class="built_in">export</span> KEY_EMAIL=<span class="string">&quot;admin@fandenggui.com&quot;</span> <span class="comment">#邮箱</span></span><br><span class="line"><span class="built_in">export</span> KEY_OU=<span class="string">&quot;myserver&quot;</span>  <span class="comment">#单位</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./vars <span class="comment">#加载vars参数到当前环境中</span></span><br><span class="line">./clean-all   <span class="comment">#第一次使用时需要执行，会在当前目录中建立keys目录 </span></span><br><span class="line">./build-ca    <span class="comment">#建立ca证书</span></span><br><span class="line">./build-key-server server  <span class="comment">#建立服务器证书</span></span><br><span class="line">./build-key client  <span class="comment">#建立客户端证书</span></span><br><span class="line">./build-dh  <span class="comment">#为OpenVPN服务端生成 Diffie Hellman 参数</span></span><br></pre></td></tr></table></figure>
+<p>③ 配置服务器配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /usr/share/doc/openvpn-2.3.7/sample/sample-config-files/server.conf /etc/openvpn/</span><br><span class="line"><span class="built_in">cd</span> /etc/openvpn</span><br><span class="line">mkdir <span class="built_in">log</span>  <span class="comment">#在当前目录下创建log目录，用于存放openvpn中的log文件</span></span><br><span class="line"></span><br><span class="line">vim server.conf  <span class="comment">#egrep -v &quot;#|;|^$&quot; server.conf过滤结果如下</span></span><br><span class="line">port 1194</span><br><span class="line">proto tcp</span><br><span class="line">dev tun</span><br><span class="line">ca easy-rsa/keys/ca.crt</span><br><span class="line">cert easy-rsa/keys/server.crt</span><br><span class="line">dh easy-rsa/keys/dh2048.pem</span><br><span class="line">server 10.8.0.0 255.255.255.0</span><br><span class="line">ifconfig-pool-persist ipp.txt</span><br><span class="line">push <span class="string">&quot;route 10.1.1.0 255.255.255.0&quot;</span></span><br><span class="line">push <span class="string">&quot;dhcp-option DNS 208.67.220.220&quot;</span></span><br><span class="line">keepalive 10 120</span><br><span class="line">comp-lzo</span><br><span class="line">user nobody</span><br><span class="line">group nobody</span><br><span class="line">persist-key</span><br><span class="line">persist-tun</span><br><span class="line">status <span class="built_in">log</span>/openvpn-status.log</span><br><span class="line"><span class="built_in">log</span>         <span class="built_in">log</span>/openvpn.log</span><br><span class="line">log-append  <span class="built_in">log</span>/openvpn.log</span><br><span class="line">verb 3   </span><br></pre></td></tr></table></figure>
+<p>④ 配置 iptables</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">iptables -F</span><br><span class="line">iptables -X</span><br><span class="line">iptables -A INPUT -p tcp --dport 22 -j ACCEPT <span class="comment">#开启ssh端口</span></span><br><span class="line">iptables -P INPUT DROP </span><br><span class="line">iptables -P FORWARD DROP </span><br><span class="line">iptables -P OUTPUT ACCEPT </span><br><span class="line">iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT <span class="comment">#保持已经建立的连接</span></span><br><span class="line">iptables -A INPUT -p tcp --dport 1194 -j ACCEPT  <span class="comment">#允许openvpn的端口连接 </span></span><br><span class="line">iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE <span class="comment">#将所有10.8.0.0网段的包转发到eth0口</span></span><br><span class="line">iptables -A FORWARD -i tun+ -j ACCEPT <span class="comment">#添加FORWARD白名单</span></span><br><span class="line">iptables -A INPUT -s 10.8.0.0/24 -j ACCEPT <span class="comment">#允许虚拟网段的所有连接</span></span><br></pre></td></tr></table></figure>
+<p>⑤ 配置系统内核参数，使其支持转发</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># a. 临时生效</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;1&quot;</span> &gt; /proc/sys/net/ipv4/ip_forward  </span><br><span class="line"></span><br><span class="line"><span class="comment"># b. 配置文件，长久生效</span></span><br><span class="line">vim /etc/sysctl.conf</span><br><span class="line">net.ipv4.ip_forward = 1  <span class="comment">#更改这个条目，保存退出；</span></span><br><span class="line">sysctl -p  <span class="comment">#使之生效</span></span><br></pre></td></tr></table></figure>
+<p>⑥ 客户端连接</p>
+<p>WIN7下，安装Openvpn客户端后，从服务器上面下载 <code>ca.crt、client.crt、client.key、client.ovpn</code> 文件到 Openvpn Client 安装路径下的 config 目录下。(<code>默认是c:\Program Files\OpenVPN\config</code>)</p>
+<blockquote>
+<p>其中ovpn模板配置文件可参见：cp /usr/share/doc/openvpn-2.3.7/sample/sample-config-files/client.conf /etc/openvpn/easy-rsa/keys/client.ovpn</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>openvpn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Terminal proxy config</title>
+    <url>/2021/04/08/linux/terminal-proxy-config/</url>
+    <content><![CDATA[<h1 id="Linux-Terminal-Proxy-代理配置"><a href="#Linux-Terminal-Proxy-代理配置" class="headerlink" title="Linux Terminal Proxy 代理配置"></a>Linux Terminal Proxy 代理配置</h1><p>如果需要在 Terminal 中使用代理，则需配置一些代理变量来实现。此方式适用于所有 Linux 发行版、MacOS 等类Unix系统。</p>
+<a id="more"></a>
+
+<h2 id="通用配置"><a href="#通用配置" class="headerlink" title="通用配置"></a>通用配置</h2><p>如果代理启用了身份认证，需要提供账号密码</p>
+<ul>
+<li>在当前 BASH 终端中输入可临时生效</li>
+<li>将内容写入 <code>~/.bashrc</code> 中，对当前用户生效</li>
+<li>将内容写入 <code>/etc/profile</code> 中，对所有用户生效</li>
+<li>在脚本中写入，仅对脚本中的请求生效</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> username=<span class="string">&#x27;myuser&#x27;</span></span><br><span class="line"><span class="built_in">export</span> password=<span class="string">&#x27;mypass123com&#x27;</span></span><br><span class="line"><span class="built_in">export</span> proxy=<span class="string">&quot;http://<span class="variable">$&#123;username&#125;</span>:<span class="variable">$&#123;password&#125;</span>@myproxy.itdevops.cn:3128&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 无账号密码</span></span><br><span class="line"><span class="comment"># export proxy=&quot;http://myproxy.itdevops.cn:3128&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> http_proxy=<span class="variable">$&#123;proxy&#125;</span></span><br><span class="line"><span class="built_in">export</span> https_proxy=<span class="variable">$&#123;proxy&#125;</span></span><br><span class="line"><span class="built_in">export</span> ftp_proxy=<span class="variable">$&#123;proxy&#125;</span></span><br><span class="line"><span class="built_in">export</span> all_proxy=<span class="variable">$&#123;proxy&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证代理是否生效</span></span><br><span class="line">curl -I https://www.google.com/</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="特别说明"><a href="#特别说明" class="headerlink" title="特别说明"></a>特别说明</h2><p>如果密码中有特殊字符，一般会报以下错误</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl: (5) Could not resolve proxy: com@myproxy.itdevops.cn; Unknown error</span><br></pre></td></tr></table></figure>
+
+
+<p>此时需要将特殊字符用URL编码后输入，以  <code>%+Hex</code> 形式写入。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ~ : 0x7E</span></span><br><span class="line"><span class="comment"># @ : 0x40</span></span><br><span class="line"><span class="comment"># % : 0x25</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果密码是  P@ssw%rd~ ，那么代理时密码需要如下设定</span></span><br><span class="line"><span class="built_in">export</span> password=<span class="string">&#x27;P%40ssw%25rd%7E&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>更多ASCII码可参见：<a href="https://www.w3schools.com/tags/ref_urlencode.ASP">ASCII Encoding Reference</a></p>
+<p>如果代理启用了认证，未输入账号密码，则会出现类似以下的状态码或提示</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">HTTP/1.1 407 Proxy Authentication Required</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>proxy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux yum repository mirrors</title>
+    <url>/2021/02/20/linux/yum-repository-mirrors/</url>
+    <content><![CDATA[<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>通常情况下，企业内部会维护一套 <code>Yum Repository Mirrors</code>，以便于快速的安装更新一些软件包。即使是在阿里云VPC环境下，也会有一些三方或自定义的软件包需要内部镜像源来管理。</p>
+<p>针对这些需求，目前有三种镜像源的管理方式</p>
+<ul>
+<li>rsync</li>
+<li>Nexus</li>
+<li>createrepo</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h1><p>针对系统发行版的官方源，以及常用的核心仓库进行全量的同步。</p>
+<ul>
+<li>centos</li>
+<li>epel</li>
+<li>remi</li>
+</ul>
+<p>优点是内部访问时稳定、速度快，缺点是会占用较大的数据空间。</p>
+<p>示例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">mkdir -p /opt/data/repo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 过滤一些不必要的文件</span></span><br><span class="line">rsync -avz --delete-after --no-iconv \</span><br><span class="line">    --exclude=atomic/ \</span><br><span class="line">    --exclude=cr/ \</span><br><span class="line">    --exclude=dotnet/ \</span><br><span class="line">    --exclude=fasttrack/ \</span><br><span class="line">    --exclude=paas/ \</span><br><span class="line">    --exclude=rt/ \</span><br><span class="line">    --exclude=isos/ \</span><br><span class="line">    --exclude=debug/ \</span><br><span class="line">    rsync://mirrors.tuna.tsinghua.edu.cn/centos/ \</span><br><span class="line">    /opt/data/repo/centos/</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Nexus"><a href="#Nexus" class="headerlink" title="Nexus"></a>Nexus</h1><p><a href="https://www.sonatype.com/nexus/repository-oss">Sonatype Nexus Repository Manager</a></p>
+<p>对于一些低频使用、非核心的三方包，我们通过 Nexus 代理官方仓库的方式，缓存安装的 RPM 包。</p>
+<ul>
+<li>AdoptOpenJDK</li>
+<li>elasticstack</li>
+<li>nvidia-cuda</li>
+<li>…..</li>
+</ul>
+<p>优点是仅缓存所需的依赖包，无需占用太多存储资源；缺点是对于文件较大的RPM包，在首次安装时会有失败的情况。</p>
+<h2 id="扩展说明"><a href="#扩展说明" class="headerlink" title="扩展说明"></a>扩展说明</h2><p><code>Sonatype Nexus Repository Manager</code> 功能非常强大，能够存储主流的文件仓库格式，如 apt, docker, go, npm, pypi yum… 等。</p>
+<p>更多细节，参见官方文档：<a href="https://help.sonatype.com/docs">Repository Manager Documentation</a></p>
+<h1 id="createrepo"><a href="#createrepo" class="headerlink" title="createrepo"></a>createrepo</h1><p>主要用于 rpmbuild 自封装的 RPM 包，或者固定版本的三方RPM包，存放到指定目录下，生成 repodata 进行管理使用。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">createrepo --update /opt/data/repo/self-repo</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>centos</tag>
+        <tag>yum</tag>
+        <tag>repository</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Configure SFTP Service</title>
+    <url>/2021/04/08/linux/sftp-service/</url>
+    <content><![CDATA[<h1 id="SFTP"><a href="#SFTP" class="headerlink" title="SFTP"></a>SFTP</h1><p>SFTP (SSH File Transfer Protocol)是一种安全的文件传输协议。它通过SSH协议运行。它支持SSH的完整安全和身份验证功能。</p>
+<p>SFTP已几乎取代了旧版FTP作为文件传输协议，并且正在迅速取代FTP/S。它提供了这些协议提供的所有功能，但更安全，更可靠，配置更简单。</p>
+<p>SFTP还可以防止密码嗅探和中间人攻击。它使用加密和加密哈希函数保护数据的完整性，并对服务器和用户进行身份验证。</p>
+<a id="more"></a>
+
+<h2 id="Setup-Chroot-SFTP"><a href="#Setup-Chroot-SFTP" class="headerlink" title="Setup Chroot SFTP"></a>Setup Chroot SFTP</h2><h3 id="创建用户组-amp-用户"><a href="#创建用户组-amp-用户" class="headerlink" title="创建用户组 &amp; 用户"></a>创建用户组 &amp; 用户</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建用户组</span></span><br><span class="line">groupadd sftpusers</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建用户</span></span><br><span class="line"><span class="comment"># -g 指定账号 用户组</span></span><br><span class="line"><span class="comment"># -s 指定账号 login shell</span></span><br><span class="line"><span class="comment"># -d 指定账号 home directory， 默认 /home/username</span></span><br><span class="line"><span class="comment"># -M 不创建 home directory</span></span><br><span class="line">useradd -g sftpusers -s /sbin/nologin -M s-beijing</span><br><span class="line">useradd -g sftpusers -s /sbin/nologin -d /uploads -M s-shanghai</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置密码</span></span><br><span class="line">passwd s-beijing</span><br><span class="line">passwd s-shanghai</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SFTP chroot directory</span></span><br><span class="line">mkdir -p /sftp/s-beijing</span><br><span class="line">mkdir -p /sftp/s-shanghai</span><br><span class="line"></span><br><span class="line"><span class="comment"># SFTP s-shanghai home directory</span></span><br><span class="line">mkdir /sftp/s-shanghai/uploads</span><br><span class="line">chown s-shanghai:sftpusers /sftp/s-shanghai/uploads/</span><br></pre></td></tr></table></figure>
+<p>Tips：</p>
+<ul>
+<li>SFTP 用户家目录的 / 根路径 是相对于 ChrootDirectory 声明的目录的</li>
+<li>创建 SFTP 用户家目录后，默认登录会处在家目录中，否则处在根目录中</li>
+<li>一定要在根目录下，创建一个 SFTP 用户拥有权限的目录，否则无权限创建文件</li>
+<li>根目录一定是非 SFTP 账号权限，否则登录时会报错</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 客户端终端报错</span></span><br><span class="line">s-shanghai@itdevops.cn<span class="string">&#x27;s password:</span></span><br><span class="line"><span class="string">packet_write_wait: Connection to 10.93.1.10 port 22: Broken pipe</span></span><br><span class="line"><span class="string">Couldn&#x27;</span>t <span class="built_in">read</span> packet: Connection reset by peer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 服务端日志 /var/log/secure</span></span><br><span class="line">Apr  8 15:22:07 itdevops.cn sshd[13974]: fatal: bad ownership or modes <span class="keyword">for</span> chroot directory <span class="string">&quot;/sftp/s-shanghai&quot;</span> [postauth]</span><br></pre></td></tr></table></figure>
+
+
+<p>查看权限情况</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ls -ld /sftp/</span></span><br><span class="line">drwxr-xr-x 4 root root 4096 Apr  8 15:11 /sftp/</span><br><span class="line"></span><br><span class="line"><span class="comment"># ls -ld /sftp/s-beijing/</span></span><br><span class="line">drwxr-xr-x 2 root root 4096 Apr  8 15:10 /sftp/s-beijing/</span><br><span class="line"></span><br><span class="line"><span class="comment"># ls -ld /sftp/s-shanghai/</span></span><br><span class="line">drwxr-xr-x 3 root root 4096 Apr  8 15:11 /sftp/s-shanghai/</span><br><span class="line"></span><br><span class="line"><span class="comment"># ls -ld /sftp/s-shanghai/uploads/</span></span><br><span class="line">drwxr-xr-x 2 s-shanghai sftpusers 4096 Apr  8 15:11 /sftp/s-shanghai/uploads/</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="配置-sshd-config"><a href="#配置-sshd-config" class="headerlink" title="配置 sshd_config"></a>配置 sshd_config</h3><p>在 <code>sshd_config</code> 中注释 <code>sftp-server</code> ，并启用 <code>internal-sftp</code> 子系统。</p>
+<p>注释内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># override default of no subsystems</span></span><br><span class="line"><span class="comment"># Subsystem   sftp    /usr/libexec/openssh/sftp-server</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加内容 </span></span><br><span class="line">Subsystem       sftp    internal-sftp</span><br><span class="line"><span class="comment"># 匹配组，并启用 ChrootDirestory</span></span><br><span class="line">Match Group sftpusers</span><br><span class="line">        ChrootDirectory /sftp/%u</span><br><span class="line">        ForceCommand internal-sftp</span><br></pre></td></tr></table></figure>
+<p>Tips：</p>
+<ul>
+<li><p>ChrootDirectory /sftp/%u 中的 %u 表示登录账号的用户名 </p>
+</li>
+<li><p><code>sftp-server</code> 以及 <code>internal-sftp</code> 均具有 SFTP 功能，但 <code>internal-sftp</code> 实现了一个进程内SFTP服务，且简化了 ChrootDirectory 配置，强制不同用户使用不同位置的根目录。</p>
+</li>
+</ul>
+<h3 id="启用SFTP-amp-验证"><a href="#启用SFTP-amp-验证" class="headerlink" title="启用SFTP &amp; 验证"></a>启用SFTP &amp; 验证</h3><p>重启 sshd 以启用 SFTP 子系统。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl restart sshd.service</span><br></pre></td></tr></table></figure>
+
+
+<p>测试验证 s-beijing 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sftp s-beijing@itdevops.cn</span></span><br><span class="line">s-beijing@itdevops.cn<span class="string">&#x27;s password:</span></span><br><span class="line"><span class="string">Connected to itdevops.cn.</span></span><br><span class="line"><span class="string">sftp&gt; ls</span></span><br><span class="line"><span class="string">sftp&gt; pwd</span></span><br><span class="line"><span class="string">Remote working directory: /</span></span><br><span class="line"><span class="string">sftp&gt; mkdir abc</span></span><br><span class="line"><span class="string">Couldn&#x27;</span>t create directory: Permission denied</span><br><span class="line">sftp&gt; <span class="built_in">bye</span></span><br></pre></td></tr></table></figure>
+<p>测试验证 s-shanghai 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sftp s-shanghai@itdevops.cn</span></span><br><span class="line">s-shanghai@itdevops.cn<span class="string">&#x27;s password:</span></span><br><span class="line"><span class="string">Connected to itdevops.cn.</span></span><br><span class="line"><span class="string">sftp&gt; ls</span></span><br><span class="line"><span class="string">sftp&gt; pwd</span></span><br><span class="line"><span class="string">Remote working directory: /uploads</span></span><br><span class="line"><span class="string">sftp&gt; mkdir abc</span></span><br><span class="line"><span class="string">sftp&gt; ls</span></span><br><span class="line"><span class="string">abc</span></span><br><span class="line"><span class="string">sftp&gt; cd /</span></span><br><span class="line"><span class="string">sftp&gt; ls</span></span><br><span class="line"><span class="string">uploads</span></span><br><span class="line"><span class="string">sftp&gt; mkdir aaa</span></span><br><span class="line"><span class="string">Couldn&#x27;</span>t create directory: Permission denied</span><br><span class="line">sftp&gt; <span class="built_in">bye</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Logging-sftp"><a href="#Logging-sftp" class="headerlink" title="Logging sftp"></a>Logging sftp</h3><p>如果想要记录详细的 SFTP 日志，有以下三种方式。</p>
+<p>Via Monitor</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Subsystem   sftp    internal-sftp -l VERBOSE</span><br></pre></td></tr></table></figure>
+<p>日志结果将在 <code>/var/log/secure</code> 中</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Mar  9 11:24:04 rhel7 sshd[20327]: received client version 3 [postauth]</span><br><span class="line">Mar  9 11:24:04 rhel7 sshd[20327]: realpath <span class="string">&quot;.&quot;</span> [postauth]</span><br><span class="line">Mar  9 11:24:05 rhel7 sshd[20327]: opendir <span class="string">&quot;/&quot;</span> [postauth]</span><br></pre></td></tr></table></figure>
+
+
+<p>Via socket in chroot</p>
+<p>如果需要独立的日志文件输出，还需要额外调整 <code>/etc/rsyslog.conf</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># /etc/ssh/sshd_config</span></span><br><span class="line">Subsystem   sftp    internal-sftp -l VERBOSE</span><br><span class="line"></span><br><span class="line"><span class="comment"># /etc/rsyslog.conf</span></span><br><span class="line">input(<span class="built_in">type</span>=<span class="string">&quot;imuxsock&quot;</span> HostName=<span class="string">&quot;user&quot;</span> Socket=<span class="string">&quot;/chroots/user/dev/log&quot;</span> CreatePath=<span class="string">&quot;on&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="variable">$fromhost</span> == <span class="string">&#x27;user&#x27;</span> <span class="keyword">then</span> /var/<span class="built_in">log</span>/sftp.log</span><br><span class="line">&amp; stop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启 sshd &amp; rsyslog</span></span><br></pre></td></tr></table></figure>
+
+
+<p>3、Via socket in chroot, filtering using log facility</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># /etc/ssh/sshd_config</span></span><br><span class="line">Subsystem   sftp    internal-sftp -l VERBOSE -f LOCAL3</span><br><span class="line"></span><br><span class="line"><span class="comment"># /etc/rsyslog.conf</span></span><br><span class="line">input(<span class="built_in">type</span>=<span class="string">&quot;imuxsock&quot;</span> Socket=<span class="string">&quot;/chroots/user/dev/log&quot;</span> CreatePath=<span class="string">&quot;on&quot;</span>)</span><br><span class="line">local3.*                                            /var/<span class="built_in">log</span>/sftp.log</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://man.openbsd.org/sshd_config">https://man.openbsd.org/sshd_config</a></li>
+<li><a href="https://www.ssh.com/academy/ssh/sftp">https://www.ssh.com/academy/ssh/sftp</a></li>
+<li><a href="https://access.redhat.com/articles/1374633">https://access.redhat.com/articles/1374633</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>sftp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python2 Tab Autocomplete</title>
+    <url>/2017/02/12/python/Python2-Tab-Autocomplete/</url>
+    <content><![CDATA[<h1 id="Linux-Python2-Tab-Autocomplete"><a href="#Linux-Python2-Tab-Autocomplete" class="headerlink" title="Linux Python2 Tab Autocomplete"></a>Linux Python2 Tab Autocomplete</h1><p>① 新建 <code>vim ~/.pystartup</code> Python2 启动时的环境变量加载文件。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Add auto-completion and a stored history file of commands to your Python</span></span><br><span class="line"><span class="comment"># interactive interpreter. Requires Python 2.0+, readline. Autocomplete is</span></span><br><span class="line"><span class="comment"># bound to the Esc key by default (you can change it - see readline docs).</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Store the file in ~/.pystartup, and set an environment variable to point</span></span><br><span class="line"><span class="comment"># to it:  &quot;export PYTHONSTARTUP=~/.pystartup&quot; in bash.</span></span><br><span class="line"><span class="keyword">import</span> atexit</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> readline</span><br><span class="line"><span class="keyword">import</span> rlcompleter</span><br><span class="line">readline.parse_and_bind(<span class="string">&#x27;tab: complete&#x27;</span>)</span><br><span class="line">historyPath = os.path.expanduser(<span class="string">&quot;~/.pyhistory&quot;</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_history</span>(<span class="params">historyPath=historyPath</span>):</span></span><br><span class="line">    <span class="keyword">import</span> readline</span><br><span class="line">    readline.write_history_file(historyPath)</span><br><span class="line"><span class="keyword">if</span> os.path.exists(historyPath):</span><br><span class="line">    readline.read_history_file(historyPath)</span><br><span class="line">atexit.register(save_history)</span><br><span class="line"><span class="keyword">del</span> os, atexit, readline, rlcompleter, save_history, historyPath</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+
+<p>② 设置系统变量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 即时生效，重启失效</span></span><br><span class="line"><span class="built_in">export</span> PYTHONSTARTUP=~/.pystartup  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 永久生效</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;export PYTHONSTARTUP=~/.pystartup&quot;</span> &gt;&gt; /etc/profile</span><br></pre></td></tr></table></figure>
+<h1 id="Windows-Python2-Tab-Autocomplete"><a href="#Windows-Python2-Tab-Autocomplete" class="headerlink" title="Windows Python2 Tab Autocomplete"></a>Windows Python2 Tab Autocomplete</h1><p>① 安装 <code>pyreadline</code> 依赖</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install pyreadline</span><br></pre></td></tr></table></figure>
+<p>② 在Python安装路径的Lib文件夹下新建一个 tab.py。<br>例如：<code>C:\Program Files (x86)\Python2\Lib</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Add auto-completion and a stored history file of commands to your Python</span></span><br><span class="line"><span class="comment"># interactive interpreter. </span></span><br><span class="line">import atexit</span><br><span class="line">import os</span><br><span class="line">import readline</span><br><span class="line">import rlcompleter</span><br><span class="line">import sys</span><br><span class="line"><span class="comment"># Tab completion   </span></span><br><span class="line">readline.parse_and_bind(<span class="string">&#x27;tab: complete&#x27;</span>)   </span><br><span class="line"><span class="comment"># history file，这个路径可以自定义，但需要确保目录存在。</span></span><br><span class="line">histfile = os.path.join(<span class="string">&quot;D:\\Tmp\\history\\&quot;</span>, <span class="string">&quot;.pythonhistory&quot;</span>)</span><br><span class="line">try:   </span><br><span class="line">    readline.read_history_file(histfile)   </span><br><span class="line">except IOError:   </span><br><span class="line">    pass   </span><br><span class="line">atexit.register(readline.write_history_file, histfile)   </span><br><span class="line">           </span><br><span class="line">del os, histfile, readline, rlcompleter</span><br></pre></td></tr></table></figure>
+<p>③ 和linux类似，如果想输入python就自动加载tab补全，在系统属性中的环境变量里增加PYTHONSTARTUP变量，值为绝对路径的 tab.py，</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">例如：</span><br><span class="line">变量名：PYTHONSTARTUP</span><br><span class="line">变量值：C:\Program Files (x86)\Python2\Lib\tab.py</span><br></pre></td></tr></table></figure>
+<p>注：不做这步的话，每次输入python进入交互界面后，需要手动import tab</p>
+]]></content>
+      <categories>
+        <category>dev</category>
+        <category>python2</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>optimization</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python2 No module named _tkinter of matplotlib</title>
+    <url>/2017/02/20/python/Python2-No-module-named-tkinter/</url>
+    <content><![CDATA[<h1 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Python：2.7.13</span><br><span class="line">Pip：9.0.1</span><br><span class="line">matplotlib：2.0.0  (pip install matplotlib)</span><br></pre></td></tr></table></figure>
+
+<h1 id="Error-Message"><a href="#Error-Message" class="headerlink" title="Error Message"></a>Error Message</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; import matplotlib.pyplot</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line"> File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/pyplot.py&quot;</span>, line 115, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> _backend_mod, new_figure_manager, draw_if_interactive, _show = pylab_setup()</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/backends/__init__.py&quot;</span>, line 32, <span class="keyword">in</span> pylab_setup</span><br><span class="line"> globals(),locals(),[backend_name],0)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/backends/backend_tkagg.py&quot;</span>, line 6, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> from six.moves import tkinter as Tk</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 203, <span class="keyword">in</span> load_module</span><br><span class="line"> mod = mod._resolve()</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 115, <span class="keyword">in</span> _resolve</span><br><span class="line"> <span class="built_in">return</span> _import_module(self.mod)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&quot;</span>, line 82, <span class="keyword">in</span> _import_module</span><br><span class="line"> __import__(name)</span><br><span class="line"> File <span class="string">&quot;/opt/soft/python2/lib/python2.7/lib-tk/Tkinter.py&quot;</span>, line 39, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line"> import _tkinter <span class="comment"># If this fails your Python may not be configured for Tk</span></span><br><span class="line">ImportError: No module named _tkinter</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>Recompile python</p>
+<ol>
+<li>Extract the source file <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># tar xzf Python-2.7.13.tgz</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># cd Python-2.7.13</span></span><br></pre></td></tr></table></figure></li>
+<li>Check the tk/tcl version，Step 4 need the version information <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># rpm -qa | grep ^tk</span></span><br><span class="line">tk-8.5.7-5.el6.x86_64</span><br><span class="line">tkinter-2.6.6-66.el6_8.x86_64</span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># rpm -qa | grep ^tcl</span></span><br><span class="line">tcl-8.5.7-6.el6.x86_64</span><br></pre></td></tr></table></figure></li>
+<li>Install tk/tcl devel <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># yum install tk-devel tcl-devel -y</span></span><br></pre></td></tr></table></figure></li>
+<li>Find these lines and cancel the comment <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim Modules/Setup</span></span><br><span class="line"><span class="comment"># *** Always uncomment this (leave the leading underscore in!):</span></span><br><span class="line">_tkinter _tkinter.c tkappinit.c -DWITH_APPINIT \</span><br><span class="line">-L/usr/<span class="built_in">local</span>/lib \</span><br><span class="line">-I/usr/<span class="built_in">local</span>/include \</span><br><span class="line">-ltk8.5 -ltcl8.5 \      <span class="comment"># this version from step 2.</span></span><br><span class="line">-lX11</span><br></pre></td></tr></table></figure></li>
+<li>Start complie &amp; install python <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># ldconfig</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># ./configure --prefix=/opt/soft/python2 --with-ensurepip=install</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># make</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># make install</span></span><br></pre></td></tr></table></figure></li>
+<li>Config sys env. <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@arno Python-2.7.13]<span class="comment"># mv /usr/bin/python /usr/bin/pythonbak</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># unlink /usr/bin/python2</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim /usr/bin/yum</span></span><br><span class="line"><span class="meta">#!/usr/bin/python2.6</span></span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># vim ~/.bash_profile</span></span><br><span class="line"><span class="comment"># User specific environment and startup programs</span></span><br><span class="line">PYPATH=/opt/soft/python2/bin</span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$HOME</span>/bin:<span class="variable">$PYPATH</span></span><br><span class="line"><span class="built_in">export</span> PATH</span><br><span class="line">[root@arno Python-2.7.13]<span class="comment"># source ~/.bash_profile</span></span><br></pre></td></tr></table></figure></li>
+<li>Verification result <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Python 2.7.13 (default, Feb 20 2017, 20:35:07)</span><br><span class="line">[GCC 4.4.7 20120313 (Red Hat 4.4.7-16)] on linux2</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; import matplotlib.pyplot</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <categories>
+        <category>dev</category>
+        <category>python2</category>
+      </categories>
+      <tags>
+        <tag>troubleshooting</tag>
+        <tag>python</tag>
+        <tag>matplotlib</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Github Pages + Hexo Next 博客</title>
+    <url>/2020/02/21/nodejs/hexo-next-blog/</url>
+    <content><![CDATA[<h1 id="GitHub-Pages-博客"><a href="#GitHub-Pages-博客" class="headerlink" title="GitHub Pages 博客"></a>GitHub Pages 博客</h1><p>主要组件</p>
+<ul>
+<li>博客框架 <a href="https://hexo.io/zh-cn/">Hexo</a></li>
+<li>博客主题 <a href="https://github.com/theme-next/hexo-theme-next">hexo-theme-next</a></li>
+<li>博客托管 <a href="https://pages.github.com/">Github Pages</a></li>
+<li>自动部署 <a href="https://travis-ci.com/">Travis CI</a></li>
+</ul>
+<p>Hexo 其实是一种静态站点生成器，也可以用 <a href="https://gohugo.io/">Hugo</a>、<a href="https://jekyllrb.com/">JekyII</a>、<a href="https://www.mkdocs.org/">MkDocs</a> 等其它静态站点生成器替代。更多生成器参见：<a href="https://jamstack.org/generators/">Site Generators</a>。</p>
+<p>博客示例：</p>
+<ul>
+<li><a href="opsarno.github.io">GitHub Pages 域名 - opsarno.github.io</a></li>
+<li><a href="www.itdevops.cn">GitHub Pages 自定义域名 - www.itdevops.cn</a> <a id="more"></a>
+
+</li>
+</ul>
+<h1 id="快速安装"><a href="#快速安装" class="headerlink" title="快速安装"></a>快速安装</h1><p>主要步骤</p>
+<ol>
+<li>开发者电脑安装 Hexo 基础环境，编写博客内容</li>
+<li>定制化 Hexo 主题，使博客内容展示更加友好</li>
+<li>配置 GitHub + Travis CI，实现自动部署</li>
+</ol>
+<p><a href="https://hexo.io/zh-cn/docs/">Hexo 的官方文档</a> 其实非常详细了，本文会有一些额外的内容补充，例如 GitHub Pages 自定义域名，自动部署配置需要额外增加一步等，仅供大家参考。</p>
+<p>安装 Hexo 相当简单，只需要先安装下列应用程序即可：</p>
+<ul>
+<li>Node.js (建议用 <a href="https://github.com/jasongin/nvs/">nvs</a> 或 <a href="https://github.com/nvm-sh/nvm">nvm</a> 方式安装)</li>
+<li>Git</li>
+</ul>
+<h2 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<h2 id="初始化基础环境"><a href="#初始化基础环境" class="headerlink" title="初始化基础环境"></a>初始化基础环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init opsarno.github.io</span><br><span class="line"><span class="built_in">cd</span> opsarno.github.io</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p><code>_config.yml</code> 文件中配置博客的基本信息</p>
+<h2 id="安装主题"><a href="#安装主题" class="headerlink" title="安装主题"></a>安装主题</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br><span class="line"></span><br><span class="line">cp themes/next/_config.yml _config.next.yml</span><br></pre></td></tr></table></figure>
+<p>独立的主题配置文件  <code>_config.[theme].yml</code>  应放置于站点根目录下，支持 <code>yml</code> 或 <code>json</code> 格式。该特性自 Hexo 5.0.0 起提供。</p>
+<p>配置站点文件 <code>_config.yml</code> 中的 <code>theme</code> 以供 Hexo 寻找 <code>_config.[theme].yml</code> 文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># _config.yml</span></span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line">theme: next</span><br><span class="line">theme_config: _config.next.yml</span><br></pre></td></tr></table></figure>
+<p>配置主题文件 <code>_config.next.yml</code>，自定义定义菜单。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># _config.next.yml</span></span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-th</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="string">友链:</span> <span class="string">/links/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-link</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br></pre></td></tr></table></figure>
+<h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><h3 id="新建一篇文章"><a href="#新建一篇文章" class="headerlink" title="新建一篇文章"></a>新建一篇文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new <span class="string">&quot;Hello World&quot;</span></span><br></pre></td></tr></table></figure>
+<p>上述命令，会创建一个 <code>source/_posts/Hello-World.md</code> 的文件。</p>
+<p>另外，可以通过 <code>--path</code> 选项新建子目录，以便于在 <code>source/_posts/</code> 下创建更好的目录结构管理文章源文件。</p>
+<p>示例，<code>source/_posts/linux/nginx-install.md</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new --path linux/nginx-install <span class="string">&quot;nginx install&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建分类页"><a href="#创建分类页" class="headerlink" title="创建分类页"></a>创建分类页</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+<p>分类页，是一种特殊页面，编辑 <code>source/categories/index.md</code> 文件，添加  <code>type: &quot;categories&quot;</code> 即可，无需其它内容。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">categories</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2020-02-19 11:55:35</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">&quot;categories&quot;</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建标签页"><a href="#创建标签页" class="headerlink" title="创建标签页"></a>创建标签页</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+<p>标签页，也是一种特殊页面，编辑 <code>source/tags/index.md</code> 文件，添加 <code>type: &quot;tags&quot;</code> 即可，无需其它内容。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">tags</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2020-02-19 11:56:35</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">&quot;tags&quot;</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+<h3 id="友链-amp-关于"><a href="#友链-amp-关于" class="headerlink" title="友链 &amp; 关于"></a>友链 &amp; 关于</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page links</span><br><span class="line">hexo new page about</span><br></pre></td></tr></table></figure>
+<p>编辑 <code>source/about/index.md</code>，<code>source/links/index.md</code> 文件，与文章类似，填写需要展示的内容。</p>
+<h3 id="启动服务器"><a href="#启动服务器" class="headerlink" title="启动服务器"></a>启动服务器</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo server</span><br><span class="line"></span><br><span class="line"><span class="comment"># server 可简写为 s</span></span><br><span class="line">hexo s</span><br><span class="line"></span><br><span class="line"><span class="comment"># INFO  Validating config</span></span><br><span class="line"><span class="comment"># INFO  Start processing</span></span><br><span class="line"><span class="comment"># INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span></span><br></pre></td></tr></table></figure>
+<p>可以方便的本机访问，查看博客内容及样式。</p>
+<h2 id="插件推荐"><a href="#插件推荐" class="headerlink" title="插件推荐"></a>插件推荐</h2><ul>
+<li><p><a href="https://github.com/next-theme/hexo-generator-searchdb">hexo-generator-searchdb</a><br>更多功能的搜索数据生成器</p>
+</li>
+<li><p><a href="https://github.com/hexojs/hexo-generator-feed">hexo-generator-feed</a><br>Generate Atom 1.0 or RSS 2.0 feed. 以便于支持RSS订阅。</p>
+</li>
+<li><p><a href="https://github.com/theme-next/hexo-symbols-count-time">hexo-symbols-count-time</a><br>在博客文章中显示符号计数及所需阅读时间。<br>比 <a href="https://github.com/ierhyna/hexo-reading-time">hexo-reading-time</a> 好，比 <a href="https://github.com/willin/hexo-wordcount">hexo-wordcount</a> 快。没有外部依赖。</p>
+</li>
+<li><p><a href="https://github.com/hexojs/hexo-generator-sitemap">hexo-generator-sitemap</a><br>生成站点地图</p>
+</li>
+</ul>
+<h2 id="自动部署"><a href="#自动部署" class="headerlink" title="自动部署"></a>自动部署</h2><p>官方文档：<a href="https://hexo.io/zh-cn/docs/github-pages">将 Hexo 部署到 GitHub Pages</a></p>
+<p>这里只补充一点，就是当指定了自定义域名后，项目中会多一个<code>CNAME</code>文件，文件内容就是自定义的域名。</p>
+<p>此时，<code>.travis.yml</code> 文件需要增加一个新增动作，同步CNAME文件。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">sudo:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">node_js</span></span><br><span class="line"><span class="attr">node_js:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="number">12</span> <span class="comment"># use nodejs v10 LTS</span></span><br><span class="line"><span class="attr">cache:</span> <span class="string">npm</span></span><br><span class="line"><span class="attr">branches:</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">main</span> <span class="comment"># build main branch only</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">generate</span> <span class="comment"># generate static files</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">cp</span> <span class="string">CNAME</span> <span class="string">public/</span> <span class="comment"># 新增动作，同步CNAME文件。</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">provider:</span> <span class="string">pages</span></span><br><span class="line">  <span class="attr">skip-cleanup:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">github-token:</span> <span class="string">$GH_TOKEN</span></span><br><span class="line">  <span class="attr">keep-history:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">on:</span></span><br><span class="line">    <span class="attr">branch:</span> <span class="string">main</span></span><br><span class="line">  <span class="attr">local-dir:</span> <span class="string">public</span></span><br></pre></td></tr></table></figure>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
+<li>主分支 <code>main / master</code>，管理的是实际站点项目的源文件</li>
+<li>自动部署会自动新增<code>gh-pages</code>分支，用来托管实际的站点文件</li>
+<li>GitHub项目 settings 中的 GitHub Pages项，Branchs 需改为 <code>gh-pages</code> 分支。</li>
+<li>自定义域名，需要将其主机记录 CNAME 指向 username.github.io ，username 为你自己的实际名称。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>更多细节，请参见官方文档。</p>
+<ul>
+<li><a href="https://pages.github.com/">https://pages.github.com/</a></li>
+<li><a href="https://hexo.io/zh-cn/docs/">https://hexo.io/zh-cn/docs/</a></li>
+<li><a href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>next</tag>
+        <tag>blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WSL NVM - npm Error EACCES permission denied</title>
+    <url>/2021/02/21/nodejs/WSL-NVM-npm-Error-EACCES-permission-denied/</url>
+    <content><![CDATA[<a id="more"></a>
+
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>基础环境</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">系统：Windows WSL</span><br><span class="line">工具：NVM (Node Version Manager)</span><br><span class="line">版本：node-v12.20.1、npm-6.14.10</span><br></pre></td></tr></table></figure>
+
+<p>全局安装工具包时抛错 <code>npm ERR! Error: EACCES: permission denied</code> </p>
+<p>详情如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">opsarno@DESKTOP-T3JD9UU:~$ npm install nrm -g  <span class="comment"># 安装 nrm 工具</span></span><br><span class="line">npm WARN deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142</span><br><span class="line">npm WARN deprecated coffee-script@1.7.1: CoffeeScript on NPM has moved to <span class="string">&quot;coffeescript&quot;</span> (no hyphen)</span><br><span class="line">npm WARN deprecated mkdirp@0.3.5: Legacy versions of mkdirp are no longer supported. Please update to mkdirp 1.x. (Note that the API surface has changed to use Promises <span class="keyword">in</span> 1.x.)</span><br><span class="line">npm WARN deprecated har-validator@5.1.5: this library is no longer supported</span><br><span class="line">npm ERR! code EACCES</span><br><span class="line">npm ERR! syscall rename</span><br><span class="line">npm ERR! path /home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width</span><br><span class="line">npm ERR! dest /home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2</span><br><span class="line">npm ERR! errno -13</span><br><span class="line">npm ERR! Error: EACCES: permission denied, rename <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span> -&gt; <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span></span><br><span class="line">npm ERR!  [OperationalError: EACCES: permission denied, rename <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span> -&gt; <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span>] &#123;</span><br><span class="line">npm ERR!   cause: [Error: EACCES: permission denied, rename <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span> -&gt; <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span>] &#123;</span><br><span class="line">npm ERR!     errno: -13,</span><br><span class="line">npm ERR!     code: <span class="string">&#x27;EACCES&#x27;</span>,</span><br><span class="line">npm ERR!     syscall: <span class="string">&#x27;rename&#x27;</span>,</span><br><span class="line">npm ERR!     path: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span>,</span><br><span class="line">npm ERR!     dest: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span></span><br><span class="line">npm ERR!   &#125;,</span><br><span class="line">npm ERR!   errno: -13,</span><br><span class="line">npm ERR!   code: <span class="string">&#x27;EACCES&#x27;</span>,</span><br><span class="line">npm ERR!   syscall: <span class="string">&#x27;rename&#x27;</span>,</span><br><span class="line">npm ERR!   path: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/npm-753362b2/node_modules/string-width&#x27;</span>,</span><br><span class="line">npm ERR!   dest: <span class="string">&#x27;/home/opsarno/.nvm/versions/node/v12.20.1/lib/node_modules/.staging/string-width-8aef3ce2&#x27;</span>,</span><br><span class="line">npm ERR!   parent: <span class="string">&#x27;nrm&#x27;</span></span><br><span class="line">npm ERR! &#125;</span><br><span class="line">npm ERR!</span><br><span class="line">npm ERR! The operation was rejected by your operating system.</span><br><span class="line">npm ERR! It is likely you <span class="keyword">do</span> not have the permissions to access this file as the current user</span><br><span class="line">npm ERR!</span><br><span class="line">npm ERR! If you believe this might be a permissions issue, please double-check the</span><br><span class="line">npm ERR! permissions of the file and its containing directories, or try running</span><br><span class="line">npm ERR! the <span class="built_in">command</span> again as root/Administrator.</span><br><span class="line"></span><br><span class="line">npm ERR! A complete <span class="built_in">log</span> of this run can be found <span class="keyword">in</span>:</span><br><span class="line">npm ERR!     /home/opsarno/.npm/_logs/2021-02-19T13_28_26_969Z-debug.log</span><br></pre></td></tr></table></figure>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>默认 NVM 安装在用户家目录下，WSL环境中相当于安装在Windows C盘，此时如果有一些高危操作的话（如删除、重命名），可能会触发系统的保护性机制，导致权限不足。</p>
+<p>也有资料怀疑是  <a href="https://github.com/MicrosoftDocs/WSL/issues/26">Symlink Problems</a> 问题。</p>
+<p>解决方法，将 NVM （如未使用NVM，则是 node），安装到非系统盘符，默认WSL将所有Windows盘符挂载到 <code>/mnt/</code> 目录下。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 我这里在 d 盘下，新建了一个目录，用于存放 .nvm 工具</span></span><br><span class="line">mkdir /mnt/d/data/</span><br><span class="line">mv ~/.nvm /mnt/d/data/.nvm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新 ~/.bashrc 中的 nvm 变量配置</span></span><br><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">&quot;/mnt/d/data/.nvm&quot;</span></span><br><span class="line">[ -s <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> ] &amp;&amp; \. <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> <span class="comment"># This loads nvm</span></span><br></pre></td></tr></table></figure>
+<p>重新打开 terminal，再次执行安装，成功！</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://im.shellj.com/2020/05/wsl-npm-install-permission-denied-error.html">https://im.shellj.com/2020/05/wsl-npm-install-permission-denied-error.html</a></li>
+<li><a href="https://github.com/MicrosoftDocs/WSL/issues/26">https://github.com/MicrosoftDocs/WSL/issues/26</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>dev</category>
+        <category>npm</category>
+      </categories>
+      <tags>
+        <tag>nodejs</tag>
+        <tag>npm</tag>
+        <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NVM INSTALL 最佳实践</title>
+    <url>/2024/07/07/nodejs/NVM-INSTALL-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</url>
+    <content><![CDATA[<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>如果网络条件好，可以直接使用官方仓库安装，本文主要记录使用国内仓库加速安装方法。</p>
+<ul>
+<li>Github 官方仓库 - <a href="https://github.com/nvm-sh/nvm">https://github.com/nvm-sh/nvm</a></li>
+<li>Gitee 码云镜像仓库 - <a href="https://gitee.com/repository-mirror/nvm">https://gitee.com/repository-mirror/nvm</a></li>
+</ul>
+<blockquote>
+<p>Gitee 码云镜像仓库是个人同步的代码，可能不是最新的，如有需要可联系作者同步更新一下。</p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="NVM-安装"><a href="#NVM-安装" class="headerlink" title="NVM 安装"></a>NVM 安装</h1><p>这里以 v0.39.7 版本为例</p>
+<p>1、下载脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://gitee.com/repository-mirror/nvm/raw/v0.39.7/install.sh</span><br></pre></td></tr></table></figure>
+<p>2、修改脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找到以下 URL 内容，并镜像修改。主要目的是改为镜像仓库。</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;_<span class="variable">$NVM_METHOD</span>&quot;</span> = <span class="string">&quot;_script-nvm-exec&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># NVM_SOURCE_URL=&quot;https://raw.githubusercontent.com/$&#123;NVM_GITHUB_REPO&#125;/$&#123;NVM_VERSION&#125;/nvm-exec&quot;</span></span><br><span class="line">    NVM_SOURCE_URL=<span class="string">&quot;https://gitee.com/repository-mirror/nvm/raw/<span class="variable">$&#123;NVM_VERSION&#125;</span>/nvm-exec&quot;</span></span><br><span class="line">  <span class="keyword">elif</span> [ <span class="string">&quot;_<span class="variable">$NVM_METHOD</span>&quot;</span> = <span class="string">&quot;_script-nvm-bash-completion&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># NVM_SOURCE_URL=&quot;https://raw.githubusercontent.com/$&#123;NVM_GITHUB_REPO&#125;/$&#123;NVM_VERSION&#125;/bash_completion&quot;</span></span><br><span class="line">    NVM_SOURCE_URL=<span class="string">&quot;https://gitee.com/repository-mirror/nvm/raw/<span class="variable">$&#123;NVM_VERSION&#125;</span>/bash_completion&quot;</span></span><br><span class="line">  <span class="keyword">elif</span> [ -z <span class="string">&quot;<span class="variable">$NVM_SOURCE_URL</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;_<span class="variable">$NVM_METHOD</span>&quot;</span> = <span class="string">&quot;_script&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">      <span class="comment"># NVM_SOURCE_URL=&quot;https://raw.githubusercontent.com/$&#123;NVM_GITHUB_REPO&#125;/$&#123;NVM_VERSION&#125;/nvm.sh&quot;</span></span><br><span class="line">      NVM_SOURCE_URL=<span class="string">&quot;https://gitee.com/repository-mirror/nvm/raw/<span class="variable">$&#123;NVM_VERSION&#125;</span>/nvm.sh&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> [ <span class="string">&quot;_<span class="variable">$NVM_METHOD</span>&quot;</span> = <span class="string">&quot;_git&quot;</span> ] || [ -z <span class="string">&quot;<span class="variable">$NVM_METHOD</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">      <span class="comment"># NVM_SOURCE_URL=&quot;https://github.com/$&#123;NVM_GITHUB_REPO&#125;.git&quot;</span></span><br><span class="line">      NVM_SOURCE_URL=<span class="string">&quot;https://gitee.com/repository-mirror/nvm.git&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      nvm_echo &gt;&amp;2 <span class="string">&quot;Unexpected value \&quot;<span class="variable">$NVM_METHOD</span>\&quot; for \$NVM_METHOD&quot;</span></span><br><span class="line">      <span class="built_in">return</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>3、执行安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash install.sh</span><br></pre></td></tr></table></figure>
+<p>会自动在当前 shell 环境配置文件中  <code>.bashrc</code> or <code>.zshrc</code> 添加以下配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># NVM</span></span><br><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">&quot;<span class="variable">$HOME</span>/.nvm&quot;</span></span><br><span class="line">[ -s <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> ] &amp;&amp; \. <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span>  <span class="comment"># This loads nvm</span></span><br><span class="line">[ -s <span class="string">&quot;<span class="variable">$NVM_DIR</span>/bash_completion&quot;</span> ] &amp;&amp; \. <span class="string">&quot;<span class="variable">$NVM_DIR</span>/bash_completion&quot;</span>  <span class="comment"># This loads nvm bash_completion</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>说明：如果当前用户的 SHELL 环境是 BASH，则文件是 .bashrc；如果是 ZSH，则文件是 .zshrc</p>
+</blockquote>
+<h1 id="node-binaries-镜像配置"><a href="#node-binaries-镜像配置" class="headerlink" title="node binaries 镜像配置"></a>node binaries 镜像配置</h1><p>NVM 管理工具安装完成后，我们还可以配置 node 二进制文件包的镜像，用于安装加速。</p>
+<p>编辑 <code>.bashrc</code> or <code>.zshrc</code> 文件，追加写入</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看可安装的 LTS 版本</span></span><br><span class="line">nvm ls-remote --lts</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装指定版本</span></span><br><span class="line">nvm install v18.20.3 </span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证安装</span></span><br><span class="line">node -v</span><br><span class="line">npm -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 nrm 实用工具 - 用于便捷切换 registry </span></span><br><span class="line">npm install -g nrm --registry=https://registry.npmmirror.com</span><br><span class="line">nrm ls</span><br><span class="line">nrm use taobao</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+</search>

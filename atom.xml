@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>IT DevOps Club</title>
+  <icon>https://www.itdevops.cn/icon.png</icon>
+  <subtitle>技术博客</subtitle>
+  <link href="https://www.itdevops.cn/atom.xml" rel="self"/>
+  
+  <link href="https://www.itdevops.cn/"/>
+  <updated>2024-07-07T14:22:20.094Z</updated>
+  <id>https://www.itdevops.cn/</id>
+  
+  <author>
+    <name>Arno Fan</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>NVM INSTALL 最佳实践</title>
+    <link href="https://www.itdevops.cn/2024/07/07/nodejs/NVM-INSTALL-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"/>
+    <id>https://www.itdevops.cn/2024/07/07/nodejs/NVM-INSTALL-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</id>
+    <published>2024-07-07T14:01:59.000Z</published>
+    <updated>2024-07-07T14:22:20.094Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h1&gt;&lt;p&gt;如果网络条件好，可以直接使用官方仓库安装，本文主要记录使用国内仓库加速安装方法。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Github 官方仓库 - &lt;a href=&quot;https://github.com/nvm-sh/nvm&quot;&gt;https://github.com/nvm-sh/nvm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Gitee 码云镜像仓库 - &lt;a href=&quot;https://gitee.com/repository-mirror/nvm&quot;&gt;https://gitee.com/repository-mirror/nvm&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Gitee 码云镜像仓库是个人同步的代码，可能不是最新的，如有需要可联系作者同步更新一下。&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>NGINX WEBSERVER 调优</title>
+    <link href="https://www.itdevops.cn/2021/06/04/linux/nginx-tuning-optimize/"/>
+    <id>https://www.itdevops.cn/2021/06/04/linux/nginx-tuning-optimize/</id>
+    <published>2021-06-04T03:35:53.000Z</published>
+    <updated>2022-05-09T10:13:34.798Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Linux-系统调优&quot;&gt;&lt;a href=&quot;#Linux-系统调优&quot; class=&quot;headerlink&quot; title=&quot;Linux 系统调优&quot;&gt;&lt;/a&gt;Linux 系统调优&lt;/h1&gt;&lt;h2 id=&quot;Backlog-队列&quot;&gt;&lt;a href=&quot;#Backlog-队列&quot; class=&quot;headerlink&quot; title=&quot;Backlog 队列&quot;&gt;&lt;/a&gt;Backlog 队列&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt&quot;&gt;net.core.somaxconn&lt;/a&gt;  &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;somaxconn - INTEGER&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Limit of socket listen() backlog, known &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; userspace as SOMAXCONN.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Defaults to 4096. (Was 128 before linux-5.4)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    See also tcp_max_syn_backlog &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; additional tuning &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; TCP sockets.&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+  &lt;code&gt;net.core.somaxconn&lt;/code&gt; 参数是 socket listen() 的 backlog 限制。&lt;strong&gt;用于控制全连接队列长度&lt;/strong&gt;。默认值是4096（内核5.4版本以前是128）。如果 &lt;code&gt;socket server&lt;/code&gt; 处理请求较慢，以至于监听队列填满后，新来的请求会被拒绝。&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    <category term="nginx" scheme="https://www.itdevops.cn/categories/linux/nginx/"/>
+    
+    
+    <category term="nginx" scheme="https://www.itdevops.cn/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NGINX 修改 Response Headers，解决 apk 文件下载变 zip 后缀问题</title>
+    <link href="https://www.itdevops.cn/2021/06/03/linux/nginx-apk-zip/"/>
+    <id>https://www.itdevops.cn/2021/06/03/linux/nginx-apk-zip/</id>
+    <published>2021-06-03T03:35:53.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h1&gt;&lt;p&gt;部分用户手机下载 apk 文件时，后缀会变为 zip 文件。&lt;/p&gt;
+&lt;p&gt;同样适用于修改 Response Headers 的场景。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    <category term="nginx" scheme="https://www.itdevops.cn/categories/linux/nginx/"/>
+    
+    
+    <category term="nginx" scheme="https://www.itdevops.cn/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Configure SFTP Service</title>
+    <link href="https://www.itdevops.cn/2021/04/08/linux/sftp-service/"/>
+    <id>https://www.itdevops.cn/2021/04/08/linux/sftp-service/</id>
+    <published>2021-04-08T07:55:39.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;SFTP&quot;&gt;&lt;a href=&quot;#SFTP&quot; class=&quot;headerlink&quot; title=&quot;SFTP&quot;&gt;&lt;/a&gt;SFTP&lt;/h1&gt;&lt;p&gt;SFTP (SSH File Transfer Protocol)是一种安全的文件传输协议。它通过SSH协议运行。它支持SSH的完整安全和身份验证功能。&lt;/p&gt;
+&lt;p&gt;SFTP已几乎取代了旧版FTP作为文件传输协议，并且正在迅速取代FTP/S。它提供了这些协议提供的所有功能，但更安全，更可靠，配置更简单。&lt;/p&gt;
+&lt;p&gt;SFTP还可以防止密码嗅探和中间人攻击。它使用加密和加密哈希函数保护数据的完整性，并对服务器和用户进行身份验证。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/tags/linux/"/>
+    
+    <category term="sftp" scheme="https://www.itdevops.cn/tags/sftp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Terminal proxy config</title>
+    <link href="https://www.itdevops.cn/2021/04/08/linux/terminal-proxy-config/"/>
+    <id>https://www.itdevops.cn/2021/04/08/linux/terminal-proxy-config/</id>
+    <published>2021-04-08T07:49:52.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Linux-Terminal-Proxy-代理配置&quot;&gt;&lt;a href=&quot;#Linux-Terminal-Proxy-代理配置&quot; class=&quot;headerlink&quot; title=&quot;Linux Terminal Proxy 代理配置&quot;&gt;&lt;/a&gt;Linux Terminal Proxy 代理配置&lt;/h1&gt;&lt;p&gt;如果需要在 Terminal 中使用代理，则需配置一些代理变量来实现。此方式适用于所有 Linux 发行版、MacOS 等类Unix系统。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/tags/linux/"/>
+    
+    <category term="proxy" scheme="https://www.itdevops.cn/tags/proxy/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>WSL NVM - npm Error EACCES permission denied</title>
+    <link href="https://www.itdevops.cn/2021/02/21/nodejs/WSL-NVM-npm-Error-EACCES-permission-denied/"/>
+    <id>https://www.itdevops.cn/2021/02/21/nodejs/WSL-NVM-npm-Error-EACCES-permission-denied/</id>
+    <published>2021-02-21T09:25:01.000Z</published>
+    <updated>2024-07-07T14:00:55.594Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+
+&lt;h1 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h1&gt;&lt;p&gt;基础环境&lt;/p&gt;
+&lt;figure class=&quot;highlight</summary>
+        
+      
+    
+    
+    
+    <category term="dev" scheme="https://www.itdevops.cn/categories/dev/"/>
+    
+    <category term="npm" scheme="https://www.itdevops.cn/categories/dev/npm/"/>
+    
+    
+    <category term="nodejs" scheme="https://www.itdevops.cn/tags/nodejs/"/>
+    
+    <category term="npm" scheme="https://www.itdevops.cn/tags/npm/"/>
+    
+    <category term="troubleshooting" scheme="https://www.itdevops.cn/tags/troubleshooting/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux yum repository mirrors</title>
+    <link href="https://www.itdevops.cn/2021/02/20/linux/yum-repository-mirrors/"/>
+    <id>https://www.itdevops.cn/2021/02/20/linux/yum-repository-mirrors/</id>
+    <published>2021-02-20T03:20:57.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h1&gt;&lt;p&gt;通常情况下，企业内部会维护一套 &lt;code&gt;Yum Repository Mirrors&lt;/code&gt;，以便于快速的安装更新一些软件包。即使是在阿里云VPC环境下，也会有一些三方或自定义的软件包需要内部镜像源来管理。&lt;/p&gt;
+&lt;p&gt;针对这些需求，目前有三种镜像源的管理方式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;rsync&lt;/li&gt;
+&lt;li&gt;Nexus&lt;/li&gt;
+&lt;li&gt;createrepo&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    
+    <category term="centos" scheme="https://www.itdevops.cn/tags/centos/"/>
+    
+    <category term="yum" scheme="https://www.itdevops.cn/tags/yum/"/>
+    
+    <category term="repository" scheme="https://www.itdevops.cn/tags/repository/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nginx rewrite 详解</title>
+    <link href="https://www.itdevops.cn/2021/02/19/linux/nginx-rewrite/"/>
+    <id>https://www.itdevops.cn/2021/02/19/linux/nginx-rewrite/</id>
+    <published>2021-02-19T06:00:00.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h1&gt;&lt;p&gt;NGINX 重写模块 &lt;code&gt;ngx_http_rewrite_module&lt;/code&gt;  用于使用 PCRE正则表达式 更改请求URI，返回重定向，并有条件地选择配置。&lt;/p&gt;
+&lt;p&gt;主要的指令 &lt;code&gt;break, if, return, rewrite, set&lt;/code&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    <category term="nginx" scheme="https://www.itdevops.cn/categories/linux/nginx/"/>
+    
+    
+    <category term="nginx" scheme="https://www.itdevops.cn/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nginx proxy_pass 详解</title>
+    <link href="https://www.itdevops.cn/2021/02/19/linux/nginx-proxy-pass/"/>
+    <id>https://www.itdevops.cn/2021/02/19/linux/nginx-proxy-pass/</id>
+    <published>2021-02-19T05:00:00.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;指令语法&quot;&gt;&lt;a href=&quot;#指令语法&quot; class=&quot;headerlink&quot; title=&quot;指令语法&quot;&gt;&lt;/a&gt;指令语法&lt;/h1&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;proxy_pass URL;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;URL 由三部分组成：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;协议 可以指定 http 或 https&lt;/li&gt;
+&lt;li&gt;地址 可以指定 域名 或 ip 以及 可选端口&lt;/li&gt;
+&lt;li&gt;可选的URI&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    <category term="nginx" scheme="https://www.itdevops.cn/categories/linux/nginx/"/>
+    
+    
+    <category term="nginx" scheme="https://www.itdevops.cn/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nginx location 详解</title>
+    <link href="https://www.itdevops.cn/2021/02/19/linux/nginx-location/"/>
+    <id>https://www.itdevops.cn/2021/02/19/linux/nginx-location/</id>
+    <published>2021-02-19T04:00:00.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;location 指令用途&lt;/p&gt;
+&lt;p&gt;根据请求 URI 设置配置，进而对请求做不同的处理和响应。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    <category term="nginx" scheme="https://www.itdevops.cn/categories/linux/nginx/"/>
+    
+    
+    <category term="nginx" scheme="https://www.itdevops.cn/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Github Pages + Hexo Next 博客</title>
+    <link href="https://www.itdevops.cn/2020/02/21/nodejs/hexo-next-blog/"/>
+    <id>https://www.itdevops.cn/2020/02/21/nodejs/hexo-next-blog/</id>
+    <published>2020-02-21T04:00:00.000Z</published>
+    <updated>2024-07-07T14:02:50.014Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;GitHub-Pages-博客&quot;&gt;&lt;a href=&quot;#GitHub-Pages-博客&quot; class=&quot;headerlink&quot; title=&quot;GitHub Pages 博客&quot;&gt;&lt;/a&gt;GitHub Pages 博客&lt;/h1&gt;&lt;p&gt;主要组件&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;博客框架 &lt;a href=&quot;https://hexo.io/zh-cn/&quot;&gt;Hexo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;博客主题 &lt;a href=&quot;https://github.com/theme-next/hexo-theme-next&quot;&gt;hexo-theme-next&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;博客托管 &lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;自动部署 &lt;a href=&quot;https://travis-ci.com/&quot;&gt;Travis CI&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Hexo 其实是一种静态站点生成器，也可以用 &lt;a href=&quot;https://gohugo.io/&quot;&gt;Hugo&lt;/a&gt;、&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;JekyII&lt;/a&gt;、&lt;a href=&quot;https://www.mkdocs.org/&quot;&gt;MkDocs&lt;/a&gt; 等其它静态站点生成器替代。更多生成器参见：&lt;a href=&quot;https://jamstack.org/generators/&quot;&gt;Site Generators&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;博客示例：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;opsarno.github.io&quot;&gt;GitHub Pages 域名 - opsarno.github.io&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;www.itdevops.cn&quot;&gt;GitHub Pages 自定义域名 - www.itdevops.cn&lt;/a&gt;</summary>
+    
+    
+    
+    <category term="others" scheme="https://www.itdevops.cn/categories/others/"/>
+    
+    
+    <category term="hexo" scheme="https://www.itdevops.cn/tags/hexo/"/>
+    
+    <category term="next" scheme="https://www.itdevops.cn/tags/next/"/>
+    
+    <category term="blog" scheme="https://www.itdevops.cn/tags/blog/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux bind dns logging</title>
+    <link href="https://www.itdevops.cn/2017/02/20/linux/bind-dns-logging/"/>
+    <id>https://www.itdevops.cn/2017/02/20/linux/bind-dns-logging/</id>
+    <published>2017-02-20T06:26:19.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Bind DNS 日志记录&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    <category term="bind" scheme="https://www.itdevops.cn/categories/linux/bind/"/>
+    
+    
+    <category term="bind" scheme="https://www.itdevops.cn/tags/bind/"/>
+    
+    <category term="dns" scheme="https://www.itdevops.cn/tags/dns/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python2 No module named _tkinter of matplotlib</title>
+    <link href="https://www.itdevops.cn/2017/02/20/python/Python2-No-module-named-tkinter/"/>
+    <id>https://www.itdevops.cn/2017/02/20/python/Python2-No-module-named-tkinter/</id>
+    <published>2017-02-20T02:18:06.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Environment&quot;&gt;&lt;a href=&quot;#Environment&quot; class=&quot;headerlink&quot; title=&quot;Environment&quot;&gt;&lt;/a&gt;Environment&lt;/h1&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Python：2.7.13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Pip：9.0.1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;matplotlib：2.0.0  (pip install matplotlib)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;h1 id=&quot;Error-Message&quot;&gt;&lt;a href=&quot;#Error-Message&quot; class=&quot;headerlink&quot; title=&quot;Error Message&quot;&gt;&lt;/a&gt;Error Message&lt;/h1&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;&amp;gt;&amp;gt; import matplotlib.pyplot&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Traceback (most recent call last):&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; File &lt;span class=&quot;string&quot;&gt;&amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;&lt;/span&gt;, line 1, &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; &amp;lt;module&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; File &lt;span class=&quot;string&quot;&gt;&amp;quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/pyplot.py&amp;quot;&lt;/span&gt;, line 115, &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; &amp;lt;module&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; _backend_mod, new_figure_manager, draw_if_interactive, _show = pylab_setup()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; File &lt;span class=&quot;string&quot;&gt;&amp;quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/backends/__init__.py&amp;quot;&lt;/span&gt;, line 32, &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; pylab_setup&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; globals(),locals(),[backend_name],0)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; File &lt;span class=&quot;string&quot;&gt;&amp;quot;/opt/soft/python2/lib/python2.7/site-packages/matplotlib/backends/backend_tkagg.py&amp;quot;&lt;/span&gt;, line 6, &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; &amp;lt;module&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; from six.moves import tkinter as Tk&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; File &lt;span class=&quot;string&quot;&gt;&amp;quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&amp;quot;&lt;/span&gt;, line 203, &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; load_module&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; mod = mod._resolve()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; File &lt;span class=&quot;string&quot;&gt;&amp;quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&amp;quot;&lt;/span&gt;, line 115, &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; _resolve&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;span class=&quot;built_in&quot;&gt;return&lt;/span&gt; _import_module(self.mod)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; File &lt;span class=&quot;string&quot;&gt;&amp;quot;/opt/soft/python2/lib/python2.7/site-packages/six.py&amp;quot;&lt;/span&gt;, line 82, &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; _import_module&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; __import__(name)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; File &lt;span class=&quot;string&quot;&gt;&amp;quot;/opt/soft/python2/lib/python2.7/lib-tk/Tkinter.py&amp;quot;&lt;/span&gt;, line 39, &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; &amp;lt;module&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; import _tkinter &lt;span class=&quot;comment&quot;&gt;# If this fails your Python may not be configured for Tk&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ImportError: No module named _tkinter&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
+    
+    
+    
+    <category term="dev" scheme="https://www.itdevops.cn/categories/dev/"/>
+    
+    <category term="python2" scheme="https://www.itdevops.cn/categories/dev/python2/"/>
+    
+    
+    <category term="troubleshooting" scheme="https://www.itdevops.cn/tags/troubleshooting/"/>
+    
+    <category term="python" scheme="https://www.itdevops.cn/tags/python/"/>
+    
+    <category term="matplotlib" scheme="https://www.itdevops.cn/tags/matplotlib/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python2 Tab Autocomplete</title>
+    <link href="https://www.itdevops.cn/2017/02/12/python/Python2-Tab-Autocomplete/"/>
+    <id>https://www.itdevops.cn/2017/02/12/python/Python2-Tab-Autocomplete/</id>
+    <published>2017-02-12T02:31:52.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Linux-Python2-Tab-Autocomplete&quot;&gt;&lt;a href=&quot;#Linux-Python2-Tab-Autocomplete&quot; class=&quot;headerlink&quot; title=&quot;Linux Python2 Tab Autocomplete&quot;&gt;&lt;/a&gt;Linux Python2 Tab Autocomplete&lt;/h1&gt;&lt;p&gt;① 新建 &lt;code&gt;vim ~/.pystartup&lt;/code&gt; Python2 启动时的环境变量加载文件。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# Add auto-completion and a stored history file of commands to your Python&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# interactive interpreter. Requires Python 2.0+, readline. Autocomplete is&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# bound to the Esc key by default (you can change it - see readline docs).&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;#&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# Store the file in ~/.pystartup, and set an environment variable to point&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# to it:  &amp;quot;export PYTHONSTARTUP=~/.pystartup&amp;quot; in bash.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; atexit&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; os&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; readline&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; rlcompleter&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;readline.parse_and_bind(&lt;span class=&quot;string&quot;&gt;&amp;#x27;tab: complete&amp;#x27;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;historyPath = os.path.expanduser(&lt;span class=&quot;string&quot;&gt;&amp;quot;~/.pyhistory&amp;quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;save_history&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;historyPath=historyPath&lt;/span&gt;):&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; readline&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    readline.write_history_file(historyPath)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; os.path.exists(historyPath):&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    readline.read_history_file(historyPath)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;atexit.register(save_history)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;del&lt;/span&gt; os, atexit, readline, rlcompleter, save_history, historyPath&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
+    
+    
+    
+    <category term="dev" scheme="https://www.itdevops.cn/categories/dev/"/>
+    
+    <category term="python2" scheme="https://www.itdevops.cn/categories/dev/python2/"/>
+    
+    
+    <category term="python" scheme="https://www.itdevops.cn/tags/python/"/>
+    
+    <category term="optimization" scheme="https://www.itdevops.cn/tags/optimization/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux openvpn server</title>
+    <link href="https://www.itdevops.cn/2015/07/02/linux/openvpn-server/"/>
+    <id>https://www.itdevops.cn/2015/07/02/linux/openvpn-server/</id>
+    <published>2015-07-02T04:00:00.000Z</published>
+    <updated>2022-05-09T06:28:57.708Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;实验环境&quot;&gt;&lt;a href=&quot;#实验环境&quot; class=&quot;headerlink&quot; title=&quot;实验环境&quot;&gt;&lt;/a&gt;实验环境&lt;/h1&gt;&lt;p&gt;本文用 Vmware Workstation 模拟出来的一个VPN环境，其中主机参数如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# 任意的WEB服务&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;LAN WEB SERVER      10.1.1.11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# Centos 6.X（Openvpn 2.3.X）  &lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;VPN  SERVER         10.1.1.10（LAN）   10.1.2.10（WAN）&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# Windows 7 （Openvpn Client）&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;WAN Client PC       10.1.2.11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://www.itdevops.cn/categories/linux/"/>
+    
+    
+    <category term="openvpn" scheme="https://www.itdevops.cn/tags/openvpn/"/>
+    
+  </entry>
+  
+</feed>
