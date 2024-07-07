@@ -144,7 +144,8 @@ theme_config: _config.next.yml
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-# Github pages
-# - type: git
-#   repo: https://github.com/opsarno/opsarno.github.io
-#   branch: gh-pages
+- type: git
+  repo: https://github.com/opsarno/opsarno.github.io
+  branch: gh-pages
+  message: "update"
+  
