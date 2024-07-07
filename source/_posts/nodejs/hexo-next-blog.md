@@ -1,7 +1,7 @@
 ---
 title: Github Pages + Hexo Next 博客
 date: 2020-02-21 12:00:00
-tags: [hexo, next]
+tags: [hexo, next, blog]
 categories: [others]
 
 ---

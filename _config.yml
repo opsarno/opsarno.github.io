@@ -6,7 +6,7 @@
 title: 'IT DevOps Club'
 subtitle: '技术博客'
 description: '醉里挑灯看剑，梦回吹角连营。'
-keywords: [linux, python, shell, nginx, docker]
+keywords: [linux, python, shell, nginx, docker, keepalived, lvs]
 author: 'Arno Fan'
 language: zh-CN
 timezone: 'Asia/Shanghai'

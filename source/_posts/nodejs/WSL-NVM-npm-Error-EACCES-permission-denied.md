@@ -1,5 +1,5 @@
 ---
-title: npm Error EACCES permission denied
+title: WSL NVM - npm Error EACCES permission denied
 date: 2021-02-21 17:25:01
 tags: [nodejs, npm, troubleshooting]
 categories: [dev, npm]
@@ -21,7 +21,7 @@ categories: [dev, npm]
 
 详情如下：
 ```bash
-opsarno@DESKTOP-T3JD9UU:~$ npm install nrm -g
+opsarno@DESKTOP-T3JD9UU:~$ npm install nrm -g  # 安装 nrm 工具
 npm WARN deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
 npm WARN deprecated coffee-script@1.7.1: CoffeeScript on NPM has moved to "coffeescript" (no hyphen)
 npm WARN deprecated mkdirp@0.3.5: Legacy versions of mkdirp are no longer supported. Please update to mkdirp 1.x. (Note that the API surface has changed to use Promises in 1.x.)
