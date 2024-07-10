@@ -2,7 +2,7 @@
 title: nginx rewrite 详解
 date: 2021-02-19 14:00:00
 tags: nginx
-categories: [linux, nginx]
+categories: [Linux, Nginx]
 ---
 
 # 概述

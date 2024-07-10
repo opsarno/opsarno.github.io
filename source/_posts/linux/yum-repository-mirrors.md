@@ -2,7 +2,7 @@
 title: linux yum repository mirrors
 date: 2021-02-20 11:20:57
 tags: [centos, yum, repository]
-categories: [linux]
+categories: [Linux]
 ---
 
 # 说明

@@ -2,7 +2,7 @@
 title: linux openvpn server
 date: 2015-07-02 12:00:00
 tags: openvpn
-categories: linux
+categories: [Linux, OpenVPN]
 ---
 
 # 实验环境

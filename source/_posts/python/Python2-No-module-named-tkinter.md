@@ -2,7 +2,7 @@
 title: python2 No module named _tkinter of matplotlib
 date: 2017-02-20 10:18:06
 tags: [python, matplotlib, troubleshooting]
-categories: [dev, python2]
+categories: [Python, Python2]
 ---
 
 # Environment

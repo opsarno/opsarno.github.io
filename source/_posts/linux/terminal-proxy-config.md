@@ -2,7 +2,7 @@
 title: Terminal proxy config
 date: 2021-04-08 15:49:52
 tags: [linux, proxy]
-categories: [linux]
+categories: [Linux]
 ---
 
 # Linux Terminal Proxy 代理配置

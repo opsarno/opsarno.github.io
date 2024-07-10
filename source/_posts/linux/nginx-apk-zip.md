@@ -2,7 +2,7 @@
 title: NGINX 修改 Response Headers，解决 apk 文件下载变 zip 后缀问题
 date: 2021-06-03 11:35:53
 tags: nginx
-categories: [linux, nginx]
+categories: [Linux, Nginx]
 ---
 
 # 问题

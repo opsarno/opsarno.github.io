@@ -2,7 +2,7 @@
 title: NGINX WEBSERVER 调优
 date: 2021-06-04 11:35:53
 tags: nginx
-categories: [linux, nginx]
+categories: [Linux, Nginx]
 ---
 
 # Linux 系统调优

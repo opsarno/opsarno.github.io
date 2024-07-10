@@ -2,7 +2,7 @@
 title: nginx location 详解
 date: 2021-02-19 12:00:00
 tags: [nginx]
-categories: [linux, nginx]
+categories: [Linux, Nginx]
 ---
 
 location 指令用途

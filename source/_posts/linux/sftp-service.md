@@ -2,7 +2,7 @@
 title: Configure SFTP Service
 date: 2021-04-08 15:55:39
 tags: [linux, sftp]
-categories: [linux]
+categories: [Linux, SFTP]
 ---
 
 # SFTP

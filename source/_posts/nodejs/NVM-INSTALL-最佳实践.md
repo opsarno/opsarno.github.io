@@ -1,8 +1,8 @@
 ---
 title: NVM INSTALL 最佳实践
 date: 2024-07-07 22:01:59
-tags:
-categories:
+tags: [nvm, npm, nodejs]
+categories: [Nodejs]
 ---
 
 # 说明

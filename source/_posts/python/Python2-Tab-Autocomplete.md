@@ -2,7 +2,7 @@
 title: Python2 Tab Autocomplete
 date: 2017-02-12 10:31:52
 tags: [python, optimization]
-categories: [dev, python2]
+categories: [Python, Python2]
 ---
 
 # Linux Python2 Tab Autocomplete

@@ -1,8 +1,8 @@
 ---
 title: WSL NVM - npm Error EACCES permission denied
 date: 2021-02-21 17:25:01
-tags: [nodejs, npm, troubleshooting]
-categories: [dev, npm]
+tags: [nodejs, npm, troubleshooting, wsl]
+categories: [Nodejs]
 ---
 <!--more-->
 
