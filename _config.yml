@@ -12,9 +12,8 @@ language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
-## If your site is put in a subdirectory, set url as 'http://example.com/child' and root as '/child/'
+## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://www.itdevops.cn
-root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -44,15 +43,14 @@ render_drafts: false
 post_asset_folder: false
 relative_link: false
 future: true
+syntax_highlighter: highlight.js
 highlight:
-  enable: true
   line_number: true
   auto_detect: false
   tab_replace: ''
   wrap: true
   hljs: false
 prismjs:
-  enable: false
   preprocess: true
   line_number: true
   tab_replace: ''
@@ -97,55 +95,10 @@ ignore:
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
-search:
-  path: search.xml
-  field: post
-  content: true
-  format: html
-
-## https://github.com/theme-next/hexo-symbols-count-time
-symbols_count_time:
-  symbols: true
-  time: true
-  total_symbols: true
-  total_time: true
-  exclude_codeblock: false
-  awl: 4
-  wpm: 275
-  suffix: "mins."
-
-## https://github.com/hexojs/hexo-generator-sitemap
-sitemap:
-  path: sitemap.xml
-  template:
-  rel: false
-  tags: true
-  categories: true
-
-## https://github.com/hexojs/hexo-generator-feed
-feed:
-  enable: true
-  type: atom
-  path: atom.xml
-  limit: 20
-  hub:
-  content:
-  content_limit: 140
-  content_limit_delim: ' '
-  order_by: -date
-  icon: icon.png
-  autodiscovery: true
-  template:
-
 ## Themes: https://hexo.io/themes/
 theme: next
-theme_config: _config.next.yml
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-- type: git
-  repo: https://github.com/opsarno/opsarno.github.io
-  branch: gh-pages
-  message: "update"
-  
+  type: ''
