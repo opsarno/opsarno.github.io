@@ -7,7 +7,7 @@ date: 2021-02-19 16:44:58
 - [Vultr - 国外服务器，全球十六个节点 支持微信&支付宝](https://www.vultr.com/?ref=7126586) 
 
 镜像加速
-- [阿里巴巴开源镜像站]（https://developer.aliyun.com/mirror/）
+- [阿里巴巴开源镜像站](https://developer.aliyun.com/mirror/)
 - [清华大学开源镜像站](https://mirrors.tuna.tsinghua.edu.cn/)
 - [阿里巴巴开源镜像站](https://developer.aliyun.com/mirror/)
 - [NEXT, I TELL YOU](https://next.itellyou.cn/)
@@ -19,7 +19,6 @@ date: 2021-02-19 16:44:58
 技术博客
 - [酷壳](https://coolshell.cn/)
 - [廖雪峰](https://www.liaoxuefeng.com/)
-- [运维生存时间](http://www.ttlsa.com/)
 - [美团技术团队](https://tech.meituan.com/)
 - [有赞技术团队](https://tech.youzan.com/)
 

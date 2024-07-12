@@ -7,7 +7,7 @@ categories: [Network, IPv6]
 # 概述
 [RFC 4291](https://www.iana.org/go/rfc4291) 指定 `2000::/3` 为互联网号码分配机构（IANA）可以分配给 RIRs 的全球单播地址空间。
 
-本文中使用的所有全球单播地址前缀均为  [RFC 3849](https://www.iana.org/go/rfc3849) 指定的标准文档专用地址：`2001:db8::/32`
+[RFC 3849](https://www.iana.org/go/rfc3849) 指定了标准文档专用地址：`2001:db8::/32`
 
 <!--more-->
 
@@ -16,7 +16,7 @@ IPv6 地址空间管理的责任按照如下所示的层次结构在全球范围
 
 <img src="/images/ipv6/Distribution.png" alt="Distribution" width="400">
 
-## IANA 
+## IANA 互联网号码分配机构
 
 Internet Assigned Numbers Authority
 
@@ -26,10 +26,6 @@ Internet Assigned Numbers Authority
 - [IANA IPv4 Address Space Registry](https://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xhtml)
 - [Internet Protocol Version 6 Address Space](https://www.iana.org/assignments/ipv6-address-space/ipv6-address-space.xhtml)
 
-
-## IR 互联网注册管理机构
-
-Internet Registry
 
 ## RIR 区域互联网注册管理机构
 
@@ -60,7 +56,7 @@ National Internet Registry
 
 Local Internet Registry 
 
-## ISP
+## ISP 互联网服务供应商
 
 Internet Service Provider
 
