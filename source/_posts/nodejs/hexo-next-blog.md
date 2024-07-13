@@ -10,20 +10,20 @@ categories: [Nodejs]
 - 博客框架 [Hexo](https://hexo.io/zh-cn/)
 - 博客主题 [hexo-theme-next](https://github.com/theme-next/hexo-theme-next)
 - 博客托管 [Github Pages](https://pages.github.com/)
-- 自动部署 [Travis CI](https://travis-ci.com/)
+- 自动部署 [Github Actions](https://docs.github.com/en/actions)
 
 Hexo 其实是一种静态站点生成器，也可以用 [Hugo](https://gohugo.io/)、[JekyII](https://jekyllrb.com/)、[MkDocs](https://www.mkdocs.org/) 等其它静态站点生成器替代。更多生成器参见：[Site Generators](https://jamstack.org/generators/)。
 
 博客示例：
 - [GitHub Pages 域名 - opsarno.github.io](opsarno.github.io)
-- [GitHub Pages 自定义域名 - www.itdevops.cn](www.itdevops.cn) 
+
 <!--more-->
 
 # 快速安装
 主要步骤
 1. 开发者电脑安装 Hexo 基础环境，编写博客内容
 2. 定制化 Hexo 主题，使博客内容展示更加友好
-3. 配置 GitHub + Travis CI，实现自动部署
+3. 配置 GitHub + Github Actions，实现自动部署
 
 [Hexo 的官方文档](https://hexo.io/zh-cn/docs/) 其实非常详细了，本文会有一些额外的内容补充，例如 GitHub Pages 自定义域名，自动部署配置需要额外增加一步等，仅供大家参考。
 
@@ -48,11 +48,23 @@ npm install
 
 
 ## 安装主题
-```bash
-git clone https://github.com/theme-next/hexo-theme-next themes/next
 
-cp themes/next/_config.yml _config.next.yml
-```
+我用的是 [hexo-theme-next](https://theme-next.js.org/docs/)，官方提供了两种安装方式
+
+1. 使用 NPM 【推荐】
+    ```bash
+    npm install hexo-theme-next
+
+    cp node_modules/hexo-theme-next/_config.yml _config.next.yml
+    ```
+
+2. 使用 GIT
+    ```bash
+    git clone https://github.com/next-theme/hexo-theme-next themes/next
+
+    cp themes/next/_config.yml _config.next.yml
+    ```
+
 独立的主题配置文件  `_config.[theme].yml`  应放置于站点根目录下，支持 `yml` 或 `json` 格式。该特性自 Hexo 5.0.0 起提供。
 
 
@@ -145,19 +157,27 @@ hexo s
 
 
 ## 插件推荐
-- [hexo-generator-searchdb](https://github.com/next-theme/hexo-generator-searchdb)  
-更多功能的搜索数据生成器
 
-- [hexo-generator-feed](https://github.com/hexojs/hexo-generator-feed)  
-Generate Atom 1.0 or RSS 2.0 feed. 以便于支持RSS订阅。
+更多插件，可参见 <https://hexo.io/plugins/>
 
-- [hexo-symbols-count-time](https://github.com/theme-next/hexo-symbols-count-time)  
-在博客文章中显示符号计数及所需阅读时间。
-比 [hexo-reading-time](https://github.com/ierhyna/hexo-reading-time) 好，比 [hexo-wordcount](https://github.com/willin/hexo-wordcount) 快。没有外部依赖。
+推荐安装的插件
+```bash
+# hexo-theme-next 主题中 Local Search 功能依赖
+# https://github.com/next-theme/hexo-generator-searchdb
+npm install hexo-generator-searchdb
 
-- [hexo-generator-sitemap](https://github.com/hexojs/hexo-generator-sitemap)  
-生成站点地图
+# hexo-theme-next 主题中 Post wordcount display settings 功能依赖
+# https://github.com/next-theme/hexo-word-counter
+npm install hexo-word-counter
 
+# Generate Atom 1.0 or RSS 2.0 feed.
+# https://github.com/hexojs/hexo-generator-feed
+npm install hexo-generator-feed
+
+# 生成站点地图
+# https://github.com/hexojs/hexo-generator-sitemap
+npm install hexo-generator-sitemap
+```
 
 
 ## 自动部署
